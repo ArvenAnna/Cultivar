@@ -1,0 +1,44 @@
+:root {
+    --main-background: #1D8051;
+    --dark-background: #011B12 /*color(gray blackness(+45%))*/;
+    --dark-dark-background: #000101;  /*color(#585858 blackness(+95%));*/
+    --light-background: #0F8487; /*color(gray whiteness(+45%))*/
+    --main-font-color: black;
+
+
+    --error-color: #932621;
+    --error-background: #935656;
+    --error-border: 1px solid var(--error-color);
+    --error-shadow: 1px 1px 1px 0 var(--error-color), -1px -1px 1px 0 var(--error-color);
+
+    --success-color: #219310;
+    --success-background: #559358;
+    --success-border: 1px solid var(--success-color);
+    --success-shadow: 1px 1px 1px 0 var(--success-color), -1px -1px 1px 0 var(--success-color);
+
+    --info-color: #0C7493;
+    --info-background: #4B7B93;
+    --info-border: 1px solid var(--info-color);
+    --info-shadow: 1px 1px 1px 0 var(--info-color), -1px -1px 1px 0 var(--info-color);
+
+    --main-border: 2px solid var(--dark-background);
+
+    --normal-font-size: 1rem;
+    --small-font-size: 0.9rem;
+    --big-font-size: 1.2rem;
+    --header-font-size: 1.6rem;
+
+    --inset-shadow: 2px 2px 5px 0 var(--main-background) inset;
+    --outer-shadow: 1px 1px 5px 0 var(--dark-background);
+    --outer-light-shadow: 1px 1px 5px 0 var(--light-background);
+    --text-shadow: 2px 2px var(--dark-dark-background);
+
+    --card-width: 200px;
+    --full-size-card-height: 200px;
+
+    --main-border-radius: 0.2rem;
+}
+
+body {
+    background-color: black;
+}

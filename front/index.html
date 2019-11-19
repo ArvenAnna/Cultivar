@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Cultivars</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/grey-theme.css">
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+
+    #loader {
+        display: none;
+        height: 100%;
+        background-color: black;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+
+    main-app:not(:defined) {
+        display: none;
+    }
+
+    main-app:not(:defined) + #loader{
+        display: flex;
+    }
+</style>
+
+<body>
+    <main-app></main-app>
+    <div id="loader">Loading...</div>
+    <!--<script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>-->
+    <script src="/bin/app.bundle.js" charset="utf-8"></script>
+</body>
+
+</html>

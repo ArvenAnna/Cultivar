@@ -1,0 +1,42 @@
+{
+  "name": "recipe",
+  "version": "1.0.0",
+  "description": "FE for cultivar application",
+  "main": "webpack.config.js",
+  "bin": {
+    "recept": "app.bundle.js"
+  },
+  "scripts": {
+    "test": "NODE_ENV=test jest --config ./test/jest.config.js",
+    "test:watch": "jest --watch --config ./test/jest.config.js",
+    "test:coverage": "jest --coverage --config ./test/jest.config.js",
+    "build-watch": "webpack --env.PHOTO_CATALOG=photo --env.TEMP_CATALOG=tempfiles --env.PREVIEW_IMG_PREFIX=-small --watch",
+    "dev-server": "npx webpack-dev-server --hot --inline",
+    "node-server": "npx nodemon --max-old-space-size=4192 dev-server.js",
+    "dev": "npx webpack --env.PHOTO_CATALOG=photo --env.TEMP_CATALOG=tempfiles --env.PREVIEW_IMG_PREFIX=-small"
+  },
+  "repository": {
+    "type": "git",
+    "url": "my"
+  },
+  "keywords": [
+    "recipe"
+  ],
+  "author": "Anna",
+  "license": "ISC",
+  "dependencies": {
+    "@webcomponents/webcomponentsjs": "2.2.10",
+    "express": "4.16.3",
+    "morgan": "1.9.0"
+  },
+  "devDependencies": {
+    "http-proxy-middleware": "0.18.0",
+    "nodemon": "1.17.3",
+    "npm-run-all": "4.1.2",
+    "source-map-loader": "0.2.3",
+    "url-loader": "1.0.1",
+    "webpack": "4.5.0",
+    "webpack-cli": "2.0.14",
+    "webpack-dev-server": "3.1.3"
+  }
+}

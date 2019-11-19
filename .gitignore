@@ -1,0 +1,11 @@
+*.iml
+app/target/
+.idea/
+database/db
+
+front/node_modules
+front/package-lock.json
+front/bin
+
+tempfiles
+photo

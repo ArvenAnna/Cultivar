@@ -1,0 +1,120 @@
+/*@import "./variables.css";*/
+
+html {
+    font-size: 16px;
+    font-family: Arial;
+    color: black;
+}
+
+body {
+    font-size: var(--normal-font-size);
+
+    --theme-border-radius: var(--main-border-radius);
+    --control-font-size: var(--small-font-size);
+
+    /*for input-text*/
+    --input-background: var(--light-background);
+    --input-placeholder: var(--dark-background);
+    --input-error-color: var(--error-color);
+    --input-error-color: var(--error-color);
+    --input-shadow: var(--outer-shadow);
+
+    /*for textarea*/
+    --textarea-height: var(--card-width);
+
+    /*for checkbox*/
+    --checkbox-background: var(--light-background);
+    --checkbox-shadow: var(--outer-shadow);
+
+    /*for drop-down*/
+    --drop-down-font-color: var(--main-font-color);
+    --drop-down-bg: var(--light-background);
+    --drop-down-outlined-color: var(--light-background);
+    --drop-down-outlined-bg: var(--dark-background);
+    --drop-down-shadow: var(--outer-shadow);
+
+    /*for tag*/
+    --tag-background: var(--dark-background);
+    --tag-font-color: var(--light-background);
+    --tag-font-size: var(--small-font-size);
+    --tag-shadow: var(--inset-shadow);
+
+    /*for tree-tags*/
+    --tree-tags-background: var(--light-background);
+    --tree-tags-border: var(--main-border);
+
+    /*for page-list*/
+    --page-list-background: var(--light-background);
+    --page-list-background-active: var(--dark-background);
+    --page-list-border: var(--main-border);
+
+    /*for button*/
+    --button-border: var(--main-border);
+    --button-background: var(--light-background);
+    --button-shadow: var(--inset-shadow);
+    --button-hover-background: var(--light-background);
+
+    /*for list-items*/
+    --list-background: var(--dark-background);
+    --list-font-color: var(--light-background);
+    --list-font-size: var(--small-font-size);
+
+    /*for draggable-image-list*/
+    --drag-target-bg: var(--dark-background);
+    /*for image with text*/
+    --image-with-text-bg: var(--list-background);
+    --image-with-text-color: var(--light-background);
+
+    /*for menu*/
+    --menu-background: var(--main-background);
+
+    /*for photo upload*/
+    --image-border: 2px solid var(--dark-background);
+    --image-width: var(--card-width);
+    --image-overlay-label-bg: var(--light-background);
+
+    /*for tooltip*/
+    --tooltip-background: var(--dark-dark-background);
+    --tooltip-font--color: var(--light-background);
+    --tooltip-shadow: var(--outer-light-shadow);
+    --tooltip-width: 10rem;
+}
+
+recipe-header, recipe-sidebar {
+    /*for button*/
+    --button-border: none;
+    --button-background: var(--main-background);
+    --button-shadow: var(--outer-shadow);
+    --button-hover-background: var(--dark-background);
+}
+
+recipe-search {
+    --control-width: 100%;
+}
+
+create-recipe-page {
+    --create-recipe-font-color: var(--dark-dark-background);
+    --control-width: 12rem;
+
+    /*for photo upload*/
+    /*--image-border: 2px solid var(--dark-background);*/
+    /*--image-width: var(--card-width);*/
+    /*--image-overlay-label-bg: var(--light-background);*/
+}
+
+ingredients-page {
+    --control-width: 12rem;
+}
+
+common-notification {
+    --notification-error-border: var(--error-border);
+    --notification-error-color: var(--error-background);
+    --notification-success-border: var(--success-border);
+    --notification-success-color: var(--success-background);
+    --notification-info-border: var(--info-border);
+    --notification-info-color: var(--info-background);
+}
+
+modal-window {
+    --modal-cross-background: var(--light-background);
+}
