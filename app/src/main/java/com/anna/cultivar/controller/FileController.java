@@ -1,6 +1,6 @@
 package com.anna.cultivar.controller;
 
-import com.anna.recept.dto.FilePath;
+import com.anna.cultivar.dto.FilePath;
 import com.anna.cultivar.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

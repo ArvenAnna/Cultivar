@@ -28,10 +28,22 @@ public class VarietySpecification implements Specification<Variety> {
 		if (searchParams.getSearch() != null) {
 			Predicate searchInNamePredicate = cb.like(cb.upper(varietyRoot.get("name")), "%" + searchParams.getSearch().toUpperCase() + "%");
 			Predicate searchInDescriptionPredicate = cb.like(cb.upper(varietyRoot.get("description")), "%" + searchParams.getSearch().toUpperCase() + "%");
-			Predicate searchInAuthorPredicate = cb.like(cb.upper(varietyRoot.get("author")), "%" + searchParams.getSearch().toUpperCase() + "%");
-			Predicate searchPredicate = cb.or(searchInNamePredicate, searchInDescriptionPredicate, searchInAuthorPredicate);
+//			Predicate searchInAuthorPredicate = cb.like(cb.upper(varietyRoot.get("author")), "%" + searchParams.getSearch().toUpperCase() + "%");
+			Predicate searchPredicate = cb.or(searchInNamePredicate, searchInDescriptionPredicate);
 
 			predicates.add(searchPredicate);
+		}
+
+		if (searchParams.getHybridisatorId() != null) {
+			predicates.add(cb.equal(varietyRoot.get("author"), searchParams.getHybridisatorId()));
+		}
+
+		if (searchParams.getType() != null) {
+			predicates.add(cb.equal(varietyRoot.get("ype"), searchParams.getType()));
+		}
+
+		if (searchParams.getSportOf() != null) {
+			predicates.add(cb.equal(varietyRoot.get("sportOf"), searchParams.getSportOf()));
 		}
 
 		return cb.and(predicates.toArray(new Predicate[0]));

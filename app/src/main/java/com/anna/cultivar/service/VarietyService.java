@@ -14,4 +14,6 @@ public interface VarietyService {
 	VarietyDto updateRecipe(VarietyDto varietyDto);
 
 	VarietyDto getVariety(Long varietyId);
+
+	VarietyPage findVarietiesByKeyword(Pageable pageable, String keyword);
 }

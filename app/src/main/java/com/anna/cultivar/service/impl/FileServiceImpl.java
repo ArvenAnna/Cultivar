@@ -30,6 +30,7 @@ public class FileServiceImpl implements FileService {
 
     public static final int SMALL_IMAGE_TARGET_SIZE = 300;
     public static final String INGREDIENTS_CATALOG = "ingredients";
+    public static final String VARIETIES_CATALOG = "varieties";
 
     @Autowired
     ServletContext context;
@@ -87,6 +88,11 @@ public class FileServiceImpl implements FileService {
     @Override
     public String saveIngredientFile(String path, String name) {
         return saveFile(path, INGREDIENTS_CATALOG, name);
+    }
+
+    @Override
+    public String saveVarietyFile(String path, String name) {
+        return saveFile(path, VARIETIES_CATALOG, name);
     }
 
     private String saveFile(String path, String catalog, String subCatalog) {

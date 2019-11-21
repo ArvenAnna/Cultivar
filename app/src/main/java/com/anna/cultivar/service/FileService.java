@@ -29,4 +29,6 @@ public interface FileService {
     String saveRecipeFile(String path, String department, String name);
 
 	String saveIngredientFile(String path, String name);
+
+	String saveVarietyFile(String path, String name);
 }

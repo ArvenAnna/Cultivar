@@ -35,14 +35,57 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: hybridisators; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.hybridisators (
+    id integer NOT NULL,
+    name character varying(400)
+);
+
+
+ALTER TABLE public.hybridisators OWNER TO postgres;
+
+--
+-- Name: TABLE hybridisators; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE public.hybridisators IS 'Persons who made hybridisation';
+
+
+--
+-- Name: hybridisators_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.hybridisators_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.hybridisators_id_seq OWNER TO postgres;
+
+--
+-- Name: hybridisators_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.hybridisators_id_seq OWNED BY public.hybridisators.id;
+
+
+--
 -- Name: varieties; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.varieties (
     id integer NOT NULL,
     name character varying(400) NOT NULL,
-    author character varying(400),
-    description text
+    author integer,
+    description text,
+    variety_type character varying(100) NOT NULL,
+    hybridisation_date timestamp without time zone,
+    sport_of integer
 );
 
 
@@ -77,6 +120,55 @@ ALTER SEQUENCE public.varieties_id_seq OWNED BY public.varieties.id;
 
 
 --
+-- Name: variety_details; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.variety_details (
+    id integer NOT NULL,
+    photo character varying(300) NOT NULL,
+    description text,
+    variety_id integer NOT NULL
+);
+
+
+ALTER TABLE public.variety_details OWNER TO postgres;
+
+--
+-- Name: TABLE variety_details; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE public.variety_details IS 'Table for variety''s photo';
+
+
+--
+-- Name: variety_details_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.variety_details_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.variety_details_id_seq OWNER TO postgres;
+
+--
+-- Name: variety_details_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.variety_details_id_seq OWNED BY public.variety_details.id;
+
+
+--
+-- Name: hybridisators id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.hybridisators ALTER COLUMN id SET DEFAULT nextval('public.hybridisators_id_seq'::regclass);
+
+
+--
 -- Name: varieties id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -84,10 +176,32 @@ ALTER TABLE ONLY public.varieties ALTER COLUMN id SET DEFAULT nextval('public.va
 
 
 --
+-- Name: variety_details id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.variety_details ALTER COLUMN id SET DEFAULT nextval('public.variety_details_id_seq'::regclass);
+
+
+--
+-- Data for Name: hybridisators; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.hybridisators (id, name) FROM stdin;
+\.
+
+
+--
+-- Name: hybridisators_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.hybridisators_id_seq', 1, false);
+
+
+--
 -- Data for Name: varieties; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.varieties (id, name, author, description) FROM stdin;
+COPY public.varieties (id, name, author, description, variety_type, hybridisation_date, sport_of) FROM stdin;
 \.
 
 
@@ -99,6 +213,29 @@ SELECT pg_catalog.setval('public.varieties_id_seq', 1, false);
 
 
 --
+-- Data for Name: variety_details; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.variety_details (id, photo, description, variety_id) FROM stdin;
+\.
+
+
+--
+-- Name: variety_details_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.variety_details_id_seq', 1, false);
+
+
+--
+-- Name: hybridisators hybridisators_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.hybridisators
+    ADD CONSTRAINT hybridisators_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: varieties varieties_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -107,10 +244,56 @@ ALTER TABLE ONLY public.varieties
 
 
 --
+-- Name: variety_details variety_details_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.variety_details
+    ADD CONSTRAINT variety_details_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: hybridisators_id_uindex; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX hybridisators_id_uindex ON public.hybridisators USING btree (id);
+
+
+--
 -- Name: varieties_id_uindex; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX varieties_id_uindex ON public.varieties USING btree (id);
+
+
+--
+-- Name: variety_details_id_uindex; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX variety_details_id_uindex ON public.variety_details USING btree (id);
+
+
+--
+-- Name: varieties varieties_hybridisators_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.varieties
+    ADD CONSTRAINT varieties_hybridisators_id_fk FOREIGN KEY (author) REFERENCES public.hybridisators(id);
+
+
+--
+-- Name: varieties varieties_varieties_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.varieties
+    ADD CONSTRAINT varieties_varieties_id_fk FOREIGN KEY (sport_of) REFERENCES public.varieties(id);
+
+
+--
+-- Name: variety_details variety_details_varieties_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.variety_details
+    ADD CONSTRAINT variety_details_varieties_id_fk FOREIGN KEY (variety_id) REFERENCES public.varieties(id);
 
 
 --
