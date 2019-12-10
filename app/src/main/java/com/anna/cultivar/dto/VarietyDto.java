@@ -19,7 +19,7 @@ public class VarietyDto {
 	private String description;
 	private Variety.Type type;
 	private LocalDate hybridisationDate;
-	private Long sportOf;
+	private VarietyBaseDto sportOf;
 	private List<VarietyDetailDto> details;
 
 	public static VarietyDto of(Variety variety) {
@@ -30,7 +30,7 @@ public class VarietyDto {
 				.description(variety.getDescription())
 				.type(variety.getType())
 				.hybridisationDate(variety.getHybridisationDate())
-				.sportOf(variety.getSportOf())
+				.sportOf(VarietyBaseDto.of(variety.getSportOf()))
 				.build();
 	}
 }

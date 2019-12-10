@@ -3,6 +3,10 @@ import '../../styled/input-text';
 import '../../styled/text-area';
 import '../../styled/action-button';
 
+import './parts/author-selector';
+import './parts/type-selector';
+import './parts/sport-of';
+
 import {t} from '../../utils/translateUtils';
 
 const CONTAINER = 'page-container';
@@ -14,6 +18,11 @@ const BUTTON_CONTAINER = 'button-container';
 
 const DESCRIPTION_COMPONENT = 'text-area';
 const BUTTON_COMPONENT = 'action-button';
+
+const AUTHOR_SELECTOR_COMPONENT = 'author-selector';
+const TYPE_SELECTOR_COMPONENT = 'type-selector';
+const SPORT_OF_COMPONENT = 'sport-of';
+
 
 const template = `
   <style>
@@ -52,9 +61,15 @@ const template = `
         <input-text id='${NAME}'/>
       </div> 
       
+      <${AUTHOR_SELECTOR_COMPONENT}></${AUTHOR_SELECTOR_COMPONENT}>
+      <${TYPE_SELECTOR_COMPONENT}></${TYPE_SELECTOR_COMPONENT}>
+      
       <div id='${NAME_CONTAINER}'>
             <${DESCRIPTION_COMPONENT}></${DESCRIPTION_COMPONENT}>
       </div>
+      
+      <${SPORT_OF_COMPONENT}></${SPORT_OF_COMPONENT}>
+     
       
       <div id='${BUTTON_CONTAINER}'>
             <${BUTTON_COMPONENT} text='${t('common.save')}'></${BUTTON_COMPONENT}>
@@ -69,6 +84,23 @@ class CreateVarietyPage extends WebElement {
         this._renderPage();
     }
 
+    set authors(newAuthors) {
+        this.$authors = newAuthors;
+        this._renderPage();
+    }
+
+    set types(items) {
+        this.$types = items;
+        this._renderPage();
+    }
+
+    set props({item, authors, types}) {
+        this.$variety = item;
+        this.$authors = authors;
+        this.$types = types;
+        this._renderPage();
+    }
+
     constructor() {
         super(template, true);
 
@@ -80,18 +112,21 @@ class CreateVarietyPage extends WebElement {
             pattern: /.+/,
             errorText: t('varieties.error_empty_variety')
         }];
-
-
     }
 
     _save() {
         this.$variety.name = this.$_id(NAME).value;
         this.$variety.description = this.$(DESCRIPTION_COMPONENT).value;
 
-        // if (!this.$recipe.department) {
-        //     this.$recipe.department = this.$departments.length
-        //         ? this.$departments[0] : null;
-        // }
+        if (!this.$variety.author) {
+            this.$variety.author = this.$authors.length
+                ? this.$authors[0] : null;
+        }
+
+        if (!this.$variety.type) {
+            this.$variety.type = this.$types.length
+                ? this.$types[0] : null;
+        }
 
         this.$variety.save().then(id => {
             window.location.hash = '/variety/' + id;
@@ -102,6 +137,11 @@ class CreateVarietyPage extends WebElement {
         if (this.$variety) {
             this.$_id(NAME).value = this.$variety.name || '';
             this.$(DESCRIPTION_COMPONENT).value = this.$variety.description || '';
+            this.$(AUTHOR_SELECTOR_COMPONENT).variety = this.$variety;
+            this.$(AUTHOR_SELECTOR_COMPONENT).authors = this.$authors;
+            this.$(TYPE_SELECTOR_COMPONENT).variety = this.$variety;
+            this.$(TYPE_SELECTOR_COMPONENT).types = this.$types;
+            this.$(SPORT_OF_COMPONENT).variety = this.$variety;
         }
 
         // this.$(RECIPE_DEPARTMENT_COMPONENT).recipe = this.$recipe;

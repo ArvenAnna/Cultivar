@@ -28,6 +28,18 @@ export class Variety extends Model {
         return this._variety.description;
     }
 
+    get author() {
+        return { ... this._variety.author };
+    }
+
+    get type() {
+        return this._variety.type;
+    }
+
+    get sportOf() {
+        return {...this._variety.sportOf};
+    }
+
     // get refs() {
     //     if (!this._recipe.refs || !this._recipe.refs.length) {
     //         return null;

@@ -1,8 +1,8 @@
+import {MAX_SUGGESTIONS_NUMBER} from "./limits";
+
 const httpPrefix = '/api';
 
 const routes = {
-    GET_DEPARTMENTS: `${httpPrefix}/departs`,
-
     UPLOAD_FILE: httpPrefix + '/file',
 
     GET_TRANSLATION: (context, bundle) => `/translations/${context}/${bundle}.json`,
@@ -15,6 +15,10 @@ const routes = {
     SEARCH_VARIETIES_PAGEABLE: (searchUrl) => `${httpPrefix}/varieties${searchUrl}`,
     GET_VARIETY: (variety) => `${httpPrefix}/varieties/${variety}`,
     POST_CREATE_VARIETY: httpPrefix + '/varieties',
+
+    GET_AUTHORS: `${httpPrefix}/varieties/hybridisators`,
+    GET_VARIETY_TYPES: `${httpPrefix}/varieties/types`,
+    GET_VARIETIS_BY_KEYWORD: (keyword) => `${httpPrefix}/varieties/keyword/${keyword}?pageSize=${MAX_SUGGESTIONS_NUMBER}&pageNumber=0`
 
 };
 

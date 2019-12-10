@@ -25,6 +25,30 @@ class NewVariety extends Variety {
         return super.description;
     }
 
+    get author() {
+        return super.author;
+    }
+
+    set author(newAuthor) {
+        this.$variety.author = { ... newAuthor };
+    }
+
+    get type() {
+        return super.type;
+    }
+
+    set type(newType) {
+        this.$variety.type = newType;
+    }
+
+    get sportOf() {
+        return super.sportOf;
+    }
+
+    set sportOf(sport) {
+        this.$variety.sportOf = {...sport};
+    }
+
     // set imgPath(path) {
     //     this._recipe.imgPath = path;
     // }

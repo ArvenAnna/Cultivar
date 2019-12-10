@@ -4,5 +4,8 @@
   "new_variety": "New variety",
   "edit_variety": "Edit variety",
   "error_empty_variety": "Variety should not be empty",
-  "variety_name": "Variety name"
+  "variety_name": "Variety name",
+  "select_cultivator": "Select cultivator",
+  "select_type": "Select cultivar type",
+  "sport_of": "Sport of another variety"
 }

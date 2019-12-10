@@ -15,3 +15,14 @@ To start application you need:
     \dt - show tables
     \q - exit
     drop database cultivars
+
+
+1. Mock datepicker check
+2. Implement datepicker
+3. Implement details
+4. Add Russian translations
+5. Add loader support
+
+----------------------
+
+1. Exemplar setup

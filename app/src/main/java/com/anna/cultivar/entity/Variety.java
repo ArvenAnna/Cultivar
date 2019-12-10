@@ -20,8 +20,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.anna.cultivar.dto.VarietyBaseDto;
 import com.anna.cultivar.dto.VarietyDto;
-import com.anna.recept.entity.Detail;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -52,8 +52,9 @@ public class Variety {
 	@Column(name = "hybridisation_date")
 	private LocalDate hybridisationDate;
 
-	@Column(name = "sport_of")
-	private Long sportOf;
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@JoinColumn(name = "sport_of")
+	private Variety sportOf;
 
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "author")
@@ -66,6 +67,13 @@ public class Variety {
 		MINIATURE, SEMIMINI, COMPACT_STANDART, LARGE_STANDART
 	}
 
+	public static Variety of (VarietyBaseDto dto) {
+		Variety variety = new Variety();
+		variety.setId(dto.getId());
+		variety.setName(dto.getName());
+		return variety;
+	}
+
 	public static Variety of (VarietyDto dto) {
 		Variety variety = new Variety();
 		variety.setId(dto.getId());
@@ -74,7 +82,7 @@ public class Variety {
 		variety.setDescription(dto.getDescription());
 		variety.setType(dto.getType());
 		variety.setHybridisationDate(dto.getHybridisationDate());
-		variety.setSportOf(dto.getSportOf());
+		variety.setSportOf(Optional.ofNullable(dto.getSportOf()).map(Variety::of).orElse(null));
 		variety.setDetails(Optional.ofNullable(dto.getDetails())
 				.map(details -> details.stream().map(detail -> VarietyDetail.of(detail, variety)).collect(Collectors.toList()))
 				.orElse(new ArrayList<>()));

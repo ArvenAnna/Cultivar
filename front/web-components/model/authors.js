@@ -4,33 +4,34 @@ import {getResponse} from '../utils/httpUtils';
 import mNotification from './notification';
 import {SEVERITY_TYPES} from "../common-notification";
 
-class Departments extends Model {
+class Authors extends Model {
 
     constructor() {
         super();
 
-        this._departments = [];
+        this._authors = [];
 
-        this.bindMethods(this._setDepartments, this.retrieve);
+        this._setAuthors = this._setAuthors.bind(this);
+        this.retrieve = this.retrieve.bind(this);
     }
 
-    get departments() {
-        return [...this._departments];
+    get authors() {
+        return [...this._authors];
     }
 
     retrieve() {
-        fetch(routes.GET_DEPARTMENTS)
+        fetch(routes.GET_AUTHORS)
             .then(getResponse)
-            .then(newDepartments => this._setDepartments(newDepartments))
+            .then(this._setAuthors)
             .catch(e => {
                 mNotification.showMessage(e.message, SEVERITY_TYPES.ERROR);
             });
     }
 
-    _setDepartments(newDepartments) {
-        this._departments = newDepartments;
+    _setAuthors(newAuthors) {
+        this._authors = newAuthors;
         this.notifySubscribers();
     }
 }
 
-export default new Departments();
+export default new Authors();

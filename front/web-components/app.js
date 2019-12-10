@@ -11,8 +11,8 @@ import './views/create-variety/create-variety-page-renderer';
 import './views/create-variety/edit-variety-page-renderer';
 
 import './app-header';
-import './app-sidebar';
-import './recipe-search';
+// import './app-sidebar';
+// import './recipe-search';
 
 const CONTAINER = 'app_container';
 const BODY = 'app_body';
