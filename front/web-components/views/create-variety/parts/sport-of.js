@@ -49,7 +49,7 @@ class SportOf extends WebElement {
             removeItemCallback: this._removeSportOfCallback
         };
 
-        if (this.$variety.sportOf) {
+        if (this.$variety.sportOf && this.$variety.sportOf.id) {
             this.$(SUGGESTION_INPUT_COMPONENT).style.display = 'none';
             this.$(REMOVABLE_TAG_COMPONENT).innerHTML = this.$variety.sportOf.name;
             this.$(REMOVABLE_TAG_COMPONENT).style.display = 'block';

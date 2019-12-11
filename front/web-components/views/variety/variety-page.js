@@ -156,9 +156,9 @@ const template = `
   
   <div id='${CONTAINER}'>
       <div id='${CAPTION}'></div>     
-      <img src='${noImage}' id='${MAIN_PHOTO}'/>
+      <!--<img src='${noImage}' id='${MAIN_PHOTO}'/>-->
       <div id='${DESCRIPTION}'></div>  
-      <!--<div id='${DETAILS}'></div>-->
+      <div id='${DETAILS}'></div>
   </div>
 `;
 
@@ -189,8 +189,8 @@ class VarietyPage extends WebElement {
         this.$_id(CAPTION).textContent = '';
         // this.$_id(MAIN_PHOTO).src = noImage;
         this.$_id(DESCRIPTION).textContent = '';
-        // this.$_id(DETAILS).innerHTML = '';
-        // this.$_id(DETAILS).style.display = 'none';
+        this.$_id(DETAILS).innerHTML = '';
+        this.$_id(DETAILS).style.display = 'none';
     }
 
     _renderPage() {
@@ -202,18 +202,18 @@ class VarietyPage extends WebElement {
             // this.$_id(MAIN_PHOTO).src =  this.$variety.imgPathFull || noImage;
             this.$_id(DESCRIPTION).textContent = this.$variety.description || '';
 
-            // if (this.$recipe.details && this.$recipe.details.length) {
-            //     this.$_id(DETAILS).style.display = 'grid';
-            //     this.$recipe.details.forEach(detail => {
-            //         const detailTemplate = this.getTemplateById(RECIPE_DETAIL_TEMPLATE);
-            //         if (detail.imgPath) {
-            //             detailTemplate.byClass(DETAILS_PHOTO).src = detail.imgPath;
-            //             detailTemplate.byClass(DETAILS_PHOTO).addEventListener('click', this._openFullPhoto.bind(this, detail.imgPathFull));
-            //         }
-            //         detailTemplate.byClass(DETAILS_DESCRIPTION).textContent = detail.description;
-            //         this.$_id(DETAILS).appendChild(detailTemplate);
-            //     })
-            // }
+            if (this.$variety.details && this.$variety.details.length) {
+                this.$_id(DETAILS).style.display = 'grid';
+                this.$variety.details.forEach(detail => {
+                    const detailTemplate = this.getTemplateById(RECIPE_DETAIL_TEMPLATE);
+                    if (detail.photo) {
+                        detailTemplate.byClass(DETAILS_PHOTO).src = detail.photo;
+                        detailTemplate.byClass(DETAILS_PHOTO).addEventListener('click', this._openFullPhoto.bind(this, detail.photoFull));
+                    }
+                    detailTemplate.byClass(DETAILS_DESCRIPTION).textContent = detail.description;
+                    this.$_id(DETAILS).appendChild(detailTemplate);
+                })
+            }
 
         }
     }

@@ -8,6 +8,7 @@ services:
         args:
           - photoLocation=${PHOTO_LOCATION}
           - templocation=${TEMP_LOCATION}
+          - previewImagePrefix=${PREVIEW_IMAGE_PREFIX}
       env_file:
         - '.env'
       ports:
@@ -37,7 +38,7 @@ services:
     links:
       - db
     volumes:
-       - ./${FOTO_LOCATION}:/usr/local/tomcat/webapps/ROOT/${PHOTO_LOCATION}
+       - ./${PHOTO_LOCATION}:/usr/local/tomcat/webapps/ROOT/${PHOTO_LOCATION}
        - ./${TEMP_LOCATION}:/usr/local/tomcat/webapps/ROOT/${TEMP_LOCATION}
     env_file:
        - '.env'

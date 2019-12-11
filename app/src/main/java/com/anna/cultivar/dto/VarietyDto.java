@@ -2,6 +2,8 @@ package com.anna.cultivar.dto;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.anna.cultivar.entity.Variety;
 
@@ -30,7 +32,8 @@ public class VarietyDto {
 				.description(variety.getDescription())
 				.type(variety.getType())
 				.hybridisationDate(variety.getHybridisationDate())
-				.sportOf(VarietyBaseDto.of(variety.getSportOf()))
+				.sportOf(Optional.ofNullable(variety.getSportOf()).map(VarietyBaseDto::of).orElse(null))
+				.details(variety.getDetails().stream().map(VarietyDetailDto::of).collect(Collectors.toList()))
 				.build();
 	}
 }

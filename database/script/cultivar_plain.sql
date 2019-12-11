@@ -127,7 +127,8 @@ CREATE TABLE public.variety_details (
     id integer NOT NULL,
     photo character varying(300) NOT NULL,
     description text,
-    variety_id integer NOT NULL
+    variety_id integer NOT NULL,
+    detail_order integer NOT NULL
 );
 
 
@@ -216,7 +217,7 @@ SELECT pg_catalog.setval('public.varieties_id_seq', 1, false);
 -- Data for Name: variety_details; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.variety_details (id, photo, description, variety_id) FROM stdin;
+COPY public.variety_details (id, photo, description, variety_id, detail_order) FROM stdin;
 \.
 
 

@@ -65,20 +65,20 @@ export class Variety extends Model {
     //         }));
     // }
     //
-    // get details() {
-    //     return this._recipe.details && this._recipe.details.map((detail) => {
-    //         const {filePath, id, order, description} = detail;
-    //         const isTempImage = filePath && `/${filePath}`.startsWith(routes.TEMP_CATALOG);
-    //         return {
-    //             id,
-    //             description,
-    //             order,
-    //             [`${INTERNAL_ID_KEY}`]: detail[`${INTERNAL_ID_KEY}`],
-    //             imgPath: isTempImage ? filePath : getImageSmallCopy(routes.IMAGE_CATALOG + filePath),
-    //             imgPathFull: isTempImage ? filePath : routes.IMAGE_CATALOG + filePath
-    //         }
-    //     });
-    // }
+    get details() {
+        return this._variety.details && this._variety.details.map((detail) => {
+            const {photo, id, order, description} = detail;
+            const isTempImage = photo && `/${photo}`.startsWith(routes.TEMP_CATALOG);
+            return {
+                id,
+                description,
+                order,
+                [`${INTERNAL_ID_KEY}`]: detail[`${INTERNAL_ID_KEY}`],
+                photo: isTempImage ? photo : getImageSmallCopy(routes.IMAGE_CATALOG + photo),
+                photoFull: isTempImage ? photo : routes.IMAGE_CATALOG + photo
+            }
+        });
+    }
 
     retrieve(id) {
         fetch(routes.GET_VARIETY(id))
@@ -91,10 +91,10 @@ export class Variety extends Model {
 
     _setVariety(item) {
         this._variety = item;
-        // this._recipe.details = this._recipe.details.sort((d1,d2) => d1.order - d2.order);
-        // this._recipe.details.forEach((d, i) => d.order = i + 1);
+        this._variety.details = this._variety.details.sort((d1,d2) => d1.order - d2.order);
+        this._variety.details.forEach((d, i) => d.order = i + 1);
         // this._recipe.proportions = this._recipe.proportions.map((p, i) => ({...p, [`${INTERNAL_ID_KEY}`]: i}));
-        // this._recipe.details = this._recipe.details.map((p, i) => ({...p, [`${INTERNAL_ID_KEY}`]: i}));
+        this._variety.details = this._variety.details.map((p, i) => ({...p, [`${INTERNAL_ID_KEY}`]: i}));
         // this._recipe.refs = this._recipe.refs.map((p, i) => ({...p, [`${INTERNAL_ID_KEY}`]: i}));
         this.notifySubscribers();
     }

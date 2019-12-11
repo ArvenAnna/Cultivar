@@ -52,7 +52,7 @@ public class Variety {
 	@Column(name = "hybridisation_date")
 	private LocalDate hybridisationDate;
 
-	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "sport_of")
 	private Variety sportOf;
 

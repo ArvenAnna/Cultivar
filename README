@@ -17,11 +17,8 @@ To start application you need:
     drop database cultivars
 
 
-1. Mock datepicker check
 2. Implement datepicker
-3. Implement details
 4. Add Russian translations
-5. Add loader support
 
 ----------------------
 

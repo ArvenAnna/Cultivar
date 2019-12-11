@@ -5,6 +5,19 @@ import {INTERNAL_ID_KEY} from '../../constants/common';
 
 class NewVariety extends Variety {
 
+    static _getByInternalId(array, objToFind) {
+        return array.find(item => item[`${INTERNAL_ID_KEY}`] === objToFind[`${INTERNAL_ID_KEY}`]);
+    }
+
+    static _getNextInternalId(array) {
+        const internalKeys = array.map(item => item[`${INTERNAL_ID_KEY}`]);
+        return internalKeys.length ? Math.max(...internalKeys) + 1 : 0;
+    }
+
+    static _getWithoutByInternalId(array, objToFind) {
+        return array.filter(item => item[`${INTERNAL_ID_KEY}`] !== objToFind[`${INTERNAL_ID_KEY}`]);
+    }
+
     constructor() {
         super();
     }
@@ -14,11 +27,11 @@ class NewVariety extends Variety {
     }
 
     set name(newName) {
-        this.$variety.name = newName;
+        this._variety.name = newName;
     }
 
     set description(newDescription) {
-        this.$variety.description = newDescription;
+        this._variety.description = newDescription;
     }
 
     get description() {
@@ -30,7 +43,7 @@ class NewVariety extends Variety {
     }
 
     set author(newAuthor) {
-        this.$variety.author = { ... newAuthor };
+        this._variety.author = { ... newAuthor };
     }
 
     get type() {
@@ -38,7 +51,7 @@ class NewVariety extends Variety {
     }
 
     set type(newType) {
-        this.$variety.type = newType;
+        this._variety.type = newType;
     }
 
     get sportOf() {
@@ -46,7 +59,7 @@ class NewVariety extends Variety {
     }
 
     set sportOf(sport) {
-        this.$variety.sportOf = {...sport};
+        this._variety.sportOf = {...sport};
     }
 
     // set imgPath(path) {
@@ -57,14 +70,61 @@ class NewVariety extends Variety {
     //     return super.imgPath;
     // }
 
+    set detail (detail) {
+        if (!this._variety.details) {
+            this._variety.details = [];
+        }
+
+        let oldDetail = NewVariety._getByInternalId(this._variety.details, detail);
+
+        if (oldDetail) {
+            //then update these fields, img path can not be changed
+            oldDetail.description = detail.description;
+            oldDetail.order = this._calculateDetailOrder(detail);
+        } else {
+            //then create
+            this._variety.details.push({
+                description: detail.description,
+                photo: detail.photo,
+                order: this._calculateDetailOrder(detail),
+                [`${INTERNAL_ID_KEY}`]: NewVariety._getNextInternalId(this._variety.details)
+            });
+        }
+    }
+
+    reorderDetails(detailFrom, detailTo) {
+        let oldDetailFrom = NewVariety._getByInternalId(this._variety.details, detailFrom);
+        this._variety.details.filter(d => d.order >= detailTo.order).forEach(d => d.order = d.order + 1);
+        oldDetailFrom.order = detailTo.order;
+        this._variety.details = this._variety.details.sort((d1,d2) => d1.order - d2.order);
+    }
+
+    _calculateDetailOrder(detail) {
+        if (detail.order) return detail.order;
+        if (this._variety.details.length === 0) {
+            return 1;
+        } else {
+            return this._variety.details[this._variety.details.length - 1].order + 1;
+        }
+    }
+
+    removeDetail(detail) {
+        if (this._variety.details) {
+            this._variety.details = NewVariety._getWithoutByInternalId(this._variety.details, detail);
+        }
+    }
+
     async save() {
-        const method = this.$variety.id ? 'PUT' : 'POST';
-        const newRecipe = await doJsonRequest(routes.POST_CREATE_VARIETY, method, this.$variety);
+        //todo: remove:
+        const mockedDate = new Date();
+        this._variety.hybridisationDate = mockedDate;
+        const method = this._variety.id ? 'PUT' : 'POST';
+        const newRecipe = await doJsonRequest(routes.POST_CREATE_VARIETY, method, this._variety);
         return newRecipe.id;
     }
 
     clear() {
-        this.$variety = {};
+        this._variety = {};
     }
 }
 

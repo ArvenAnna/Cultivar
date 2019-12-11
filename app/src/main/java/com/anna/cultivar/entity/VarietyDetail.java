@@ -37,11 +37,15 @@ public class VarietyDetail {
 	@JoinColumn(name = "variety_id")
 	private Variety variety;
 
+	@Column(name = "detail_order")
+	private Integer order;
+
 	public static VarietyDetail of(VarietyDetailDto dto) {
 		VarietyDetail detail = new VarietyDetail();
 		detail.setId(dto.getId());
 		detail.setDescription(dto.getDescription());
 		detail.setPhoto(dto.getPhoto());
+		detail.setOrder(dto.getOrder());
 		return detail;
 	}
 

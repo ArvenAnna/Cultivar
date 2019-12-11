@@ -6,6 +6,7 @@ import '../../styled/action-button';
 import './parts/author-selector';
 import './parts/type-selector';
 import './parts/sport-of';
+import './parts/variety-details';
 
 import {t} from '../../utils/translateUtils';
 
@@ -19,6 +20,7 @@ const BUTTON_CONTAINER = 'button-container';
 const DESCRIPTION_COMPONENT = 'text-area';
 const BUTTON_COMPONENT = 'action-button';
 
+const DETAILS_COMPONENT = 'variety-details';
 const AUTHOR_SELECTOR_COMPONENT = 'author-selector';
 const TYPE_SELECTOR_COMPONENT = 'type-selector';
 const SPORT_OF_COMPONENT = 'sport-of';
@@ -70,6 +72,7 @@ const template = `
       
       <${SPORT_OF_COMPONENT}></${SPORT_OF_COMPONENT}>
      
+      <${DETAILS_COMPONENT}></${DETAILS_COMPONENT}>
       
       <div id='${BUTTON_CONTAINER}'>
             <${BUTTON_COMPONENT} text='${t('common.save')}'></${BUTTON_COMPONENT}>
@@ -118,7 +121,7 @@ class CreateVarietyPage extends WebElement {
         this.$variety.name = this.$_id(NAME).value;
         this.$variety.description = this.$(DESCRIPTION_COMPONENT).value;
 
-        if (!this.$variety.author) {
+        if (!this.$variety.author || !this.$variety.author.id) {
             this.$variety.author = this.$authors.length
                 ? this.$authors[0] : null;
         }
@@ -142,6 +145,7 @@ class CreateVarietyPage extends WebElement {
             this.$(TYPE_SELECTOR_COMPONENT).variety = this.$variety;
             this.$(TYPE_SELECTOR_COMPONENT).types = this.$types;
             this.$(SPORT_OF_COMPONENT).variety = this.$variety;
+            this.$(DETAILS_COMPONENT).variety = this.$variety;
         }
 
         // this.$(RECIPE_DEPARTMENT_COMPONENT).recipe = this.$recipe;

@@ -7,7 +7,7 @@ const routes = {
 
     GET_TRANSLATION: (context, bundle) => `/translations/${context}/${bundle}.json`,
 
-    IMAGE_CATALOG: `/${process.env.FOTO_CATALOG}/`,
+    IMAGE_CATALOG: `/${process.env.PHOTO_CATALOG}/`,
     TEMP_CATALOG: `/${process.env.TEMP_CATALOG}/`,
     PREVIEW_IMAGE_PREFIX: process.env.PREVIEW_IMAGE_PREFIX,
 

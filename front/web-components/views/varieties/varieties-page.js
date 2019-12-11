@@ -56,12 +56,12 @@ const template = `
   </style>
   
   <template id='${ITEM_TEMPLATE}'>
-      <recipe-link>
+      <router-link>
          <div class='${ITEM}'>
             <img src='${noImage}' class='${PHOTO}'/>
             <div class='${NAME}'></div>
          </div>
-      </recipe-link>    
+      </router-link>    
   </template>
   
   <div id='${CONTAINER}'>
