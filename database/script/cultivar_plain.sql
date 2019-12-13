@@ -35,6 +35,78 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: exemplar_history; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.exemplar_history (
+    id integer NOT NULL,
+    description text,
+    exemplar_id integer,
+    event_type character varying(100),
+    event_date timestamp without time zone,
+    photo character varying(1000)
+);
+
+
+ALTER TABLE public.exemplar_history OWNER TO postgres;
+
+--
+-- Name: exemplar_history_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.exemplar_history_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.exemplar_history_id_seq OWNER TO postgres;
+
+--
+-- Name: exemplar_history_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.exemplar_history_id_seq OWNED BY public.exemplar_history.id;
+
+
+--
+-- Name: exemplars; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.exemplars (
+    id integer NOT NULL,
+    variety_id integer,
+    parent integer,
+    is_sport boolean
+);
+
+
+ALTER TABLE public.exemplars OWNER TO postgres;
+
+--
+-- Name: exemplars_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.exemplars_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.exemplars_id_seq OWNER TO postgres;
+
+--
+-- Name: exemplars_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.exemplars_id_seq OWNED BY public.exemplars.id;
+
+
+--
 -- Name: hybridisators; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -163,6 +235,20 @@ ALTER SEQUENCE public.variety_details_id_seq OWNED BY public.variety_details.id;
 
 
 --
+-- Name: exemplar_history id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.exemplar_history ALTER COLUMN id SET DEFAULT nextval('public.exemplar_history_id_seq'::regclass);
+
+
+--
+-- Name: exemplars id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.exemplars ALTER COLUMN id SET DEFAULT nextval('public.exemplars_id_seq'::regclass);
+
+
+--
 -- Name: hybridisators id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -181,6 +267,36 @@ ALTER TABLE ONLY public.varieties ALTER COLUMN id SET DEFAULT nextval('public.va
 --
 
 ALTER TABLE ONLY public.variety_details ALTER COLUMN id SET DEFAULT nextval('public.variety_details_id_seq'::regclass);
+
+
+--
+-- Data for Name: exemplar_history; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.exemplar_history (id, description, exemplar_id, event_type, event_date, photo) FROM stdin;
+\.
+
+
+--
+-- Name: exemplar_history_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.exemplar_history_id_seq', 1, false);
+
+
+--
+-- Data for Name: exemplars; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.exemplars (id, variety_id, parent, is_sport) FROM stdin;
+\.
+
+
+--
+-- Name: exemplars_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.exemplars_id_seq', 1, false);
 
 
 --
@@ -229,6 +345,22 @@ SELECT pg_catalog.setval('public.variety_details_id_seq', 1, false);
 
 
 --
+-- Name: exemplar_history exemplar_history_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.exemplar_history
+    ADD CONSTRAINT exemplar_history_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: exemplars exemplars_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.exemplars
+    ADD CONSTRAINT exemplars_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: hybridisators hybridisators_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -253,6 +385,20 @@ ALTER TABLE ONLY public.variety_details
 
 
 --
+-- Name: exemplar_history_id_uindex; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX exemplar_history_id_uindex ON public.exemplar_history USING btree (id);
+
+
+--
+-- Name: exemplars_id_uindex; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX exemplars_id_uindex ON public.exemplars USING btree (id);
+
+
+--
 -- Name: hybridisators_id_uindex; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -271,6 +417,30 @@ CREATE UNIQUE INDEX varieties_id_uindex ON public.varieties USING btree (id);
 --
 
 CREATE UNIQUE INDEX variety_details_id_uindex ON public.variety_details USING btree (id);
+
+
+--
+-- Name: exemplar_history exemplar_history_exemplars_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.exemplar_history
+    ADD CONSTRAINT exemplar_history_exemplars_id_fk FOREIGN KEY (exemplar_id) REFERENCES public.exemplars(id);
+
+
+--
+-- Name: exemplars exemplars_exemplars_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.exemplars
+    ADD CONSTRAINT exemplars_exemplars_id_fk FOREIGN KEY (parent) REFERENCES public.exemplars(id);
+
+
+--
+-- Name: exemplars exemplars_varieties_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.exemplars
+    ADD CONSTRAINT exemplars_varieties_id_fk FOREIGN KEY (variety_id) REFERENCES public.varieties(id);
 
 
 --

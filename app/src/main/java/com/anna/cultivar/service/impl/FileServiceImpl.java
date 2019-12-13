@@ -31,6 +31,7 @@ public class FileServiceImpl implements FileService {
     public static final int SMALL_IMAGE_TARGET_SIZE = 300;
     public static final String INGREDIENTS_CATALOG = "ingredients";
     public static final String VARIETIES_CATALOG = "varieties";
+    public static final String EXEMPLARS_CATALOG = "exemplars";
 
     @Autowired
     ServletContext context;
@@ -173,5 +174,9 @@ public class FileServiceImpl implements FileService {
             });
             oldCatalogPath.toFile().delete();
         }
+    }
+
+    public String saveExemplarFile(String photo, String name) {
+        return saveFile(photo, EXEMPLARS_CATALOG, name);
     }
 }
