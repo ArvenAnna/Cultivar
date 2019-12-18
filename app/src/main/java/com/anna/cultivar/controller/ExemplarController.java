@@ -1,7 +1,5 @@
 package com.anna.cultivar.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -17,7 +15,6 @@ import com.anna.cultivar.dto.ExemplarCreationRequest;
 import com.anna.cultivar.dto.ExemplarDto;
 import com.anna.cultivar.dto.ExemplarPage;
 import com.anna.cultivar.dto.ExemplarSearchParams;
-import com.anna.cultivar.entity.ExemplarHistory;
 import com.anna.cultivar.service.ExemplarService;
 
 @RestController
@@ -26,8 +23,6 @@ public class ExemplarController {
 
 	@Autowired
 	private ExemplarService exemplarService;
-//	@Autowired
-//	private HybridisatorService hybridisatorService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ExemplarPage exemplarsList(ExemplarSearchParams searchParams, @NotNull final Pageable pageable) {
@@ -48,14 +43,4 @@ public class ExemplarController {
 	public ExemplarPage findExemplarsByKeyword(@PathVariable("keyword") String keyword, @NotNull final Pageable pageable) {
 		return exemplarService.findByKeyword(pageable, keyword);
 	}
-
-//	@RequestMapping(value = {"/events"}, method = RequestMethod.GET)
-//	public List<ExemplarHistory.ExemplarEvent> getEvents() {
-//		return hybridisatorService.getAll().collect(Collectors.toList());
-//	}
-//
-//	@RequestMapping(value = {"/types"}, method = RequestMethod.GET)
-//	public List<String> getTypes() {
-//		return Arrays.stream(Variety.Type.values()).map(Enum::name).collect(Collectors.toList());
-//	}
 }

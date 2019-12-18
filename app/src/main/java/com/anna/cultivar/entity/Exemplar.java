@@ -34,6 +34,9 @@ public class Exemplar {
 	@Column(name = "id")
 	private Long id;
 
+	@Column(name = "name")
+	private String name;
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "variety_id")
 	private Variety variety;
@@ -50,6 +53,7 @@ public class Exemplar {
 
 	public static Exemplar of(ExemplarCreationRequest request) {
 		Exemplar entity = new Exemplar();
+		entity.setName(request.getName());
 		Optional.ofNullable(request.getParent()).ifPresent(id -> {
 			Exemplar parent = new Exemplar();
 			parent.setId(id);

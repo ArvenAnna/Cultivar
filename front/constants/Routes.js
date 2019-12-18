@@ -18,7 +18,11 @@ const routes = {
 
     GET_AUTHORS: `${httpPrefix}/varieties/hybridisators`,
     GET_VARIETY_TYPES: `${httpPrefix}/varieties/types`,
-    GET_VARIETIS_BY_KEYWORD: (keyword) => `${httpPrefix}/varieties/keyword/${keyword}?pageSize=${MAX_SUGGESTIONS_NUMBER}&pageNumber=0`
+    GET_VARIETIS_BY_KEYWORD: (keyword) => `${httpPrefix}/varieties/keyword/${keyword}?pageSize=${MAX_SUGGESTIONS_NUMBER}&pageNumber=0`,
+
+    SEARCH_EXEMPLARS_PAGEABLE: (searchUrl) => `${httpPrefix}/exemplars${searchUrl}`,
+    GET_EXEMPLAR: (exemplar) => `${httpPrefix}/exemplars/${exemplar}`,
+    POST_CREATE_EXEMPLAR: httpPrefix + '/exemplars',
 
 };
 

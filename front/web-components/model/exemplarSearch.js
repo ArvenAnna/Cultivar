@@ -8,7 +8,8 @@ const DEFAULT_PAGE_NUMBER = 0;
 const DEFAULT_SEARCH_URL = `?page=${DEFAULT_PAGE_NUMBER}&size=${PAGE_SIZE}`;
 
 //TODO: remove recipe logic
-class Search extends Model {
+
+class ExemplarSearch extends Model {
 
     constructor() {
         super();
@@ -161,9 +162,9 @@ class Search extends Model {
         }
 
         this.$searchUrl = searchUrl;
-        goTo(`/varieties${searchUrl}`);
+        goTo(`/exemplars${searchUrl}`);
         this.notifySubscribers();
     }
 }
 
-export default new Search();
+export default new ExemplarSearch();

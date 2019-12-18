@@ -15,6 +15,7 @@ import lombok.Getter;
 @Builder
 public class ExemplarDto {
 	private Long id;
+	private String name;
 	private VarietyBaseDto variety;
 	private Long parent;
 	private boolean isSport;

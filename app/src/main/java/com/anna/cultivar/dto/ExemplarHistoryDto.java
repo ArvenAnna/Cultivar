@@ -14,6 +14,7 @@ import lombok.Getter;
 public class ExemplarHistoryDto {
 	private Long id;
 	private ExemplarHistory.ExemplarEvent eventType;
+	private Integer eventNumber;
 	private LocalDate date;
 	private String description;
 	private String photo;

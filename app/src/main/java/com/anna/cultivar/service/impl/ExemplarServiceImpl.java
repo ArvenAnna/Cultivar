@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.anna.cultivar.dto.ExemplarCreationRequest;
@@ -19,6 +20,7 @@ import com.anna.cultivar.repository.ExemplarRepository;
 import com.anna.cultivar.repository.ExemplarSpecification;
 import com.anna.cultivar.service.ExemplarService;
 
+@Service
 public class ExemplarServiceImpl implements ExemplarService {
 
 	@Autowired

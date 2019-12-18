@@ -10,6 +10,11 @@ import './views/varieties/varieties-page-renderer';
 import './views/create-variety/create-variety-page-renderer';
 import './views/create-variety/edit-variety-page-renderer';
 
+import './views/exemplars/exemplars-page-renderer';
+import './views/exemplar/exemplar-page-renderer';
+import './views/create-exemplar/create-exemplar-page-renderer';
+
+
 import './app-header';
 // import './app-sidebar';
 // import './recipe-search';
@@ -78,6 +83,11 @@ const template = `
             <app-route path="/variety/:id" component="variety-page-renderer"></app-route> 
             <app-route path="/variety/:id/edit" component="edit-variety-page-renderer"></app-route>
             <app-route path="/variety" component="create-variety-page-renderer"></app-route>
+            
+            <app-route path="/exemplars" component="exemplars-page-renderer"></app-route>
+            <app-route path="/exemplar/:id" component="exemplar-page-renderer"></app-route>
+            <app-route path="/exemplar" component="create-exemplar-page-renderer"></app-route>
+
         </div>
         <div id="${SIDE}">
             <!--<app-sidebar></app-sidebar>-->

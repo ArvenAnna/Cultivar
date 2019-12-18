@@ -44,7 +44,8 @@ CREATE TABLE public.exemplar_history (
     exemplar_id integer,
     event_type character varying(100),
     event_date timestamp without time zone,
-    photo character varying(1000)
+    photo character varying(1000),
+    event_number integer
 );
 
 
@@ -79,7 +80,8 @@ CREATE TABLE public.exemplars (
     id integer NOT NULL,
     variety_id integer,
     parent integer,
-    is_sport boolean
+    is_sport boolean,
+    name character varying(1000)
 );
 
 
@@ -273,7 +275,7 @@ ALTER TABLE ONLY public.variety_details ALTER COLUMN id SET DEFAULT nextval('pub
 -- Data for Name: exemplar_history; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.exemplar_history (id, description, exemplar_id, event_type, event_date, photo) FROM stdin;
+COPY public.exemplar_history (id, description, exemplar_id, event_type, event_date, photo, event_number) FROM stdin;
 \.
 
 
@@ -288,7 +290,7 @@ SELECT pg_catalog.setval('public.exemplar_history_id_seq', 1, false);
 -- Data for Name: exemplars; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.exemplars (id, variety_id, parent, is_sport) FROM stdin;
+COPY public.exemplars (id, variety_id, parent, is_sport, name) FROM stdin;
 \.
 
 

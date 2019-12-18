@@ -1,7 +1,6 @@
 package com.anna.cultivar.entity;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +16,6 @@ import javax.persistence.Table;
 
 import com.anna.cultivar.dto.ExemplarCreationRequest;
 import com.anna.cultivar.dto.ExemplarHistoryDto;
-import com.anna.cultivar.dto.VarietyBaseDto;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -49,11 +47,14 @@ public class ExemplarHistory {
 	@Column(name = "description")
 	private String description;
 
+	@Column(name = "event_number")
+	private Integer eventNumber;
+
 	@Column(name = "photo")
 	private String photo;
 
 	public enum ExemplarEvent {
-		BIRTH, SEPARATE_FROM_LEAF, FIRST_BUDS, BLOSSOM, LEAF_SEPARATED, LEAF_ROOTS, CHILD_BIRTH, GROW
+		APPEARANCE, FIRST_LEAF, SEPARATE_FROM_LEAF, FIRST_BUDS, BLOSSOM, LEAF_SEPARATED, LEAF_ROOTS, CHILD_BIRTH, GROW
 	}
 
 	public static ExemplarHistory of(ExemplarCreationRequest request) {
@@ -61,8 +62,7 @@ public class ExemplarHistory {
 		entity.setDate(request.getDate());
 		entity.setDescription(request.getDescription());
 		entity.setPhoto(request.getPhoto());
-		entity.setEventType(ExemplarEvent.BIRTH);
-
+		entity.setEventType(ExemplarEvent.APPEARANCE);
 		return entity;
 	}
 
