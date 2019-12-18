@@ -138,8 +138,8 @@ class CreateExemplarPage extends WebElement {
     }
 
     _renderPage() {
-        if (this.$variety) {
-            this.$_id(NAME).value = this.$variety.name || '';
+        if (this.$exemplar) {
+            this.$_id(NAME).value = this.$exemplar.name || '';
             // this.$(DESCRIPTION_COMPONENT).value = this.$variety.description || '';
             this.$(VARIETY_SELECTOR_COMPONENT).exemplar = this.$exemplar;
             // this.$(TYPE_SELECTOR_COMPONENT).variety = this.$variety;

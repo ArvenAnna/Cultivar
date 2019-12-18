@@ -52,8 +52,8 @@ public class VarietyController {
 		return varietyService.updateRecipe(varietyDto);
 	}
 
-	@RequestMapping(value = {"/keyword/{keyword}"}, method = RequestMethod.GET)
-	public VarietyPage findVarietiesByKeyword(@PathVariable("keyword") String keyword, @NotNull final Pageable pageable) {
+	@RequestMapping(value = {"/keyword"}, method = RequestMethod.POST)
+	public VarietyPage findVarietiesByKeyword(@RequestBody String keyword, @NotNull final Pageable pageable) {
 		return varietyService.findVarietiesByKeyword(pageable, keyword);
 	}
 

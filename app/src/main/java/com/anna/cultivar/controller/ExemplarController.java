@@ -39,8 +39,9 @@ public class ExemplarController {
 		return exemplarService.save(dto);
 	}
 
-	@RequestMapping(value = {"/keyword/{keyword}"}, method = RequestMethod.GET)
-	public ExemplarPage findExemplarsByKeyword(@PathVariable("keyword") String keyword, @NotNull final Pageable pageable) {
+	@RequestMapping(value = {"/keyword"}, method = RequestMethod.POST)
+	public ExemplarPage findExemplarsByKeyword(@RequestBody String keyword, @NotNull final Pageable pageable) {
+		// do combination of name and variety name
 		return exemplarService.findByKeyword(pageable, keyword);
 	}
 }

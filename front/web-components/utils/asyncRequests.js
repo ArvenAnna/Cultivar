@@ -4,10 +4,21 @@ import {getResponse} from './httpUtils';
 import {SEVERITY_TYPES} from "../common-notification";
 
 export const retrieveVarietiesByKeyword = async (keyword) => {
-    return await fetch(routes.GET_VARIETIS_BY_KEYWORD(keyword), {method: 'GET',
+    return await fetch(routes.GET_VARIETIES_BY_KEYWORD, {method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-        }})
+        }, body: JSON.stringify(keyword)})
+        .then(getResponse)
+        .catch(e => {
+            mNotification.showMessage(e.message, SEVERITY_TYPES.ERROR);
+        });
+}
+
+export const retrieveExemplarsByKeyword = async (keyword) => {
+    return await fetch(routes.GET_EXEMPLARS_BY_KEYWORD, {method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }, body: JSON.stringify(keyword)})
         .then(getResponse)
         .catch(e => {
             mNotification.showMessage(e.message, SEVERITY_TYPES.ERROR);

@@ -306,6 +306,7 @@ SELECT pg_catalog.setval('public.exemplars_id_seq', 1, false);
 --
 
 COPY public.hybridisators (id, name) FROM stdin;
+1	Елена Лебецкая
 \.
 
 
@@ -313,7 +314,7 @@ COPY public.hybridisators (id, name) FROM stdin;
 -- Name: hybridisators_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.hybridisators_id_seq', 1, false);
+SELECT pg_catalog.setval('public.hybridisators_id_seq', 1, true);
 
 
 --
@@ -321,6 +322,8 @@ SELECT pg_catalog.setval('public.hybridisators_id_seq', 1, false);
 --
 
 COPY public.varieties (id, name, author, description, variety_type, hybridisation_date, sport_of) FROM stdin;
+1	ЛЕ-Иллюзия	1	Белая с яркими пурпурно-темно-фиолетовыми мазками полумахровая анютка. Пестролистник.	MINIATURE	2019-12-18 00:00:00	\N
+2	ЛЕ-Голубой Лютик	1	 Плотные махровые цветы-кочанчики нежно голубово цвета с зелеными краями лепестков. Ровная розетка из темных слегка удлиненных листьев. Полумини.	SEMIMINI	2019-12-18 00:00:00	\N
 \.
 
 
@@ -328,7 +331,7 @@ COPY public.varieties (id, name, author, description, variety_type, hybridisatio
 -- Name: varieties_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.varieties_id_seq', 1, false);
+SELECT pg_catalog.setval('public.varieties_id_seq', 2, true);
 
 
 --
