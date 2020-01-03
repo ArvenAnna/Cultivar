@@ -3,28 +3,30 @@ import '../../styled/input-text';
 import '../../styled/text-area';
 import '../../styled/action-button';
 
+import '../../components/file-upload/photo-upload';
+
 // import './parts/author-selector';
 // import './parts/type-selector';
 // import './parts/sport-of';
 import './parts/variety-selector';
 
 import {t} from '../../utils/translateUtils';
+import routes from '../../../constants/Routes';
+import {noImage} from '../../../constants/themes';
 
 const CONTAINER = 'page-container';
 
 const NAME_CONTAINER = 'name-container';
 const NAME = 'name';
+const DATE = 'date';
 const NAME_CAPTION = 'name-caption';
 const BUTTON_CONTAINER = 'button-container';
 
 const DESCRIPTION_COMPONENT = 'text-area';
 const BUTTON_COMPONENT = 'action-button';
 
-const DETAILS_COMPONENT = 'variety-details';
+const UPLOAD_COMPONENT = 'photo-upload';
 const VARIETY_SELECTOR_COMPONENT = 'variety-selector';
-const TYPE_SELECTOR_COMPONENT = 'type-selector';
-const SPORT_OF_COMPONENT = 'sport-of';
-
 
 const template = `
   <style>
@@ -64,16 +66,18 @@ const template = `
       </div> 
       
       <${VARIETY_SELECTOR_COMPONENT}></${VARIETY_SELECTOR_COMPONENT}>
-      
-      <${TYPE_SELECTOR_COMPONENT}></${TYPE_SELECTOR_COMPONENT}>
-      
+            
       <div id='${NAME_CONTAINER}'>
             <${DESCRIPTION_COMPONENT}></${DESCRIPTION_COMPONENT}>
       </div>
+           
+      <${UPLOAD_COMPONENT}></${UPLOAD_COMPONENT}>
       
-      <${SPORT_OF_COMPONENT}></${SPORT_OF_COMPONENT}>
-     
-      <${DETAILS_COMPONENT}></${DETAILS_COMPONENT}>
+      <div id='${NAME_CONTAINER}'>
+        <div id='${NAME_CAPTION}'>${t('exemplars.exemplar_date')}</div>
+        <input-text id='${DATE}'/>
+      </div> 
+      
       
       <div id='${BUTTON_CONTAINER}'>
             <${BUTTON_COMPONENT} text='${t('common.save')}'></${BUTTON_COMPONENT}>
@@ -120,8 +124,8 @@ class CreateExemplarPage extends WebElement {
 
     _save() {
         this.$exemplar.name = this.$_id(NAME).value;
-        // this.$variety.description = this.$(DESCRIPTION_COMPONENT).value;
-
+        this.$exemplar.description = this.$(DESCRIPTION_COMPONENT).value;
+        this.$exemplar.date = this.$_id(DATE).value;
         // if (!this.$exemplar.variety || !this.$exemplar.variety.id) {
         //     this.$exemplar.variety = this.$authors.length
         //         ? this.$authors[0] : null;
@@ -132,19 +136,32 @@ class CreateExemplarPage extends WebElement {
         //         ? this.$types[0] : null;
         // }
 
-        this.$exemplar.save().then(id => {
-            window.location.hash = '/exemplar/' + id;
-        });
+        console.dir(this.$exemplar)
+
+        if (this.$exemplar.date == 'Invalid Date') {
+            alert('date or date format is not valid');
+        } else {
+            this.$exemplar.save().then(id => {
+                window.location.hash = '/exemplar/' + id;
+            });
+        }
+
     }
 
     _renderPage() {
         if (this.$exemplar) {
             this.$_id(NAME).value = this.$exemplar.name || '';
-            // this.$(DESCRIPTION_COMPONENT).value = this.$variety.description || '';
+            this.$(DESCRIPTION_COMPONENT).value = this.$exemplar.description || '';
             this.$(VARIETY_SELECTOR_COMPONENT).exemplar = this.$exemplar;
-            // this.$(TYPE_SELECTOR_COMPONENT).variety = this.$variety;
-            // this.$(TYPE_SELECTOR_COMPONENT).types = this.$types;
-            // this.$(SPORT_OF_COMPONENT).variety = this.$variety;
+            this.$(UPLOAD_COMPONENT).props = {
+                uploadFileCallback: (path) => {
+                    this.$exemplar.photo = path;
+                },
+                uploadUrl: routes.UPLOAD_FILE,
+                src: this.$exemplar.photo,
+                defaultSrc: noImage
+            };
+            this.$_id(DATE).value = this.$exemplar.date || '';
             // this.$(DETAILS_COMPONENT).variety = this.$variety;
         }
 

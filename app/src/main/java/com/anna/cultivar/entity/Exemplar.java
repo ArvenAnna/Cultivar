@@ -1,5 +1,6 @@
 package com.anna.cultivar.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,16 +50,16 @@ public class Exemplar {
 	private boolean isSport;
 
 	@OneToMany(mappedBy = "exemplar", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<ExemplarHistory> history;
+	private List<ExemplarHistory> history = new ArrayList<>();
 
 	public static Exemplar of(ExemplarCreationRequest request) {
 		Exemplar entity = new Exemplar();
 		entity.setName(request.getName());
-		Optional.ofNullable(request.getParent()).ifPresent(id -> {
-			Exemplar parent = new Exemplar();
-			parent.setId(id);
-			entity.setParent(parent);
-		});
+//		Optional.ofNullable(request.getParent()).ifPresent(id -> {
+//			Exemplar parent = new Exemplar();
+//			parent.setId(id);
+//			entity.setParent(parent);
+//		});
 		Optional.ofNullable(request.getVariety()).map(VarietyBaseDto::getId).ifPresent(id -> {
 			Variety v = new Variety();
 			v.setId(id);

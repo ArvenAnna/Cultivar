@@ -46,6 +46,14 @@ export class Exemplar extends Model {
         }});
     }
 
+    get description() {
+        return this._exemplar.description;
+    }
+
+    get date() {
+        return this._exemplar.date && this._exemplar.date.toString();
+    }
+
     // get refs() {
     //     if (!this._recipe.refs || !this._recipe.refs.length) {
     //         return null;
@@ -55,13 +63,13 @@ export class Exemplar extends Model {
     //     }));
     // }
     //
-    // get imgPath() {
-    //     return getImageSmallCopy(this._recipe.imgPath && routes.IMAGE_CATALOG + this._recipe.imgPath);
-    // }
-    //
-    // get imgPathFull() {
-    //     return this._recipe.imgPath && routes.IMAGE_CATALOG + this._recipe.imgPath;
-    // }
+    get photo() {
+        return getImageSmallCopy(this._exemplar.photo && routes.IMAGE_CATALOG + this._exemplar.photo);
+    }
+
+    get photoFull() {
+        return this._exemplar.photo && routes.IMAGE_CATALOG + this._exemplar.photo;
+    }
     //
     // get proportions() {
     //     return this._recipe.proportions

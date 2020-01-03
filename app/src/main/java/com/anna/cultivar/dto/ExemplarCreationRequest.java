@@ -12,7 +12,6 @@ import lombok.Getter;
 public class ExemplarCreationRequest {
 	private VarietyBaseDto variety;
 	private String name;
-	private Long parent;
 	private LocalDate date;
 	private String description;
 	private String photo;

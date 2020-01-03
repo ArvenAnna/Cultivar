@@ -30,13 +30,13 @@ class NewExemplar extends Exemplar {
         this._exemplar.name = newName;
     }
 
-    // set description(newDescription) {
-    //     this._variety.description = newDescription;
-    // }
-    //
-    // get description() {
-    //     return super.description;
-    // }
+    set description(newDescription) {
+        this._exemplar.description = newDescription;
+    }
+
+    get description() {
+        return super.description;
+    }
 
     get variety() {
         return super.variety;
@@ -62,13 +62,21 @@ class NewExemplar extends Exemplar {
         this._exemplar.isSport = isSport;
     }
 
-    // set imgPath(path) {
-    //     this._recipe.imgPath = path;
-    // }
-    //
-    // get imgPath() {
-    //     return super.imgPath;
-    // }
+    set photo(path) {
+        this._exemplar.photo = path;
+    }
+
+    get photo() {
+        return super.photo;
+    }
+
+    get date() {
+        return super.date;
+    }
+
+    set date(date) {
+        this._exemplar.date = date && new Date(date);
+    }
 
     // set detail (detail) {
     //     if (!this._variety.details) {

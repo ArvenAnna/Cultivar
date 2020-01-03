@@ -62,6 +62,14 @@ class NewVariety extends Variety {
         this._variety.sportOf = {...sport};
     }
 
+    get hybridisationDate() {
+        return super.hybridisationDate;
+    }
+
+    set hybridisationDate(date) {
+        this._variety.hybridisationDate = date && new Date(`${date}-01-01`);
+    }
+
     // set imgPath(path) {
     //     this._recipe.imgPath = path;
     // }
@@ -115,9 +123,6 @@ class NewVariety extends Variety {
     }
 
     async save() {
-        //todo: remove:
-        const mockedDate = new Date();
-        this._variety.hybridisationDate = mockedDate;
         const method = this._variety.id ? 'PUT' : 'POST';
         const newRecipe = await doJsonRequest(routes.POST_CREATE_VARIETY, method, this._variety);
         return newRecipe.id;

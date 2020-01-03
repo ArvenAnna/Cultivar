@@ -14,6 +14,7 @@ const CONTAINER = 'page-container';
 
 const NAME_CONTAINER = 'name-container';
 const NAME = 'name';
+const DATE = 'date';
 const NAME_CAPTION = 'name-caption';
 const BUTTON_CONTAINER = 'button-container';
 
@@ -69,6 +70,11 @@ const template = `
       <div id='${NAME_CONTAINER}'>
             <${DESCRIPTION_COMPONENT}></${DESCRIPTION_COMPONENT}>
       </div>
+      
+      <div id='${NAME_CONTAINER}'>
+        <div id='${NAME_CAPTION}'>${t('varieties.hybridisation_date')}</div>
+        <input-text id='${DATE}'/>
+      </div> 
       
       <${SPORT_OF_COMPONENT}></${SPORT_OF_COMPONENT}>
      
@@ -131,9 +137,13 @@ class CreateVarietyPage extends WebElement {
                 ? this.$types[0] : null;
         }
 
-        this.$variety.save().then(id => {
-            window.location.hash = '/variety/' + id;
-        });
+        if (this.$variety.hybridisationDate == 'Invalid Date') {
+            alert('date or date format is not valid');
+        } else {
+            this.$variety.save().then(id => {
+                window.location.hash = '/variety/' + id;
+            });
+        }
     }
 
     _renderPage() {
@@ -146,6 +156,8 @@ class CreateVarietyPage extends WebElement {
             this.$(TYPE_SELECTOR_COMPONENT).types = this.$types;
             this.$(SPORT_OF_COMPONENT).variety = this.$variety;
             this.$(DETAILS_COMPONENT).variety = this.$variety;
+            this.$_id(DATE).value = this.$variety.hybridisationDate || '';
+
         }
 
         // this.$(RECIPE_DEPARTMENT_COMPONENT).recipe = this.$recipe;

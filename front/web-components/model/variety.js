@@ -40,6 +40,10 @@ export class Variety extends Model {
         return {...this._variety.sportOf};
     }
 
+    get hybridisationDate() {
+        return this._variety.hybridisationDate && this._variety.hybridisationDate.getFullYear();
+    }
+
     // get refs() {
     //     if (!this._recipe.refs || !this._recipe.refs.length) {
     //         return null;
