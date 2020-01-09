@@ -2,13 +2,12 @@ import WebElement from '../../abstract/web-element';
 import '../../styled/input-text';
 import '../../styled/text-area';
 import '../../styled/action-button';
+import '../../styled/check-box';
 
 import '../../components/file-upload/photo-upload';
 
-// import './parts/author-selector';
-// import './parts/type-selector';
-// import './parts/sport-of';
 import './parts/variety-selector';
+import './parts/parent-selector';
 
 import {t} from '../../utils/translateUtils';
 import routes from '../../../constants/Routes';
@@ -24,9 +23,11 @@ const BUTTON_CONTAINER = 'button-container';
 
 const DESCRIPTION_COMPONENT = 'text-area';
 const BUTTON_COMPONENT = 'action-button';
+const CHECKBOX_COMPONENT = 'check-box';
 
 const UPLOAD_COMPONENT = 'photo-upload';
 const VARIETY_SELECTOR_COMPONENT = 'variety-selector';
+const PARENT_SELECTOR = 'parent-selector';
 
 const template = `
   <style>
@@ -35,7 +36,7 @@ const template = `
         padding: 0 1.5rem;
     }
     
-    #${NAME_CONTAINER}{
+    .${NAME_CONTAINER}{
         display: flex;
         margin: 1rem;
         align-items: center;
@@ -47,7 +48,7 @@ const template = `
        justify-content: center;
     }
     
-    #${NAME_CAPTION} {
+    .${NAME_CAPTION} {
         margin-right: 0.5rem;
     }
     
@@ -60,24 +61,30 @@ const template = `
   </style>
   
   <div id='${CONTAINER}'>
-      <div id='${NAME_CONTAINER}'>
-        <div id='${NAME_CAPTION}'>${t('exemplars.exemplar_name')}</div>
+      <div class='${NAME_CONTAINER}'>
+        <div class='${NAME_CAPTION}'>${t('exemplars.exemplar_name')}</div>
         <input-text id='${NAME}'/>
       </div> 
       
       <${VARIETY_SELECTOR_COMPONENT}></${VARIETY_SELECTOR_COMPONENT}>
+      
+      <${PARENT_SELECTOR}></${PARENT_SELECTOR}>
             
       <div id='${NAME_CONTAINER}'>
             <${DESCRIPTION_COMPONENT}></${DESCRIPTION_COMPONENT}>
       </div>
+      
+      <div class="${NAME_CONTAINER}">
+            <div class='${NAME_CAPTION}'>${t('exemplars.is_sport')}</div>
+            <${CHECKBOX_COMPONENT}></${CHECKBOX_COMPONENT}>
+      </div>
            
       <${UPLOAD_COMPONENT}></${UPLOAD_COMPONENT}>
       
-      <div id='${NAME_CONTAINER}'>
-        <div id='${NAME_CAPTION}'>${t('exemplars.exemplar_date')}</div>
+      <div class='${NAME_CONTAINER}'>
+        <div class='${NAME_CAPTION}'>${t('exemplars.exemplar_date')}</div>
         <input-text id='${DATE}'/>
       </div> 
-      
       
       <div id='${BUTTON_CONTAINER}'>
             <${BUTTON_COMPONENT} text='${t('common.save')}'></${BUTTON_COMPONENT}>
@@ -126,6 +133,7 @@ class CreateExemplarPage extends WebElement {
         this.$exemplar.name = this.$_id(NAME).value;
         this.$exemplar.description = this.$(DESCRIPTION_COMPONENT).value;
         this.$exemplar.date = this.$_id(DATE).value;
+        this.$exemplar.isSport = this.$(CHECKBOX_COMPONENT).value;
         // if (!this.$exemplar.variety || !this.$exemplar.variety.id) {
         //     this.$exemplar.variety = this.$authors.length
         //         ? this.$authors[0] : null;
@@ -153,6 +161,7 @@ class CreateExemplarPage extends WebElement {
             this.$_id(NAME).value = this.$exemplar.name || '';
             this.$(DESCRIPTION_COMPONENT).value = this.$exemplar.description || '';
             this.$(VARIETY_SELECTOR_COMPONENT).exemplar = this.$exemplar;
+            this.$(PARENT_SELECTOR).exemplar = this.$exemplar;
             this.$(UPLOAD_COMPONENT).props = {
                 uploadFileCallback: (path) => {
                     this.$exemplar.photo = path;
@@ -162,6 +171,7 @@ class CreateExemplarPage extends WebElement {
                 defaultSrc: noImage
             };
             this.$_id(DATE).value = this.$exemplar.date || '';
+            this.$(CHECKBOX_COMPONENT).value = this.$exemplar.isSport;
             // this.$(DETAILS_COMPONENT).variety = this.$variety;
         }
 

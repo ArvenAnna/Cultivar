@@ -25,7 +25,7 @@ export class Exemplar extends Model {
     }
 
     get parent() {
-        return this._exemplar.parent;
+        return { ... this._exemplar.parent};
     }
 
     get isSport() {

@@ -7,5 +7,7 @@
   "parent_ref": "Reference on parent exemplar",
   "exemplar_name": "Exemplar name",
   "choose_variety": "Choose variety",
-  "exemplar_date": "Enter exemplar appearance date in format YYYY-MM-DD"
+  "choose_parent": "Choose parent exemplar",
+  "exemplar_date": "Enter exemplar appearance date in format YYYY-MM-DD",
+  "is_sport": "Is it sport?"
 }

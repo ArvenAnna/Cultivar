@@ -51,7 +51,7 @@ class NewExemplar extends Exemplar {
     }
 
     set parent(parent) {
-        this._exemplar.parent = parent;
+        this._exemplar.parent = { ... parent };
     }
 
     get isSport() {
