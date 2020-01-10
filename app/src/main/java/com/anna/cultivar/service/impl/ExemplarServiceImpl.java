@@ -13,6 +13,7 @@ import com.anna.cultivar.dto.ExemplarCreationRequest;
 import com.anna.cultivar.dto.ExemplarDto;
 import com.anna.cultivar.dto.ExemplarPage;
 import com.anna.cultivar.dto.ExemplarSearchParams;
+import com.anna.cultivar.dto.ExemplarUpdateRequest;
 import com.anna.cultivar.entity.Exemplar;
 import com.anna.cultivar.entity.ExemplarHistory;
 import com.anna.cultivar.repository.ExemplarKeywordSpecification;
@@ -82,6 +83,14 @@ public class ExemplarServiceImpl implements ExemplarService {
 				.currentPage(page.getNumber())
 				.pageSize(page.getSize())
 				.build();
+	}
+
+	@Transactional
+	@Override
+	public ExemplarDto update(ExemplarUpdateRequest dto) {
+		Exemplar entity = Exemplar.of(dto);
+		saveAllFiles(entity);
+		return ExemplarDto.of(exemplarRepository.saveAndFlush(entity));
 	}
 
 	private List<ExemplarDto> convert(List<Exemplar> entities) {

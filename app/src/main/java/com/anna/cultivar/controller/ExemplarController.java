@@ -15,6 +15,7 @@ import com.anna.cultivar.dto.ExemplarCreationRequest;
 import com.anna.cultivar.dto.ExemplarDto;
 import com.anna.cultivar.dto.ExemplarPage;
 import com.anna.cultivar.dto.ExemplarSearchParams;
+import com.anna.cultivar.dto.ExemplarUpdateRequest;
 import com.anna.cultivar.service.ExemplarService;
 
 @RestController
@@ -37,6 +38,11 @@ public class ExemplarController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ExemplarDto saveExemplar(@RequestBody @Valid @NotNull(message = "Request should not be null") ExemplarCreationRequest dto) {
 		return exemplarService.save(dto);
+	}
+
+	@RequestMapping(method = RequestMethod.PUT)
+	public ExemplarDto updateExemplar(@RequestBody @Valid @NotNull(message = "Request should not be null") ExemplarUpdateRequest dto) {
+		return exemplarService.update(dto);
 	}
 
 	@RequestMapping(value = {"/keyword"}, method = RequestMethod.POST)

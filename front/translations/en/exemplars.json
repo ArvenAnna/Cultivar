@@ -9,5 +9,6 @@
   "choose_variety": "Choose variety",
   "choose_parent": "Choose parent exemplar",
   "exemplar_date": "Enter exemplar appearance date in format YYYY-MM-DD",
-  "is_sport": "Is it sport?"
+  "is_sport": "Is it sport?",
+  "add_event": "Add new event for this exemplar"
 }

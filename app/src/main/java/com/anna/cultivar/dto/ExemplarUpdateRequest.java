@@ -1,7 +1,5 @@
 package com.anna.cultivar.dto;
 
-import java.time.LocalDate;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,12 +7,10 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 @Builder
-public class ExemplarCreationRequest {
+public class ExemplarUpdateRequest {
+	private Long id;
 	private VarietyBaseDto variety;
 	private String name;
-	private LocalDate date;
-	private String description;
-	private String photo;
 	private ExemplarDto parent;
 	private boolean isSport;
 }

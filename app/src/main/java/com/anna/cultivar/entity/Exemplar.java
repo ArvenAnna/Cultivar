@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.anna.cultivar.dto.ExemplarCreationRequest;
+import com.anna.cultivar.dto.ExemplarUpdateRequest;
 import com.anna.cultivar.dto.VarietyBaseDto;
 
 import lombok.EqualsAndHashCode;
@@ -55,11 +56,31 @@ public class Exemplar {
 	public static Exemplar of(ExemplarCreationRequest request) {
 		Exemplar entity = new Exemplar();
 		entity.setName(request.getName());
-//		Optional.ofNullable(request.getParent()).ifPresent(id -> {
-//			Exemplar parent = new Exemplar();
-//			parent.setId(id);
-//			entity.setParent(parent);
-//		});
+		entity.setSport(request.isSport());
+		Optional.ofNullable(request.getParent()).ifPresent(parentEx -> {
+			Exemplar parent = new Exemplar();
+			parent.setId(parentEx.getId());
+			entity.setParent(parent);
+		});
+		Optional.ofNullable(request.getVariety()).map(VarietyBaseDto::getId).ifPresent(id -> {
+			Variety v = new Variety();
+			v.setId(id);
+			entity.setVariety(v);
+		});
+
+		return entity;
+	}
+
+	public static Exemplar of(ExemplarUpdateRequest request) {
+		Exemplar entity = new Exemplar();
+		entity.setId(request.getId());
+		entity.setName(request.getName());
+		entity.setSport(request.isSport());
+		Optional.ofNullable(request.getParent()).ifPresent(parentEx -> {
+			Exemplar parent = new Exemplar();
+			parent.setId(parentEx.getId());
+			entity.setParent(parent);
+		});
 		Optional.ofNullable(request.getVariety()).map(VarietyBaseDto::getId).ifPresent(id -> {
 			Variety v = new Variety();
 			v.setId(id);

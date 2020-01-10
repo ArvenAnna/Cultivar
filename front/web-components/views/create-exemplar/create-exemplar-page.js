@@ -8,6 +8,7 @@ import '../../components/file-upload/photo-upload';
 
 import './parts/variety-selector';
 import './parts/parent-selector';
+import './parts/new-event';
 
 import {t} from '../../utils/translateUtils';
 import routes from '../../../constants/Routes';
@@ -28,6 +29,7 @@ const CHECKBOX_COMPONENT = 'check-box';
 const UPLOAD_COMPONENT = 'photo-upload';
 const VARIETY_SELECTOR_COMPONENT = 'variety-selector';
 const PARENT_SELECTOR = 'parent-selector';
+const NEW_EVENT_COMPONENT = 'new-event';
 
 const template = `
   <style>
@@ -42,7 +44,7 @@ const template = `
         align-items: center;
     }
     
-    #${BUTTON_CONTAINER} {
+    .${BUTTON_CONTAINER} {
        margin: 1rem 0;
        display: flex;
        justify-content: center;
@@ -86,9 +88,12 @@ const template = `
         <input-text id='${DATE}'/>
       </div> 
       
-      <div id='${BUTTON_CONTAINER}'>
+      <div class='${BUTTON_CONTAINER}'>
             <${BUTTON_COMPONENT} text='${t('common.save')}'></${BUTTON_COMPONENT}>
       </div>
+      
+      <${NEW_EVENT_COMPONENT}></${NEW_EVENT_COMPONENT}>
+      
   </div>
 `;
 
@@ -99,22 +104,11 @@ class CreateExemplarPage extends WebElement {
         this._renderPage();
     }
 
-    // set authors(newAuthors) {
-    //     this.$authors = newAuthors;
-    //     this._renderPage();
-    // }
-    //
-    // set types(items) {
-    //     this.$types = items;
-    //     this._renderPage();
-    // }
-    //
-    // set props({item, authors, types}) {
-    //     this.$variety = item;
-    //     this.$authors = authors;
-    //     this.$types = types;
-    //     this._renderPage();
-    // }
+    set props({exepmlar, isCreate}) {
+        this.$exemplar = exepmlar;
+        this.$isCreate = isCreate;
+        this._renderPage();
+    }
 
     constructor() {
         super(template, true);
@@ -134,15 +128,6 @@ class CreateExemplarPage extends WebElement {
         this.$exemplar.description = this.$(DESCRIPTION_COMPONENT).value;
         this.$exemplar.date = this.$_id(DATE).value;
         this.$exemplar.isSport = this.$(CHECKBOX_COMPONENT).value;
-        // if (!this.$exemplar.variety || !this.$exemplar.variety.id) {
-        //     this.$exemplar.variety = this.$authors.length
-        //         ? this.$authors[0] : null;
-        // }
-        //
-        // if (!this.$variety.type) {
-        //     this.$variety.type = this.$types.length
-        //         ? this.$types[0] : null;
-        // }
 
         console.dir(this.$exemplar)
 
@@ -153,34 +138,38 @@ class CreateExemplarPage extends WebElement {
                 window.location.hash = '/exemplar/' + id;
             });
         }
-
     }
 
     _renderPage() {
         if (this.$exemplar) {
             this.$_id(NAME).value = this.$exemplar.name || '';
-            this.$(DESCRIPTION_COMPONENT).value = this.$exemplar.description || '';
+
             this.$(VARIETY_SELECTOR_COMPONENT).exemplar = this.$exemplar;
             this.$(PARENT_SELECTOR).exemplar = this.$exemplar;
-            this.$(UPLOAD_COMPONENT).props = {
-                uploadFileCallback: (path) => {
-                    this.$exemplar.photo = path;
-                },
-                uploadUrl: routes.UPLOAD_FILE,
-                src: this.$exemplar.photo,
-                defaultSrc: noImage
-            };
-            this.$_id(DATE).value = this.$exemplar.date || '';
             this.$(CHECKBOX_COMPONENT).value = this.$exemplar.isSport;
-            // this.$(DETAILS_COMPONENT).variety = this.$variety;
-        }
 
-        // this.$(RECIPE_DEPARTMENT_COMPONENT).recipe = this.$recipe;
-        // this.$(RECIPE_DEPARTMENT_COMPONENT).departments = this.$departments;
-        // this.$(RECIPE_REFS_COMPONENT).recipe = this.$recipe;
-        // this.$(RECIPE_PROPORTIONS_COMPONENT).recipe = this.$recipe;
-        // this.$(RECIPE_MAIN_PHOTO_COMPONENT).recipe = this.$recipe;
-        // this.$(RECIPE_DETAILS_COMPONENT).recipe = this.$recipe;
+            if (this.$isCreate) {
+                this.$(DESCRIPTION_COMPONENT).value = this.$exemplar.description || '';
+                this.$(UPLOAD_COMPONENT).props = {
+                    uploadFileCallback: (path) => {
+                        this.$exemplar.photo = path;
+                    },
+                    uploadUrl: routes.UPLOAD_FILE,
+                    src: this.$exemplar.photo,
+                    defaultSrc: noImage
+                };
+                this.$_id(DATE).value = this.$exemplar.date || '';
+            } else {
+                this.$(DESCRIPTION_COMPONENT).style.display = 'none';
+                this.$(UPLOAD_COMPONENT).style.display = 'none';
+                this.$_id(DATE).style.display = 'none';
+            }
+
+            this.$(NEW_EVENT_COMPONENT).style.display = this.$isCreate ? 'none' : 'block';
+            if (!this.$isCreate) {
+                this.$(NEW_EVENT_COMPONENT).exemplar = this.$exemplar;
+            }
+        }
     }
 
 

@@ -6,6 +6,7 @@ import com.anna.cultivar.dto.ExemplarCreationRequest;
 import com.anna.cultivar.dto.ExemplarDto;
 import com.anna.cultivar.dto.ExemplarPage;
 import com.anna.cultivar.dto.ExemplarSearchParams;
+import com.anna.cultivar.dto.ExemplarUpdateRequest;
 
 public interface ExemplarService {
 	ExemplarPage getList(Pageable pageable, ExemplarSearchParams searchParams);
@@ -15,4 +16,6 @@ public interface ExemplarService {
 	ExemplarDto save(ExemplarCreationRequest dto);
 
 	ExemplarPage findByKeyword(Pageable pageable, String keyword);
+
+	ExemplarDto update(ExemplarUpdateRequest dto);
 }
