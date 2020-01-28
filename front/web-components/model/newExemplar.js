@@ -59,7 +59,7 @@ class NewExemplar extends Exemplar {
     }
 
     set isSport(isSport) {
-        this._exemplar.isSport = isSport;
+        this._exemplar.sport = isSport;
     }
 
     set photo(path) {

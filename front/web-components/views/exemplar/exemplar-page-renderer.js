@@ -1,4 +1,4 @@
-import mVariety from '../../model/variety';
+import mExemplar from '../../model/exemplar';
 import mHeader from '../../model/header';
 import router from '../../router/router-context';
 import WebElement from '../../abstract/web-element';
@@ -16,7 +16,7 @@ export default class ExemplarPageRenderer extends WebElement {
         this._currentExemplarFetched = this._currentExemplarFetched.bind(this);
         this._currentRouteChanged = this._currentRouteChanged.bind(this);
 
-        mVariety.addSubscriber(this._currentExemplarFetched);
+        mExemplar.addSubscriber(this._currentExemplarFetched);
         router.addSubscriber(this._currentRouteChanged);
 
         this._currentRouteChanged();
@@ -24,7 +24,7 @@ export default class ExemplarPageRenderer extends WebElement {
 
     _currentRouteChanged() {
         if (router.component === 'exemplar-page-renderer') {
-            mVariety.retrieve(router.params.id);
+            mExemplar.retrieve(router.params.id);
         }
     }
 
@@ -34,7 +34,7 @@ export default class ExemplarPageRenderer extends WebElement {
     }
 
     disconnectedCallback() {
-        mVariety.removeSubscriber(this._currentExemplarFetched);
+        mExemplar.removeSubscriber(this._currentExemplarFetched);
         router.removeSubscriber(this._currentRouteChanged);
         mHeader.removeExemplarEditButton();
     }

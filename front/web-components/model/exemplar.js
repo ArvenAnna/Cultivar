@@ -29,7 +29,7 @@ export class Exemplar extends Model {
     }
 
     get isSport() {
-        return this._exemplar.isSport;
+        return this._exemplar.sport;
     }
 
     get variety() {

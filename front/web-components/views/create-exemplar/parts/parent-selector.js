@@ -25,7 +25,7 @@ const template = `
   </style>
   
   <div id='${CONTAINER}'>
-       <span class='label'>${t('exemplars.choose_parent')}</span> 
+       <span class='label'>${t('exemplars.choose_parent')} </span> 
        <${SUGGESTION_INPUT_COMPONENT}></${SUGGESTION_INPUT_COMPONENT}>
        <${REMOVABLE_TAG_COMPONENT}></${REMOVABLE_TAG_COMPONENT}>
   </div>

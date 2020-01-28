@@ -24,6 +24,7 @@ const DETAIL = 'detail';
 const DETAILS_PHOTO = 'recipe_page_details_photo';
 const DETAILS_PHOTO_FULL = 'recipe_page_details_photo_full';
 const DETAILS_DESCRIPTION = 'recipe_page_details_description';
+const DETAILS_DATE = 'details-date';
 const PROPORTIONS = 'recipe-proportions';
 const REFERENCES = 'recipe-references';
 const ADD_MENU = 'add-to-menu';
@@ -147,7 +148,9 @@ const template = `
     <div class='${DETAIL}'>
         <img src='${noImage}' class='${DETAILS_PHOTO}'/>
         <div class='${DETAILS_DESCRIPTION}'></div>
+        <div class='${DETAILS_DATE}'></div>
     </div>
+    
   </template>
   
   <template id='${RECIPE_DETAIL_PHOTO_TEMPLATE}'>
@@ -198,11 +201,11 @@ class ExemplarPage extends WebElement {
 
         if (this.$exemplar) {
 
-            this.$_id(CAPTION).textContent = this.$exemplar.name  + "  " + this.$exemplar.variety.name || '';
+            this.$_id(CAPTION).textContent = `${this.$exemplar.name || ''} (${this.$exemplar.variety.name || ''})`;
             // this.$_id(MAIN_PHOTO).src =  this.$variety.imgPathFull || noImage;
             let text = this.$exemplar.isSport ? t('exemplars.it_is_sport') : ' ';
-            text += this.$exemplar.parent ? t('exemplars.parent_ref') + this.$exemplar.parent : ''
-            this.$_id(DESCRIPTION).textContent = text;
+            text += `${this.$exemplar.parent && this.$exemplar.parent.id ? t('exemplars.parent_ref') + this.$exemplar.parent || '' : ''}`
+            this.$_id(DESCRIPTION).innerHTML = text;
 
             if (this.$exemplar.history && this.$exemplar.history.length) {
                 this.$_id(DETAILS).style.display = 'grid';
@@ -211,9 +214,10 @@ class ExemplarPage extends WebElement {
                     if (detail.photo) {
                         detailTemplate.byClass(DETAILS_PHOTO).src = detail.photo;
                         detailTemplate.byClass(DETAILS_PHOTO).addEventListener('click', this._openFullPhoto.bind(this, detail.photoFull));
+                        detailTemplate.byClass(DETAILS_DATE).textContent = detail.date;
                     }
                     detailTemplate.byClass(DETAILS_DESCRIPTION).textContent = detail.description;
-                    // TODO: render eventType, eventNumber, date
+                    // TODO: render eventType, eventNumber
                     this.$_id(DETAILS).appendChild(detailTemplate);
                 })
             }

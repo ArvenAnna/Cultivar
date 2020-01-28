@@ -5,9 +5,9 @@
   "edit_exemplar": "Edit exemplar",
   "it_is_sport": "It is sport",
   "parent_ref": "Reference on parent exemplar",
-  "exemplar_name": "Exemplar name",
-  "choose_variety": "Choose variety",
-  "choose_parent": "Choose parent exemplar",
+  "exemplar_name": "Exemplar name ",
+  "choose_variety": "Choose variety ",
+  "choose_parent": "Choose parent exemplar ",
   "exemplar_date": "Enter exemplar appearance date in format YYYY-MM-DD",
   "is_sport": "Is it sport?",
   "add_event": "Add new event for this exemplar"

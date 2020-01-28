@@ -50,10 +50,6 @@ const template = `
        justify-content: center;
     }
     
-    .${NAME_CAPTION} {
-        margin-right: 0.5rem;
-    }
-    
     ${DESCRIPTION_COMPONENT} {
         --control-width: 100%;
         width: 100%;
@@ -104,8 +100,8 @@ class CreateExemplarPage extends WebElement {
         this._renderPage();
     }
 
-    set props({exepmlar, isCreate}) {
-        this.$exemplar = exepmlar;
+    set props({exemplar, isCreate}) {
+        this.$exemplar = exemplar;
         this.$isCreate = isCreate;
         this._renderPage();
     }

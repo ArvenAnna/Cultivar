@@ -15,6 +15,7 @@ import {NewHistoryItem} from "../../../model/newHistoryItem";
 import routes from "../../../../constants/Routes";
 import {noImage} from "../../../../constants/themes";
 
+const CONTAINER = 'container';
 const NAME_CONTAINER = 'name-container';
 const DATE = 'date';
 const NAME_CAPTION = 'name-caption';
@@ -89,7 +90,7 @@ class NewEvent extends WebElement {
         this._renderPage = this._renderPage.bind(this);
         this._save = this._save.bind(this);
 
-        this.$(BUTTON_COMPONENT).onClick = this._save;
+        // this.$(BUTTON_COMPONENT).onClick = this._save;
     }
 
     _save() {

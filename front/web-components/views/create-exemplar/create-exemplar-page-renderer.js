@@ -2,9 +2,6 @@ import mNewExemplar from '../../model/newExemplar';
 import WebElement from '../../abstract/web-element';
 import './create-exemplar-page';
 
-import mAuthors from "../../model/authors";
-import mTypes from "../../model/types";
-
 const template = `
   <create-exemplar-page></create-exemplar-page>
 `;
