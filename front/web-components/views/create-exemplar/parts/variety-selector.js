@@ -7,6 +7,7 @@ import {t} from '../../../utils/translateUtils';
 import {retrieveVarietiesByKeyword} from "../../../utils/asyncRequests";
 
 const CONTAINER = 'container';
+const VARIETY_TAG_TMPL = 'variety-tag-template';
 
 const SUGGESTION_INPUT_COMPONENT = 'suggestions-chooser';
 const REMOVABLE_TAG_COMPONENT = 'removable-tag';
@@ -19,15 +20,18 @@ const template = `
          align-items: center;
       }
       
-      ${REMOVABLE_TAG_COMPONENT} {
-        display: none;
-      }
+      // ${REMOVABLE_TAG_COMPONENT} {
+      //   display: none;
+      // }
   </style>
+  
+  <template id='${VARIETY_TAG_TMPL}'>
+     <${REMOVABLE_TAG_COMPONENT}></${REMOVABLE_TAG_COMPONENT}>
+  </template>
   
   <div id='${CONTAINER}'>
        <span class='label'>${t('exemplars.choose_variety')} </span> 
        <${SUGGESTION_INPUT_COMPONENT}></${SUGGESTION_INPUT_COMPONENT}>
-       <${REMOVABLE_TAG_COMPONENT}></${REMOVABLE_TAG_COMPONENT}>
   </div>
   
 `;
@@ -44,18 +48,25 @@ class VarietySelector extends WebElement {
         this._render();
     }
 
-    _render() {
-        this.$(REMOVABLE_TAG_COMPONENT).props = {
-            removeItemCallback: this._removeVarietyCallback
-        };
+    _renderRemovableTag(tagContent) {
+        if (!this.$(REMOVABLE_TAG_COMPONENT)) {
+            const tagTemplate = this.getTemplateById(VARIETY_TAG_TMPL);
+            tagTemplate.byTag(REMOVABLE_TAG_COMPONENT).innerHTML = tagContent;
+            this.$_id(CONTAINER).appendChild(tagTemplate);
+            this.$(REMOVABLE_TAG_COMPONENT).props = {
+                removeItemCallback: this._removeVarietyCallback
+            };
+        } else {
+            this.$(REMOVABLE_TAG_COMPONENT).innerHTML = tagContent;
+        }
+    }
 
+    _render() {
         if (this.$exemplar.variety && this.$exemplar.variety.id) {
             this.$(SUGGESTION_INPUT_COMPONENT).style.display = 'none';
-            this.$(REMOVABLE_TAG_COMPONENT).innerHTML = this.$exemplar.variety.name;
-            this.$(REMOVABLE_TAG_COMPONENT).style.display = 'block';
+            this._renderRemovableTag(this.$exemplar.variety.name);
 
         } else {
-            this.$(REMOVABLE_TAG_COMPONENT).style.display = 'none';
             this.$(SUGGESTION_INPUT_COMPONENT).style.display = 'block';
 
             this.$(SUGGESTION_INPUT_COMPONENT).props = {
@@ -66,8 +77,7 @@ class VarietySelector extends WebElement {
                         const variety = itms.find(i => i.name === item);
                         if (variety) {
                             this.$exemplar.variety = variety;
-                            this.$(REMOVABLE_TAG_COMPONENT).innerHTML = variety.name;
-                            this.$(REMOVABLE_TAG_COMPONENT).style.display = 'block';
+                            this._renderRemovableTag(variety.name);
                             this.$(SUGGESTION_INPUT_COMPONENT).style.display = 'none';
                         }
                     })
@@ -80,9 +90,9 @@ class VarietySelector extends WebElement {
         super(template, true);
 
         this._render = this._render.bind(this);
-        // this._saveIngredient = this._saveIngredient.bind(this);
         this._retrieveVarietiesByKeyword = this._retrieveVarietiesByKeyword.bind(this);
         this._removeVarietyCallback = this._removeVarietyCallback.bind(this);
+        this._renderRemovableTag = this._renderRemovableTag.bind(this);
     }
 
     async _retrieveVarietiesByKeyword(keyword) {
@@ -92,23 +102,9 @@ class VarietySelector extends WebElement {
 
     _removeVarietyCallback() {
         this.$exemplar.variety = null;
-        this.$(REMOVABLE_TAG_COMPONENT).style.display = 'none';
         this.$(SUGGESTION_INPUT_COMPONENT).style.display = 'block';
     }
 
-    // _saveIngredient() {
-    //     this.$ingredient.name = this.$(INPUT_COMPONENT).value;
-    //     this.$ingredient.description = this.$(TEXT_COMPONENT).value;
-    //
-    //     // put default behavior
-    //     this.$(REMOVABLE_TAG_COMPONENT).style.display = 'none';
-    //     this.$(SUGGESTION_INPUT_COMPONENT).style.display = 'block';
-    //
-    //     this.$ingredient.save().then(id => {
-    //         this.$addIngredient();
-    //         window.location.hash = '/ingredients/' + id;
-    //     });
-    // }
 }
 
 customElements.define('variety-selector', VarietySelector);

@@ -17,7 +17,7 @@ public class ExemplarDto {
 	private Long id;
 	private String name;
 	private VarietyBaseDto variety;
-	private Long parent;
+	private ExemplarDto parent;
 	private boolean sport;
 	private List<ExemplarHistoryDto> history;
 
@@ -26,9 +26,16 @@ public class ExemplarDto {
 				.id(entity.getId())
 				.name(entity.getName())
 				.variety(Optional.ofNullable(entity.getVariety()).map(VarietyBaseDto::of).orElse(null))
-				.parent(Optional.ofNullable(entity.getParent()).map(Exemplar::getId).orElse(null))
+				.parent(Optional.ofNullable(entity.getParent()).map(ExemplarDto::ofParent).orElse(null))
 				.sport(entity.isSport())
 				.history(entity.getHistory().stream().map(ExemplarHistoryDto::of).collect(Collectors.toList()))
+				.build();
+	}
+
+	public static ExemplarDto ofParent(Exemplar entity) {
+		return ExemplarDto.builder()
+				.id(entity.getId())
+				.name(entity.getName())
 				.build();
 	}
 }

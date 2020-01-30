@@ -69,7 +69,7 @@ public class ExemplarServiceImpl implements ExemplarService {
 	}
 
 	private String saveFile(String photo, Exemplar entity) {
-		return fileService.saveExemplarFile(photo, entity.getVariety().getName());
+		return fileService.saveExemplarFile(photo, entity.getName());
 	}
 
 	@Transactional
@@ -88,7 +88,8 @@ public class ExemplarServiceImpl implements ExemplarService {
 	@Transactional
 	@Override
 	public ExemplarDto update(ExemplarUpdateRequest dto) {
-		Exemplar entity = Exemplar.of(dto);
+		Exemplar existingEntity = exemplarRepository.getOne(dto.getId());
+		Exemplar entity = Exemplar.of(dto, existingEntity);
 		saveAllFiles(entity);
 		return ExemplarDto.of(exemplarRepository.saveAndFlush(entity));
 	}

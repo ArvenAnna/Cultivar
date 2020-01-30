@@ -7,6 +7,7 @@ import {t} from '../../../utils/translateUtils';
 import {retrieveExemplarsByKeyword} from "../../../utils/asyncRequests";
 
 const CONTAINER = 'container';
+const PARENT_TAG_TMPL = 'parent-tag-template';
 
 const SUGGESTION_INPUT_COMPONENT = 'suggestions-chooser';
 const REMOVABLE_TAG_COMPONENT = 'removable-tag';
@@ -19,15 +20,18 @@ const template = `
          align-items: center;
       }
       
-      ${REMOVABLE_TAG_COMPONENT} {
-        display: none;
-      }
+      // ${REMOVABLE_TAG_COMPONENT} {
+      //   display: none;
+      // }
   </style>
+  
+  <template id='${PARENT_TAG_TMPL}'>
+     <${REMOVABLE_TAG_COMPONENT}></${REMOVABLE_TAG_COMPONENT}>
+  </template>
   
   <div id='${CONTAINER}'>
        <span class='label'>${t('exemplars.choose_parent')} </span> 
        <${SUGGESTION_INPUT_COMPONENT}></${SUGGESTION_INPUT_COMPONENT}>
-       <${REMOVABLE_TAG_COMPONENT}></${REMOVABLE_TAG_COMPONENT}>
   </div>
   
 `;
@@ -39,18 +43,25 @@ class ParentSelector extends WebElement {
         this._render();
     }
 
-    _render() {
-        this.$(REMOVABLE_TAG_COMPONENT).props = {
-            removeItemCallback: this._removeVarietyCallback
-        };
+    _renderRemovableTag(tagContent) {
+        if (!this.$(REMOVABLE_TAG_COMPONENT)) {
+            const tagTemplate = this.getTemplateById(PARENT_TAG_TMPL);
+            tagTemplate.byTag(REMOVABLE_TAG_COMPONENT).innerHTML = tagContent;
+            this.$_id(CONTAINER).appendChild(tagTemplate);
+            this.$(REMOVABLE_TAG_COMPONENT).props = {
+                removeItemCallback: this._removeParentCallback
+            };
+        } else {
+            this.$(REMOVABLE_TAG_COMPONENT).innerHTML = tagContent;
+        }
+    }
 
+    _render() {
         if (this.$exemplar.parent && this.$exemplar.parent.id) {
             this.$(SUGGESTION_INPUT_COMPONENT).style.display = 'none';
-            this.$(REMOVABLE_TAG_COMPONENT).innerHTML = this.$exemplar.parent.name;
-            this.$(REMOVABLE_TAG_COMPONENT).style.display = 'block';
+            this._renderRemovableTag(this.$exemplar.parent.name);
 
         } else {
-            this.$(REMOVABLE_TAG_COMPONENT).style.display = 'none';
             this.$(SUGGESTION_INPUT_COMPONENT).style.display = 'block';
 
             this.$(SUGGESTION_INPUT_COMPONENT).props = {
@@ -61,8 +72,7 @@ class ParentSelector extends WebElement {
                         const variety = itms.find(i => i.name === item);
                         if (variety) {
                             this.$exemplar.parent = variety;
-                            this.$(REMOVABLE_TAG_COMPONENT).innerHTML = variety.name;
-                            this.$(REMOVABLE_TAG_COMPONENT).style.display = 'block';
+                            this._renderRemovableTag(variety.name);
                             this.$(SUGGESTION_INPUT_COMPONENT).style.display = 'none';
                         }
                     })
@@ -76,7 +86,8 @@ class ParentSelector extends WebElement {
 
         this._render = this._render.bind(this);
         this._retrieveExemplarsByKeyword = this._retrieveExemplarsByKeyword.bind(this);
-        this._removeVarietyCallback = this._removeVarietyCallback.bind(this);
+        this._removeParentCallback = this._removeParentCallback.bind(this);
+        this._renderRemovableTag = this._renderRemovableTag.bind(this);
     }
 
     async _retrieveExemplarsByKeyword(keyword) {
@@ -84,9 +95,8 @@ class ParentSelector extends WebElement {
         return page.exemplars;
     }
 
-    _removeVarietyCallback() {
+    _removeParentCallback() {
         this.$exemplar.parent = null;
-        this.$(REMOVABLE_TAG_COMPONENT).style.display = 'none';
         this.$(SUGGESTION_INPUT_COMPONENT).style.display = 'block';
     }
 }

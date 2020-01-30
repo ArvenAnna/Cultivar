@@ -22,10 +22,12 @@ public class ExemplarKeywordSpecification implements Specification<Exemplar> {
 	public Predicate toPredicate(Root<Exemplar> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 		List<Predicate> predicates = new ArrayList<>();
 
-		//todo: check if needed
 		if (keyword != null) {
-			Predicate searchInNamePredicate = cb.like(cb.upper(root.get("variety").get("name")), "%" + keyword.toUpperCase() + "%");
-			predicates.add(searchInNamePredicate);
+			Predicate searchInVarietyPredicate = cb.like(cb.upper(root.get("variety").get("name")), "%" + keyword.toUpperCase() + "%");
+			Predicate searchInNamePredicate = cb.like(cb.upper(root.get("name")), "%" + keyword.toUpperCase() + "%");
+			Predicate fullPredicate = cb.or(searchInNamePredicate, searchInVarietyPredicate);
+
+			predicates.add(fullPredicate);
 		}
 
 		return cb.and(predicates.toArray(new Predicate[0]));

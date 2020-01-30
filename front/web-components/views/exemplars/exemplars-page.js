@@ -86,7 +86,7 @@ class ExemplarsPage extends WebElement {
 
         this._renderPage = this._renderPage.bind(this);
 
-        this._renderPage();
+        // this._renderPage();
     }
 
     _renderPage() {

@@ -71,16 +71,16 @@ public class Exemplar {
 		return entity;
 	}
 
-	public static Exemplar of(ExemplarUpdateRequest request) {
-		Exemplar entity = new Exemplar();
+	public static Exemplar of(ExemplarUpdateRequest request, Exemplar entity) {
 		entity.setId(request.getId());
 		entity.setName(request.getName());
 		entity.setSport(request.isSport());
-		Optional.ofNullable(request.getParent()).ifPresent(parentEx -> {
+		Exemplar parentExemplar = Optional.ofNullable(request.getParent()).filter(parent -> parent.getId() != null).map(parentEx -> {
 			Exemplar parent = new Exemplar();
 			parent.setId(parentEx.getId());
-			entity.setParent(parent);
-		});
+			return parent;
+		}).orElse(null);
+		entity.setParent(parentExemplar);
 		Optional.ofNullable(request.getVariety()).map(VarietyBaseDto::getId).ifPresent(id -> {
 			Variety v = new Variety();
 			v.setId(id);

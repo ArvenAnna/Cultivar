@@ -1,22 +1,15 @@
 import WebElement from '../../abstract/web-element';
 
 import mModal from '../../model/modal';
-import mHeader from '../../model/header';
-import mNotification from '../../model/notification';
 
-import '../../components/lists/tags-list';
-import '../../styled/action-button';
 import { noImage } from '../../../constants/themes';
-import { goTo } from '../../router/utils';
 import {t} from "../../utils/translateUtils";
-import {SEVERITY_TYPES} from "../../common-notification";
 
 const CONTAINER = 'page-container';
 const DETAIL_TEMPLATE = 'detail_template';
 const RECIPE_DETAIL_PHOTO_TEMPLATE = 'recipe-detail-photo-template';
 
 const CAPTION = 'recipe_page_caption';
-const MAIN_PHOTO = 'recipe_page_main_photo';
 const DESCRIPTION = 'recipe_page_description';
 const DETAILS = 'recipe_page_details';
 
@@ -25,12 +18,7 @@ const DETAILS_PHOTO = 'recipe_page_details_photo';
 const DETAILS_PHOTO_FULL = 'recipe_page_details_photo_full';
 const DETAILS_DESCRIPTION = 'recipe_page_details_description';
 const DETAILS_DATE = 'details-date';
-const PROPORTIONS = 'recipe-proportions';
-const REFERENCES = 'recipe-references';
-const ADD_MENU = 'add-to-menu';
-
-const LIST_COMPONENT = 'tags-list';
-const BUTTON_COMPONENT = 'action-button';
+const DETAILS_EVENT = 'details-event';
 
 const template = `
   <style>
@@ -50,33 +38,6 @@ const template = `
         width: 100%;
         margin: 20px 0;
         text-shadow: var(--text-shadow);
-    }
-    
-    #${PROPORTIONS} {
-        grid-column-start: 1;
-        grid-column-end: 3;
-        grid-row-start: 2;
-        grid-row-end: 3;
-        padding: 0 1rem;
-    }
-    
-    #${REFERENCES} {
-        grid-column-start: 1;
-        grid-column-end: 3;
-        grid-row-start: 3;
-        grid-row-end: 4;
-        padding: 0 1rem;
-    }
-    
-    #${MAIN_PHOTO} {
-        grid-column-start: 1;
-        grid-column-end: 2;
-        grid-row-start: 4;
-        grid-row-end: 5;
-        width: 100%;
-        padding: 0.5rem 1rem;
-        box-sizing: border-box;
-        border-radius: var(--theme-border-radius);
     }
     
     #${DESCRIPTION} {
@@ -103,16 +64,6 @@ const template = `
         justify-items: center;
         margin: 1rem;
         padding: 1rem;
-    }
-    
-    #${ADD_MENU} {
-        grid-column-start: 1;
-        grid-column-end: 3;
-        grid-row-start: 7;
-        grid-row-end: 8;
-        display: flex;
-        justify-content: center;
-        padding-bottom: 1rem;
     }
     
     .${DETAIL} {
@@ -149,6 +100,7 @@ const template = `
         <img src='${noImage}' class='${DETAILS_PHOTO}'/>
         <div class='${DETAILS_DESCRIPTION}'></div>
         <div class='${DETAILS_DATE}'></div>
+        <div class='${DETAILS_EVENT}'></div>
     </div>
     
   </template>
@@ -159,7 +111,6 @@ const template = `
   
   <div id='${CONTAINER}'>
       <div id='${CAPTION}'></div>     
-      <!--<img src='${noImage}' id='${MAIN_PHOTO}'/>-->
       <div id='${DESCRIPTION}'></div>  
       <div id='${DETAILS}'></div>
   </div>
@@ -190,7 +141,6 @@ class ExemplarPage extends WebElement {
 
     _clearPage() {
         this.$_id(CAPTION).textContent = '';
-        // this.$_id(MAIN_PHOTO).src = noImage;
         this.$_id(DESCRIPTION).textContent = '';
         this.$_id(DETAILS).innerHTML = '';
         this.$_id(DETAILS).style.display = 'none';
@@ -204,7 +154,7 @@ class ExemplarPage extends WebElement {
             this.$_id(CAPTION).textContent = `${this.$exemplar.name || ''} (${this.$exemplar.variety.name || ''})`;
             // this.$_id(MAIN_PHOTO).src =  this.$variety.imgPathFull || noImage;
             let text = this.$exemplar.isSport ? t('exemplars.it_is_sport') : ' ';
-            text += `${this.$exemplar.parent && this.$exemplar.parent.id ? t('exemplars.parent_ref') + this.$exemplar.parent || '' : ''}`
+            text += `${this.$exemplar.parent && this.$exemplar.parent.id ? t('exemplars.parent_ref') + this.$exemplar.parent.name || '' : ''}`
             this.$_id(DESCRIPTION).innerHTML = text;
 
             if (this.$exemplar.history && this.$exemplar.history.length) {
@@ -215,9 +165,10 @@ class ExemplarPage extends WebElement {
                         detailTemplate.byClass(DETAILS_PHOTO).src = detail.photo;
                         detailTemplate.byClass(DETAILS_PHOTO).addEventListener('click', this._openFullPhoto.bind(this, detail.photoFull));
                         detailTemplate.byClass(DETAILS_DATE).textContent = detail.date;
+                        detailTemplate.byClass(DETAILS_EVENT).innerHTML = t(`events.${detail.eventType}`) + ' '
+                            + (detail.eventNumber || '');
                     }
                     detailTemplate.byClass(DETAILS_DESCRIPTION).textContent = detail.description;
-                    // TODO: render eventType, eventNumber
                     this.$_id(DETAILS).appendChild(detailTemplate);
                 })
             }

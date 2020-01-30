@@ -17,10 +17,12 @@ import {noImage} from '../../../constants/themes';
 const CONTAINER = 'page-container';
 
 const NAME_CONTAINER = 'name-container';
+const DATE_CONTAINER = 'date-container';
 const NAME = 'name';
 const DATE = 'date';
 const NAME_CAPTION = 'name-caption';
 const BUTTON_CONTAINER = 'button-container';
+const NEW_EVENT_CONTAINER = 'new-event-container';
 
 const DESCRIPTION_COMPONENT = 'text-area';
 const BUTTON_COMPONENT = 'action-button';
@@ -38,7 +40,7 @@ const template = `
         padding: 0 1.5rem;
     }
     
-    .${NAME_CONTAINER}{
+    .${NAME_CONTAINER}, .${DATE_CONTAINER}{
         display: flex;
         margin: 1rem;
         align-items: center;
@@ -79,7 +81,7 @@ const template = `
            
       <${UPLOAD_COMPONENT}></${UPLOAD_COMPONENT}>
       
-      <div class='${NAME_CONTAINER}'>
+      <div class='${DATE_CONTAINER}'>
         <div class='${NAME_CAPTION}'>${t('exemplars.exemplar_date')}</div>
         <input-text id='${DATE}'/>
       </div> 
@@ -88,8 +90,10 @@ const template = `
             <${BUTTON_COMPONENT} text='${t('common.save')}'></${BUTTON_COMPONENT}>
       </div>
       
-      <${NEW_EVENT_COMPONENT}></${NEW_EVENT_COMPONENT}>
-      
+      <div class='${NEW_EVENT_CONTAINER}'>
+        <div>${t('exemplars.add_event')}</div>
+        <${NEW_EVENT_COMPONENT}></${NEW_EVENT_COMPONENT}>
+      </div>
   </div>
 `;
 
@@ -158,10 +162,10 @@ class CreateExemplarPage extends WebElement {
             } else {
                 this.$(DESCRIPTION_COMPONENT).style.display = 'none';
                 this.$(UPLOAD_COMPONENT).style.display = 'none';
-                this.$_id(DATE).style.display = 'none';
+                this.$(`.${DATE_CONTAINER}`).style.display = 'none';
             }
 
-            this.$(NEW_EVENT_COMPONENT).style.display = this.$isCreate ? 'none' : 'block';
+            this.$(`.${NEW_EVENT_CONTAINER}`).style.display = this.$isCreate ? 'none' : 'block';
             if (!this.$isCreate) {
                 this.$(NEW_EVENT_COMPONENT).exemplar = this.$exemplar;
             }

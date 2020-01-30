@@ -13,7 +13,7 @@ import './views/create-variety/edit-variety-page-renderer';
 import './views/exemplars/exemplars-page-renderer';
 import './views/exemplar/exemplar-page-renderer';
 import './views/create-exemplar/create-exemplar-page-renderer';
-
+import './views/create-exemplar/edit-exemplar-page-renderer';
 
 import './app-header';
 // import './app-sidebar';
@@ -86,6 +86,7 @@ const template = `
             
             <app-route path="/exemplars" component="exemplars-page-renderer"></app-route>
             <app-route path="/exemplar/:id" component="exemplar-page-renderer"></app-route>
+            <app-route path="/exemplar/:id/edit" component="edit-exemplar-page-renderer"></app-route>
             <app-route path="/exemplar" component="create-exemplar-page-renderer"></app-route>
 
         </div>
