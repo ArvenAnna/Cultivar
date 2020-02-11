@@ -64,6 +64,11 @@ public class ExemplarController {
 
 	// exemplar history methods: could not be separated to separate controller due to SpringMvc limitation
 
+	@RequestMapping(value = {"/{exemplarId}/history/{hiId}"}, method = RequestMethod.GET)
+	public ExemplarHistoryDto getHistoryItem(@PathVariable("exemplarId") Long exemplarId, @PathVariable("hiId") Long hiId) {
+		return exemplarHistoryService.get(exemplarId, hiId);
+	}
+
 	@RequestMapping(value = {"/{exemplarId}/history"}, method = RequestMethod.POST)
 	public void saveHistoryItem(@RequestBody @Valid @NotNull(message = "Request should not be null") ExemplarHistoryDto dto, @PathVariable("exemplarId") Long exemplarId) {
 		exemplarHistoryService.save(dto, exemplarId);

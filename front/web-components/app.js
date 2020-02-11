@@ -15,6 +15,8 @@ import './views/exemplar/exemplar-page-renderer';
 import './views/create-exemplar/create-exemplar-page-renderer';
 import './views/create-exemplar/edit-exemplar-page-renderer';
 
+import './views/edit-history/edit-history-page-renderer';
+
 import './app-header';
 // import './app-sidebar';
 // import './recipe-search';
@@ -88,6 +90,8 @@ const template = `
             <app-route path="/exemplar/:id" component="exemplar-page-renderer"></app-route>
             <app-route path="/exemplar/:id/edit" component="edit-exemplar-page-renderer"></app-route>
             <app-route path="/exemplar" component="create-exemplar-page-renderer"></app-route>
+            
+            <app-route path="/exemplar/:id/hi/:hiId/edit" component="edit-history-page-renderer"></app-route>
 
         </div>
         <div id="${SIDE}">

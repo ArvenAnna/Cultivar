@@ -12,4 +12,6 @@ public interface ExemplarHistoryService {
 	void save(ExemplarHistoryDto dto, Long exemplarId);
 
 	void update(ExemplarHistoryDto dto, Long exemplarId);
+
+	ExemplarHistoryDto get(Long exemplarId, Long hiId);
 }

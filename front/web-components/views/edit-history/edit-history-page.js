@@ -1,7 +1,6 @@
 import WebElement from '../../abstract/web-element';
 
 import mModal from '../../model/modal';
-import '../../styled/action-button';
 
 import { noImage } from '../../../constants/themes';
 import {t} from "../../utils/translateUtils";
@@ -20,9 +19,6 @@ const DETAILS_PHOTO_FULL = 'recipe_page_details_photo_full';
 const DETAILS_DESCRIPTION = 'recipe_page_details_description';
 const DETAILS_DATE = 'details-date';
 const DETAILS_EVENT = 'details-event';
-
-const BUTTON_CONTAINER = 'button-container';
-const BUTTON_COMPONENT = 'action-button';
 
 const template = `
   <style>
@@ -97,13 +93,6 @@ const template = `
         position: fixed;
     }
     
-    .${BUTTON_CONTAINER} {
-       margin: 1rem 0;
-       display: flex;
-       justify-content: center;
-    }
-    
-    
   </style>
   
   <template id='${DETAIL_TEMPLATE}'>
@@ -112,10 +101,6 @@ const template = `
         <div class='${DETAILS_DESCRIPTION}'></div>
         <div class='${DETAILS_DATE}'></div>
         <div class='${DETAILS_EVENT}'></div>
-        <div class='${DETAILS_EVENT}'></div>
-        <div class='${BUTTON_CONTAINER}'>
-            <${BUTTON_COMPONENT} text='${t('common.edit')}'></${BUTTON_COMPONENT}>
-        </div>
     </div>
     
   </template>
@@ -125,16 +110,22 @@ const template = `
   </template>
   
   <div id='${CONTAINER}'>
-      <div id='${CAPTION}'></div>     
+      <div id='${CAPTION}'>aaaaaaa</div>     
       <div id='${DESCRIPTION}'></div>  
       <div id='${DETAILS}'></div>
   </div>
 `;
 
-class ExemplarPage extends WebElement {
+class EditHistoryPage extends WebElement {
 
-    set exemplar(item) {
-        this.$exemplar = item;
+    // set exemplar(item) {
+    //     this.$exemplar = item;
+    //     this._renderPage();
+    // }
+
+    set props({exemplarId, hi}) {
+        this.$exemplarId = exemplarId;
+        this.$hi = hi;
         this._renderPage();
     }
 
@@ -142,27 +133,27 @@ class ExemplarPage extends WebElement {
         super(template, true);
 
         this._renderPage = this._renderPage.bind(this);
-        this._clearPage = this._clearPage.bind(this);
-        this._openFullPhoto = this._openFullPhoto.bind(this);
+        // this._clearPage = this._clearPage.bind(this);
+        // this._openFullPhoto = this._openFullPhoto.bind(this);
 
         this._renderPage();
     }
 
-    _openFullPhoto(imgPath) {
-        const photoTemplate = this.getTemplateById(RECIPE_DETAIL_PHOTO_TEMPLATE);
-        photoTemplate.byTag('img').src = imgPath;
-        mModal.open(photoTemplate);
-    }
-
-    _clearPage() {
-        this.$_id(CAPTION).textContent = '';
-        this.$_id(DESCRIPTION).textContent = '';
-        this.$_id(DETAILS).innerHTML = '';
-        this.$_id(DETAILS).style.display = 'none';
-    }
+    // _openFullPhoto(imgPath) {
+    //     const photoTemplate = this.getTemplateById(RECIPE_DETAIL_PHOTO_TEMPLATE);
+    //     photoTemplate.byTag('img').src = imgPath;
+    //     mModal.open(photoTemplate);
+    // }
+    //
+    // _clearPage() {
+    //     this.$_id(CAPTION).textContent = '';
+    //     this.$_id(DESCRIPTION).textContent = '';
+    //     this.$_id(DETAILS).innerHTML = '';
+    //     this.$_id(DETAILS).style.display = 'none';
+    // }
 
     _renderPage() {
-        this._clearPage();
+        /*this._clearPage();
 
         if (this.$exemplar) {
 
@@ -182,18 +173,15 @@ class ExemplarPage extends WebElement {
                         detailTemplate.byClass(DETAILS_DATE).textContent = detail.date;
                         detailTemplate.byClass(DETAILS_EVENT).innerHTML = t(`events.${detail.eventType}`) + ' '
                             + (detail.eventNumber || '');
-                        detailTemplate.byTag(BUTTON_COMPONENT).onConstruct = (el) => {
-                            el.onClick = () => window.location.hash = '/exemplar/' + this.$exemplar.id + '/hi/' + detail.id + '/edit';
-                        }
                     }
                     detailTemplate.byClass(DETAILS_DESCRIPTION).textContent = detail.description;
                     this.$_id(DETAILS).appendChild(detailTemplate);
                 })
             }
 
-        }
+        }*/
     }
 
 }
 
-customElements.define('exemplar-page', ExemplarPage);
+customElements.define('edit-history-page', EditHistoryPage);

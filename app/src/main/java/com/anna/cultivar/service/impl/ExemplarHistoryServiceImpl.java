@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.anna.cultivar.dto.ExemplarHistoryDto;
 import com.anna.cultivar.entity.Exemplar;
 import com.anna.cultivar.entity.ExemplarHistory;
+import com.anna.cultivar.repository.ExemplarHistoryRepository;
 import com.anna.cultivar.repository.ExemplarRepository;
 import com.anna.cultivar.service.ExemplarHistoryService;
 
@@ -53,8 +54,8 @@ public class ExemplarHistoryServiceImpl implements ExemplarHistoryService {
 				Arrays.asList(LEAF_ROOTS, CHILD_BIRTH, LEAF_SEPARATED, BLOSSOM, GROW));
 	}
 
-//	@Autowired
-//	private ExemplarHistoryRepository historyRepository;
+	@Autowired
+	private ExemplarHistoryRepository historyRepository;
 	@Autowired
 	private ExemplarRepository exemplarRepository;
 	@Autowired
@@ -122,5 +123,11 @@ public class ExemplarHistoryServiceImpl implements ExemplarHistoryService {
 	@Override
 	public void update(ExemplarHistoryDto dto, Long exemplarId) {
 		save(dto, exemplarId);
+	}
+
+	@Transactional
+	@Override
+	public ExemplarHistoryDto get(Long exemplarId, Long hiId) {
+		return ExemplarHistoryDto.of(historyRepository.getOne(hiId));
 	}
 }

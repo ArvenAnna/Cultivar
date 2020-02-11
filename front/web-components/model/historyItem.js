@@ -49,6 +49,7 @@ export class HistoryItem extends Model {
             .then(this._setHistoryItem)
             .catch(e => {
                 mNotification.showMessage(e.message, SEVERITY_TYPES.ERROR);
+                console.log(e)
             });
     }
 
