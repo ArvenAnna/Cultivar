@@ -104,6 +104,11 @@ class CreateExemplarPage extends WebElement {
         this._renderPage();
     }
 
+    set events(events) {
+        this.$events = events;
+        this._renderPage();
+    }
+
     set props({exemplar, isCreate}) {
         this.$exemplar = exemplar;
         this.$isCreate = isCreate;
@@ -167,7 +172,10 @@ class CreateExemplarPage extends WebElement {
 
             this.$(`.${NEW_EVENT_CONTAINER}`).style.display = this.$isCreate ? 'none' : 'block';
             if (!this.$isCreate) {
-                this.$(NEW_EVENT_COMPONENT).exemplar = this.$exemplar;
+                this.$(NEW_EVENT_COMPONENT).props = {
+                    exemplar: this.$exemplar,
+                    events: this.$events
+                }
             }
         }
     }

@@ -16,13 +16,14 @@ To start application you need:
     \q - exit
     drop database cultivars
 
+-----------------------------------------------------------------
+TODO:
 
 2. Implement datepicker
 4. Add Russian translations
-
-----------------------
-
-1. Exemplar setup
+5. Exemplar setup
 
 b. add edit form and exclude data for history (reuse form, but needs to know which view) + add PUT endpoint for examplar
 c. add history item section with separate button + update every history item
+
+seems, full photo is not saved, only small

@@ -1,8 +1,8 @@
 import routes from '../../constants/Routes';
-import Model from '../abstract/model';
-import {doJsonRequest} from "../utils/httpUtils";
+import { doVoidJsonRequest} from "../utils/httpUtils";
+import {HistoryItem} from "./historyItem";
 
-export class NewHistoryItem extends Model {
+export class NewHistoryItem extends HistoryItem {
 
     constructor() {
         super();
@@ -44,10 +44,13 @@ export class NewHistoryItem extends Model {
         return super.photo;
     }
 
+    set photo(photo) {
+        this._hi.photo = photo;
+    }
+
     async save(exemplar) {
         const method = this._hi.id ? 'PUT' : 'POST';
-        const newEntity = await doJsonRequest(routes.POST_CREATE_HISTORY_ITEM(exemplar), method, this._hi);
-        return newEntity.id;
+        return await doVoidJsonRequest(routes.POST_CREATE_HISTORY_ITEM(exemplar), method, this._hi);
     }
 
     clear() {

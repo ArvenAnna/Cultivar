@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.anna.cultivar.dto.ExemplarHistoryDto;
 import com.anna.cultivar.entity.Exemplar;
@@ -59,14 +60,14 @@ public class ExemplarHistoryServiceImpl implements ExemplarHistoryService {
 	@Autowired
 	private FileServiceImpl fileService;
 
+	@Transactional
 	@Override
 	public void save(ExemplarHistoryDto dto, Long exemplarId) {
 		Exemplar exemplar = exemplarRepository.getOne(exemplarId);
 
-		ExemplarHistory history = ExemplarHistory.of(dto);
-		exemplar.getHistory().add(history);
-
 		validateEventType(dto, exemplar);
+
+		ExemplarHistory history = ExemplarHistory.of(dto);
 
 		history.setExemplar(exemplar);
 		exemplar.getHistory().add(history);
@@ -75,16 +76,22 @@ public class ExemplarHistoryServiceImpl implements ExemplarHistoryService {
 		exemplarRepository.saveAndFlush(exemplar);
 	}
 
+	@Transactional
 	@Override
 	public List<ExemplarHistory.ExemplarEvent> getAllowedEvents(Long exemplarId) {
 		Exemplar exemplar = exemplarRepository.getOne(exemplarId);
-		return eventsMapping.get(exemplar.getHistory().stream().sorted(
-				Comparator.comparing(ExemplarHistory::getDate).reversed()).findFirst().orElse(null));
+		return eventsMapping.get(exemplar.getHistory().stream()
+				.sorted(Comparator.comparing(ExemplarHistory::getDate).reversed())
+				.map(ExemplarHistory::getEventType)
+				.findFirst()
+				.orElse(null));
 	}
 
 	private void validateEventType(ExemplarHistoryDto dto, Exemplar exemplar) {
-		List<ExemplarHistory.ExemplarEvent> allowedEvents = eventsMapping.get(exemplar.getHistory().stream().sorted(
-				Comparator.comparing(ExemplarHistory::getDate).reversed()).findFirst().orElse(null));
+		List<ExemplarHistory.ExemplarEvent> allowedEvents = eventsMapping.get(exemplar.getHistory().stream()
+				.sorted(Comparator.comparing(ExemplarHistory::getDate).reversed())
+				.map(ExemplarHistory::getEventType)
+				.findFirst().orElse(null));
 
 		Optional.ofNullable(allowedEvents).filter(events -> events.contains(dto.getEventType()))
 				.orElseThrow(() -> new IllegalArgumentException("Event type is not allowed"));
@@ -111,6 +118,7 @@ public class ExemplarHistoryServiceImpl implements ExemplarHistoryService {
 	}
 
 
+	@Transactional
 	@Override
 	public void update(ExemplarHistoryDto dto, Long exemplarId) {
 		save(dto, exemplarId);

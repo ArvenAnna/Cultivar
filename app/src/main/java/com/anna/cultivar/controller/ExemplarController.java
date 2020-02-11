@@ -1,5 +1,8 @@
 package com.anna.cultivar.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -13,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.anna.cultivar.dto.ExemplarCreationRequest;
 import com.anna.cultivar.dto.ExemplarDto;
+import com.anna.cultivar.dto.ExemplarHistoryDto;
 import com.anna.cultivar.dto.ExemplarPage;
 import com.anna.cultivar.dto.ExemplarSearchParams;
 import com.anna.cultivar.dto.ExemplarUpdateRequest;
+import com.anna.cultivar.service.ExemplarHistoryService;
 import com.anna.cultivar.service.ExemplarService;
 
 @RestController
@@ -24,6 +29,10 @@ public class ExemplarController {
 
 	@Autowired
 	private ExemplarService exemplarService;
+	@Autowired
+	private ExemplarHistoryService exemplarHistoryService;
+
+	// exemplar methods
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ExemplarPage exemplarsList(ExemplarSearchParams searchParams, @NotNull final Pageable pageable) {
@@ -50,4 +59,26 @@ public class ExemplarController {
 		// do combination of name and variety name
 		return exemplarService.findByKeyword(pageable, keyword);
 	}
+
+
+
+	// exemplar history methods: could not be separated to separate controller due to SpringMvc limitation
+
+	@RequestMapping(value = {"/{exemplarId}/history"}, method = RequestMethod.POST)
+	public void saveHistoryItem(@RequestBody @Valid @NotNull(message = "Request should not be null") ExemplarHistoryDto dto, @PathVariable("exemplarId") Long exemplarId) {
+		exemplarHistoryService.save(dto, exemplarId);
+	}
+
+	@RequestMapping(value = {"/{exemplarId}/history"}, method = RequestMethod.PUT)
+	public void updateHistoryItem(@RequestBody @Valid @NotNull(message = "Request should not be null") ExemplarHistoryDto dto, @PathVariable("exemplarId") Long exemplarId) {
+		exemplarHistoryService.update(dto, exemplarId);
+	}
+
+	@RequestMapping(value = {"/{exemplarId}/history/events"}, method = RequestMethod.GET)
+	public List<String> getAllowedEvents(@PathVariable("exemplarId") Long exemplarId) {
+		return exemplarHistoryService.getAllowedEvents(exemplarId).stream()
+				.map(enumValue -> enumValue.name())
+				.collect(Collectors.toList());
+	}
+
 }

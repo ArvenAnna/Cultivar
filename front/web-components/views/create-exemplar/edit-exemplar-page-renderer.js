@@ -1,4 +1,5 @@
 import mNewExemplar from '../../model/newExemplar';
+import mEvents from '../../model/events';
 import WebElement from '../../abstract/web-element';
 import './create-exemplar-page';
 import router from '../../router/router-context';
@@ -14,9 +15,14 @@ class EditExemplarPageRenderer extends WebElement {
 
         this._newExemplarChanged = this._newExemplarChanged.bind(this);
         this._onRouteChange = this._onRouteChange.bind(this);
+        this._eventsChanged = this._eventsChanged.bind(this);
 
         mNewExemplar.addSubscriber(this._newExemplarChanged);
         mNewExemplar.retrieve(router.params.id);
+
+        mEvents.addSubscriber(this._eventsChanged);
+        mEvents.retrieve(router.params.id);
+
         router.addSubscriber(this._onRouteChange);
 
         // this.querySelector('create-exemplar-page').exemplar = mNewExemplar;
@@ -25,6 +31,11 @@ class EditExemplarPageRenderer extends WebElement {
             isCreate: false
         };
     }
+
+    _eventsChanged(model) {
+        this.querySelector('create-exemplar-page').events = model.events;
+    }
+
 
     _onRouteChange({params: {id}}) {
         if (router.component == 'edit-exemplar-page-renderer') {
@@ -44,6 +55,7 @@ class EditExemplarPageRenderer extends WebElement {
     disconnectedCallback() {
         router.removeSubscriber(this._onRouteChange);
         mNewExemplar.removeSubscriber(this._newExemplarChanged);
+        mEvents.removeSubscriber(this._eventsChanged);
     }
 
 }
