@@ -1,63 +1,76 @@
 package com.anna.cultivar.service.impl;
 
-import static com.anna.cultivar.entity.ExemplarHistory.ExemplarEvent.BLOSSOM;
-import static com.anna.cultivar.entity.ExemplarHistory.ExemplarEvent.CHILD_BIRTH;
+import static com.anna.cultivar.entity.ExemplarHistory.ExemplarEvent.BLOSSOM_END;
+import static com.anna.cultivar.entity.ExemplarHistory.ExemplarEvent.BLOSSOM_START;
+import static com.anna.cultivar.entity.ExemplarHistory.ExemplarEvent.DISAPPEARANCE;
 import static com.anna.cultivar.entity.ExemplarHistory.ExemplarEvent.FIRST_BUDS;
-import static com.anna.cultivar.entity.ExemplarHistory.ExemplarEvent.FIRST_LEAF;
 import static com.anna.cultivar.entity.ExemplarHistory.ExemplarEvent.GROW;
-import static com.anna.cultivar.entity.ExemplarHistory.ExemplarEvent.LEAF_ROOTS;
+import static com.anna.cultivar.entity.ExemplarHistory.ExemplarEvent.HEAD_CUT;
 import static com.anna.cultivar.entity.ExemplarHistory.ExemplarEvent.LEAF_SEPARATED;
 import static com.anna.cultivar.entity.ExemplarHistory.ExemplarEvent.SEPARATE_FROM_LEAF;
+import static com.anna.cultivar.entity.ExemplarHistory.ExemplarEvent.STEAM_SEPARATED;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.collections.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.anna.cultivar.dto.AllowedEventsRequest;
 import com.anna.cultivar.dto.ExemplarHistoryDto;
 import com.anna.cultivar.entity.Exemplar;
 import com.anna.cultivar.entity.ExemplarHistory;
 import com.anna.cultivar.repository.ExemplarHistoryRepository;
 import com.anna.cultivar.repository.ExemplarRepository;
 import com.anna.cultivar.service.ExemplarHistoryService;
+import com.anna.cultivar.service.ExemplarTransitionService;
 
 @Service
 public class ExemplarHistoryServiceImpl implements ExemplarHistoryService {
 
 	private static Map<ExemplarHistory.ExemplarEvent, List<ExemplarHistory.ExemplarEvent>> eventsMapping = new HashMap<>();
-	private static List<ExemplarHistory.ExemplarEvent> countableEvents = Arrays.asList(BLOSSOM, LEAF_SEPARATED, LEAF_ROOTS, CHILD_BIRTH);
+	private static List<ExemplarHistory.ExemplarEvent> countableEvents = Arrays.asList(BLOSSOM_START, BLOSSOM_END);
 
 	static {
 		eventsMapping.put(ExemplarHistory.ExemplarEvent.APPEARANCE,
-				Arrays.asList(FIRST_LEAF, SEPARATE_FROM_LEAF, FIRST_BUDS, BLOSSOM, LEAF_SEPARATED, GROW));
-		eventsMapping.put(FIRST_LEAF,
-				Arrays.asList(SEPARATE_FROM_LEAF, GROW));
+				Arrays.asList(SEPARATE_FROM_LEAF, FIRST_BUDS, BLOSSOM_START, BLOSSOM_END, LEAF_SEPARATED, STEAM_SEPARATED, GROW, HEAD_CUT,
+						DISAPPEARANCE));
 		eventsMapping.put(SEPARATE_FROM_LEAF,
-				Arrays.asList(FIRST_BUDS, GROW));
+				Arrays.asList(FIRST_BUDS, GROW, DISAPPEARANCE));
 		eventsMapping.put(FIRST_BUDS,
-				Arrays.asList(BLOSSOM, GROW));
-		eventsMapping.put(BLOSSOM,
-				Arrays.asList(LEAF_SEPARATED, GROW));
+				Arrays.asList(BLOSSOM_START, GROW, DISAPPEARANCE));
+		eventsMapping.put(BLOSSOM_START,
+				Arrays.asList(BLOSSOM_END, LEAF_SEPARATED, STEAM_SEPARATED, HEAD_CUT, GROW, DISAPPEARANCE));
+		eventsMapping.put(BLOSSOM_END,
+				Arrays.asList(BLOSSOM_START, LEAF_SEPARATED, STEAM_SEPARATED, HEAD_CUT, GROW, DISAPPEARANCE));
 		eventsMapping.put(LEAF_SEPARATED,
-				Arrays.asList(LEAF_SEPARATED, LEAF_ROOTS, CHILD_BIRTH, BLOSSOM, GROW));
-		eventsMapping.put(LEAF_ROOTS,
-				Arrays.asList(LEAF_ROOTS, CHILD_BIRTH, LEAF_SEPARATED, BLOSSOM, GROW));
-		eventsMapping.put(CHILD_BIRTH,
-				Arrays.asList(LEAF_ROOTS, CHILD_BIRTH, LEAF_SEPARATED, BLOSSOM, GROW));
+				Arrays.asList(BLOSSOM_START, BLOSSOM_END, LEAF_SEPARATED, STEAM_SEPARATED, HEAD_CUT, GROW, DISAPPEARANCE));
+		eventsMapping.put(STEAM_SEPARATED,
+				Arrays.asList(BLOSSOM_START, BLOSSOM_END, LEAF_SEPARATED, STEAM_SEPARATED, HEAD_CUT, GROW, DISAPPEARANCE));
 		eventsMapping.put(GROW,
-				Arrays.asList(LEAF_ROOTS, CHILD_BIRTH, LEAF_SEPARATED, BLOSSOM, GROW));
+				Arrays.asList(FIRST_BUDS, BLOSSOM_START, BLOSSOM_END, LEAF_SEPARATED, STEAM_SEPARATED, HEAD_CUT, GROW, DISAPPEARANCE));
+		eventsMapping.put(HEAD_CUT,
+				Arrays.asList(BLOSSOM_START, BLOSSOM_END, LEAF_SEPARATED, STEAM_SEPARATED, GROW, DISAPPEARANCE));
+		eventsMapping.put(DISAPPEARANCE,
+				Collections.emptyList());
+		eventsMapping.put(null,
+				Collections.emptyList());
+
 	}
 
 	@Autowired
 	private ExemplarHistoryRepository historyRepository;
 	@Autowired
 	private ExemplarRepository exemplarRepository;
+	@Autowired
+	private ExemplarTransitionService exemplarTransitionService;
 	@Autowired
 	private FileServiceImpl fileService;
 
@@ -74,15 +87,24 @@ public class ExemplarHistoryServiceImpl implements ExemplarHistoryService {
 		exemplar.getHistory().add(history);
 
 		saveAllFiles(exemplar);
+
+		if (dto.getEventType().equals(STEAM_SEPARATED)) {
+			exemplarTransitionService.createExemplarFromSteamSeparation(exemplarId, dto.getDate());
+		}
+		if (dto.getEventType().equals(LEAF_SEPARATED)) {
+			exemplarTransitionService.createLeafFromLeafSeparation(exemplarId, dto.getDate());
+		}
+
 		exemplarRepository.saveAndFlush(exemplar);
 	}
 
 	@Transactional
 	@Override
-	public List<ExemplarHistory.ExemplarEvent> getAllowedEvents(Long exemplarId) {
+	public List<ExemplarHistory.ExemplarEvent> getAllowedEvents(Long exemplarId, AllowedEventsRequest request) {
 		Exemplar exemplar = exemplarRepository.getOne(exemplarId);
 		return eventsMapping.get(exemplar.getHistory().stream()
 				.sorted(Comparator.comparing(ExemplarHistory::getDate).reversed())
+				.filter(hi -> request.getDate() != null ? (request.getDate().compareTo(hi.getDate()) > 0) : true)
 				.map(ExemplarHistory::getEventType)
 				.findFirst()
 				.orElse(null));
@@ -91,6 +113,7 @@ public class ExemplarHistoryServiceImpl implements ExemplarHistoryService {
 	private void validateEventType(ExemplarHistoryDto dto, Exemplar exemplar) {
 		List<ExemplarHistory.ExemplarEvent> allowedEvents = eventsMapping.get(exemplar.getHistory().stream()
 				.sorted(Comparator.comparing(ExemplarHistory::getDate).reversed())
+				.filter(hi -> dto.getDate() != null ? (dto.getDate().compareTo(hi.getDate()) > 0) : true)
 				.map(ExemplarHistory::getEventType)
 				.findFirst().orElse(null));
 
@@ -122,12 +145,30 @@ public class ExemplarHistoryServiceImpl implements ExemplarHistoryService {
 	@Transactional
 	@Override
 	public void update(ExemplarHistoryDto dto, Long exemplarId) {
-		save(dto, exemplarId);
+		Exemplar exemplar = exemplarRepository.getOne(exemplarId);
+		validateEventType(dto, exemplar);
+
+		ExemplarHistory history = ExemplarHistory.of(dto);
+
+		history.setExemplar(exemplar);
+
+		saveAllFiles(exemplar);
+		historyRepository.saveAndFlush(history);
 	}
 
 	@Transactional
 	@Override
 	public ExemplarHistoryDto get(Long exemplarId, Long hiId) {
 		return ExemplarHistoryDto.of(historyRepository.getOne(hiId));
+	}
+
+	@Transactional
+	@Override
+	public void remove(Long exemplarId, Long hiId) {
+		Exemplar exemplar = exemplarRepository.getOne(exemplarId);
+		ExemplarHistory history = historyRepository.getOne(hiId);
+		exemplar.getHistory().remove(history);
+
+		exemplarRepository.saveAndFlush(exemplar);
 	}
 }

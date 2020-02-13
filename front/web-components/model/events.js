@@ -19,8 +19,10 @@ class Events extends Model {
         return [...this._events];
     }
 
-    retrieve(exemplarId) {
-        fetch(routes.GET_EVENTS(exemplarId))
+    retrieve(exemplarId, date) {
+        fetch(routes.GET_EVENTS(exemplarId), {method: 'POST',
+            body: JSON.stringify({date}),
+            headers: {'Content-Type': 'application/json'}})
             .then(getResponse)
             .then(this._setEvents)
             .catch(e => {

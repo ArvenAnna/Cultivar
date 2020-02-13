@@ -53,6 +53,20 @@ export class HistoryItem extends Model {
             });
     }
 
+    delete(exemplarId) {
+        if (!this._hi.id) {
+            throw new Error("history item can not be deleted -  no id");
+        }
+        return fetch(routes.DELETE_HISTORY_ITEM(exemplarId, this._hi.id), {method: 'DELETE'})
+            .then(() => {
+                this._hi = {}
+            })
+            .catch(e => {
+                mNotification.showMessage(e.message, SEVERITY_TYPES.ERROR);
+                console.log(e)
+            });
+    }
+
     _setHistoryItem(item) {
         this._hi = item;
         this.notifySubscribers();

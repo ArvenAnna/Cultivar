@@ -54,7 +54,19 @@ public class ExemplarHistory {
 	private String photo;
 
 	public enum ExemplarEvent {
-		APPEARANCE, FIRST_LEAF, SEPARATE_FROM_LEAF, FIRST_BUDS, BLOSSOM, LEAF_SEPARATED, LEAF_ROOTS, CHILD_BIRTH, GROW
+		APPEARANCE,
+//		FIRST_LEAF,
+		SEPARATE_FROM_LEAF,
+		FIRST_BUDS,
+		BLOSSOM_START,
+		BLOSSOM_END,
+		LEAF_SEPARATED,
+		STEAM_SEPARATED,
+//		LEAF_ROOTS,
+//		CHILD_BIRTH,
+		HEAD_CUT,
+		DISAPPEARANCE,
+		GROW
 	}
 
 	public static ExemplarHistory of(ExemplarCreationRequest request) {
@@ -68,6 +80,7 @@ public class ExemplarHistory {
 
 	public static ExemplarHistory of(ExemplarHistoryDto dto) {
 		ExemplarHistory entity = new ExemplarHistory();
+		entity.setId(dto.getId());
 		entity.setDate(dto.getDate());
 		entity.setDescription(dto.getDescription());
 		entity.setPhoto(dto.getPhoto());

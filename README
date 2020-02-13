@@ -26,4 +26,9 @@ TODO:
 b. add edit form and exclude data for history (reuse form, but needs to know which view) + add PUT endpoint for examplar
 c. add history item section with separate button + update every history item
 
+8. When date is changed inside new-event element - do fetch new events
+9. Implement methods in exemplarTransitionService
+10. Write Leaf entity infractructure
+11. check the allowed events logic on history editing
+
 seems, full photo is not saved, only small

@@ -83,9 +83,10 @@ class NewEvent extends WebElement {
     //     this._renderPage();
     // }
 
-    set props({exemplar, events}) {
-        this.$exemplar = exemplar;
+    set props({exemplarId, events, hi}) {
+        this.$exemplarId = exemplarId;
         this.$events = events;
+        this.$historyItem = hi;
         if(!this.$historyItem) {
             this.$historyItem = new NewHistoryItem();
         }
@@ -109,14 +110,14 @@ class NewEvent extends WebElement {
         if (this.$historyItem.date == 'Invalid Date') {
             alert('date or date format is not valid');
         } else {
-            this.$historyItem.save(this.$exemplar.id).then(() => {
-                window.location.hash = '/exemplar/' + this.$exemplar.id;
+            this.$historyItem.save(this.$exemplarId).then(() => {
+                window.location.hash = '/exemplar/' + this.$exemplarId;
             });
         }
     }
 
     _renderPage() {
-        if (this.$exemplar) {
+        if (this.$exemplarId && this.$historyItem) {
             this.$(DESCRIPTION_COMPONENT).value = this.$historyItem.description || '';
             this.$(UPLOAD_COMPONENT).props = {
                 uploadFileCallback: (path) => {
@@ -129,7 +130,7 @@ class NewEvent extends WebElement {
             this.$_id(DATE).value = this.$historyItem.date || '';
 
         }
-        if(this.$events) {
+        if (this.$events) {
             this.$(DROP_DOWN).props = {
                 chooseItemCallback: item => this.$historyItem.eventType = item,
                 items: this.$events,

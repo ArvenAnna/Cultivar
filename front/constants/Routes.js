@@ -25,8 +25,9 @@ const routes = {
     POST_CREATE_EXEMPLAR: httpPrefix + '/exemplars',
     GET_EXEMPLARS_BY_KEYWORD: `${httpPrefix}/exemplars/keyword?pageSize=${MAX_SUGGESTIONS_NUMBER}&pageNumber=0`,
 
-    GET_HISTORY_ITEM: (exemplar, id) => `${httpPrefix}/exemplars/${exemplar}/history/${id}`, // endpoint is not existing
+    GET_HISTORY_ITEM: (exemplar, id) => `${httpPrefix}/exemplars/${exemplar}/history/${id}`,
     POST_CREATE_HISTORY_ITEM: (exemplar) => `${httpPrefix}/exemplars/${exemplar}/history`,
+    DELETE_HISTORY_ITEM: (exemplar, id) => `${httpPrefix}/exemplars/${exemplar}/history/${id}`,
 
     GET_EVENTS: (exemplar) => `${httpPrefix}/exemplars/${exemplar}/history/events`
 };

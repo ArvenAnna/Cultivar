@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.anna.cultivar.dto.AllowedEventsRequest;
 import com.anna.cultivar.dto.ExemplarCreationRequest;
 import com.anna.cultivar.dto.ExemplarDto;
 import com.anna.cultivar.dto.ExemplarHistoryDto;
@@ -69,6 +70,11 @@ public class ExemplarController {
 		return exemplarHistoryService.get(exemplarId, hiId);
 	}
 
+	@RequestMapping(value = {"/{exemplarId}/history/{hiId}"}, method = RequestMethod.DELETE)
+	public void removeHistoryItem(@PathVariable("exemplarId") Long exemplarId, @PathVariable("hiId") Long hiId) {
+		exemplarHistoryService.remove(exemplarId, hiId);
+	}
+
 	@RequestMapping(value = {"/{exemplarId}/history"}, method = RequestMethod.POST)
 	public void saveHistoryItem(@RequestBody @Valid @NotNull(message = "Request should not be null") ExemplarHistoryDto dto, @PathVariable("exemplarId") Long exemplarId) {
 		exemplarHistoryService.save(dto, exemplarId);
@@ -79,9 +85,9 @@ public class ExemplarController {
 		exemplarHistoryService.update(dto, exemplarId);
 	}
 
-	@RequestMapping(value = {"/{exemplarId}/history/events"}, method = RequestMethod.GET)
-	public List<String> getAllowedEvents(@PathVariable("exemplarId") Long exemplarId) {
-		return exemplarHistoryService.getAllowedEvents(exemplarId).stream()
+	@RequestMapping(value = {"/{exemplarId}/history/events"}, method = RequestMethod.POST)
+	public List<String> getAllowedEvents(@RequestBody @NotNull AllowedEventsRequest request, @PathVariable("exemplarId") Long exemplarId) {
+		return exemplarHistoryService.getAllowedEvents(exemplarId, request).stream()
 				.map(enumValue -> enumValue.name())
 				.collect(Collectors.toList());
 	}
