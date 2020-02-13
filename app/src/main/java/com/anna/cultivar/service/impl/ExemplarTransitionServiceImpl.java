@@ -6,16 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.anna.cultivar.dto.CreateLeafRequest;
 import com.anna.cultivar.dto.ExemplarCreationRequest;
 import com.anna.cultivar.dto.ExemplarDto;
+import com.anna.cultivar.dto.LeafDto;
 import com.anna.cultivar.service.ExemplarService;
 import com.anna.cultivar.service.ExemplarTransitionService;
+import com.anna.cultivar.service.LeafService;
 
 @Component
 public class ExemplarTransitionServiceImpl implements ExemplarTransitionService {
 
 	@Autowired
 	ExemplarService exemplarService;
+	@Autowired
+	LeafService leafService;
 
 	@Transactional
 	@Override
@@ -34,11 +39,29 @@ public class ExemplarTransitionServiceImpl implements ExemplarTransitionService 
 
 	@Override
 	public void createLeafFromLeafSeparation(Long exemplarId, LocalDate date) {
+		ExemplarDto parent = exemplarService.getExemplar(exemplarId);
 
+		CreateLeafRequest request = CreateLeafRequest.builder()
+				.date(date)
+				.description("Leaf separated")
+				.parent(parent)
+				.variety(parent.getVariety())
+				.build();
+
+		leafService.saveLeaf(request);
 	}
 
 	@Override
 	public void createExemplarFromChildSeparation(Long leafId, LocalDate date) {
-
+		LeafDto parentLeaf = leafService.getLeaf(leafId);
+		ExemplarCreationRequest request = ExemplarCreationRequest.builder()
+				.date(date)
+				.name("Leaf separation exemplar")
+				.description("Leaf separation exemplar description")
+				.parent(parentLeaf.getParent() != null ? parentLeaf.getParent() : null)
+				.sport(parentLeaf.getParent() != null ? parentLeaf.getParent().isSport() : false)
+				.variety(parentLeaf.getVariety())
+				.build();
+		exemplarService.save(request);
 	}
 }

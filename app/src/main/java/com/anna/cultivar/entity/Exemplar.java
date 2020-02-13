@@ -53,6 +53,9 @@ public class Exemplar {
 	@OneToMany(mappedBy = "exemplar", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<ExemplarHistory> history = new ArrayList<>();
 
+	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<Leaf> leaves = new ArrayList<>();
+
 	public static Exemplar of(ExemplarCreationRequest request) {
 		Exemplar entity = new Exemplar();
 		entity.setName(request.getName());

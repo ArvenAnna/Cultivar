@@ -36,6 +36,7 @@ public class ExemplarDto {
 		return ExemplarDto.builder()
 				.id(entity.getId())
 				.name(entity.getName())
+				.sport(entity.isSport())
 				.build();
 	}
 }

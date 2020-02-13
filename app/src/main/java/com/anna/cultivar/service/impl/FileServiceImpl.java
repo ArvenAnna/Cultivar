@@ -32,6 +32,7 @@ public class FileServiceImpl implements FileService {
     public static final String INGREDIENTS_CATALOG = "ingredients";
     public static final String VARIETIES_CATALOG = "varieties";
     public static final String EXEMPLARS_CATALOG = "exemplars";
+    public static final String LEAVES_CATALOG = "leaves";
 
     @Autowired
     ServletContext context;
@@ -178,5 +179,9 @@ public class FileServiceImpl implements FileService {
 
     public String saveExemplarFile(String photo, String name) {
         return saveFile(photo, EXEMPLARS_CATALOG, name);
+    }
+
+    public String saveLeafFile(String photo, String name) {
+        return saveFile(photo, LEAVES_CATALOG, name);
     }
 }

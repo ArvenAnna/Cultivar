@@ -14,8 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.anna.cultivar.dto.CreateLeafRequest;
 import com.anna.cultivar.dto.ExemplarCreationRequest;
-import com.anna.cultivar.dto.ExemplarHistoryDto;
+import com.anna.cultivar.dto.LeafHistoryDto;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -25,8 +26,8 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(of = {"id"})
 @Entity
-@Table(name = "exemplar_history")
-public class ExemplarHistory {
+@Table(name = "leaf_history")
+public class LeafHistory {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,12 +35,12 @@ public class ExemplarHistory {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "exemplar_id")
-	private Exemplar exemplar;
+	@JoinColumn(name = "leaf_id")
+	private Leaf leaf;
 
 	@Column(name = "event_type")
 	@Enumerated(EnumType.STRING)
-	private ExemplarEvent eventType;
+	private LeafEvent eventType;
 
 	@Column(name = "event_date")
 	private LocalDate date;
@@ -47,41 +48,35 @@ public class ExemplarHistory {
 	@Column(name = "description")
 	private String description;
 
-	@Column(name = "event_number")
-	private Integer eventNumber;
-
 	@Column(name = "photo")
 	private String photo;
 
-	public enum ExemplarEvent {
+	public enum LeafEvent {
 		APPEARANCE,
+		LEAF_ROOTS,
+		PLANTING_GROUND,
+		FIRST_LEAF,
 		SEPARATE_FROM_LEAF,
-		FIRST_BUDS,
-		BLOSSOM_START,
-		BLOSSOM_END,
-		LEAF_SEPARATED,
-		STEAM_SEPARATED,
-		HEAD_CUT,
 		DISAPPEARANCE,
 		GROW
 	}
 
-	public static ExemplarHistory of(ExemplarCreationRequest request) {
-		ExemplarHistory entity = new ExemplarHistory();
-		entity.setDate(request.getDate());
-		entity.setDescription(request.getDescription());
-		entity.setPhoto(request.getPhoto());
-		entity.setEventType(ExemplarEvent.APPEARANCE);
-		return entity;
-	}
-
-	public static ExemplarHistory of(ExemplarHistoryDto dto) {
-		ExemplarHistory entity = new ExemplarHistory();
+	public static LeafHistory of(LeafHistoryDto dto) {
+		LeafHistory entity = new LeafHistory();
 		entity.setId(dto.getId());
 		entity.setDate(dto.getDate());
 		entity.setDescription(dto.getDescription());
 		entity.setPhoto(dto.getPhoto());
 		entity.setEventType(dto.getEventType());
+		return entity;
+	}
+
+	public static LeafHistory of(CreateLeafRequest request) {
+		LeafHistory entity = new LeafHistory();
+		entity.setDate(request.getDate());
+		entity.setDescription(request.getDescription());
+		entity.setPhoto(request.getPhoto());
+		entity.setEventType(LeafEvent.APPEARANCE);
 		return entity;
 	}
 }

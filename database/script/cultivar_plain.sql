@@ -149,6 +149,91 @@ ALTER SEQUENCE public.hybridisators_id_seq OWNED BY public.hybridisators.id;
 
 
 --
+-- Name: leaf_history; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.leaf_history (
+    id integer NOT NULL,
+    leaf_id integer NOT NULL,
+    description text,
+    event_type character varying(100) NOT NULL,
+    event_date timestamp without time zone,
+    photo character varying(1000)
+);
+
+
+ALTER TABLE public.leaf_history OWNER TO postgres;
+
+--
+-- Name: TABLE leaf_history; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE public.leaf_history IS 'History of leaves growing';
+
+
+--
+-- Name: leaf_history_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.leaf_history_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.leaf_history_id_seq OWNER TO postgres;
+
+--
+-- Name: leaf_history_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.leaf_history_id_seq OWNED BY public.leaf_history.id;
+
+
+--
+-- Name: leaves; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.leaves (
+    id integer NOT NULL,
+    parent integer NOT NULL,
+    variety_id integer
+);
+
+
+ALTER TABLE public.leaves OWNER TO postgres;
+
+--
+-- Name: TABLE leaves; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE public.leaves IS 'Leaves separated from exemplars';
+
+
+--
+-- Name: leaves_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.leaves_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.leaves_id_seq OWNER TO postgres;
+
+--
+-- Name: leaves_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.leaves_id_seq OWNED BY public.leaves.id;
+
+
+--
 -- Name: varieties; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -258,6 +343,20 @@ ALTER TABLE ONLY public.hybridisators ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: leaf_history id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.leaf_history ALTER COLUMN id SET DEFAULT nextval('public.leaf_history_id_seq'::regclass);
+
+
+--
+-- Name: leaves id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.leaves ALTER COLUMN id SET DEFAULT nextval('public.leaves_id_seq'::regclass);
+
+
+--
 -- Name: varieties id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -318,6 +417,36 @@ SELECT pg_catalog.setval('public.hybridisators_id_seq', 1, true);
 
 
 --
+-- Data for Name: leaf_history; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.leaf_history (id, leaf_id, description, event_type, event_date, photo) FROM stdin;
+\.
+
+
+--
+-- Name: leaf_history_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.leaf_history_id_seq', 1, false);
+
+
+--
+-- Data for Name: leaves; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.leaves (id, parent, variety_id) FROM stdin;
+\.
+
+
+--
+-- Name: leaves_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.leaves_id_seq', 1, false);
+
+
+--
 -- Data for Name: varieties; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -374,6 +503,22 @@ ALTER TABLE ONLY public.hybridisators
 
 
 --
+-- Name: leaf_history leaf_history_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.leaf_history
+    ADD CONSTRAINT leaf_history_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: leaves leaves_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.leaves
+    ADD CONSTRAINT leaves_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: varieties varieties_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -408,6 +553,20 @@ CREATE UNIQUE INDEX exemplars_id_uindex ON public.exemplars USING btree (id);
 --
 
 CREATE UNIQUE INDEX hybridisators_id_uindex ON public.hybridisators USING btree (id);
+
+
+--
+-- Name: leaf_history_id_uindex; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX leaf_history_id_uindex ON public.leaf_history USING btree (id);
+
+
+--
+-- Name: leaves_id_uindex; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX leaves_id_uindex ON public.leaves USING btree (id);
 
 
 --
@@ -446,6 +605,30 @@ ALTER TABLE ONLY public.exemplars
 
 ALTER TABLE ONLY public.exemplars
     ADD CONSTRAINT exemplars_varieties_id_fk FOREIGN KEY (variety_id) REFERENCES public.varieties(id);
+
+
+--
+-- Name: leaf_history leaf_history_leaves_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.leaf_history
+    ADD CONSTRAINT leaf_history_leaves_id_fk FOREIGN KEY (leaf_id) REFERENCES public.leaves(id);
+
+
+--
+-- Name: leaves leaves_exemplars_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.leaves
+    ADD CONSTRAINT leaves_exemplars_id_fk FOREIGN KEY (parent) REFERENCES public.exemplars(id);
+
+
+--
+-- Name: leaves leaves_varieties_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.leaves
+    ADD CONSTRAINT leaves_varieties_id_fk FOREIGN KEY (variety_id) REFERENCES public.varieties(id);
 
 
 --

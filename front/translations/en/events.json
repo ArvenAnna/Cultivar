@@ -11,5 +11,6 @@
   "CHILD_BIRTH": "New cultivar was taken from current",
   "HEAD_CUT": "Head was cut",
   "DISAPPEARANCE": "Cultivar disappeared",
-  "GROW": "Cultivar is growing"
+  "GROW": "Cultivar is growing",
+  "PLANTING_GROUND": "Leaf was planted in the ground"
 }
