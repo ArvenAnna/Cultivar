@@ -1,6 +1,6 @@
 import routes, {getImageSmallCopy} from '../../constants/Routes';
 import Model from '../abstract/model';
-import {getResponse} from "../utils/httpUtils";
+import {doVoidJsonRequest, getResponse} from "../utils/httpUtils";
 import mNotification from "./notification";
 import {INTERNAL_ID_KEY} from '../../constants/common';
 import {SEVERITY_TYPES} from "../common-notification";
@@ -15,6 +15,7 @@ export class Leaf extends Model {
         this.retrieve = this.retrieve.bind(this);
         this._setLeaf = this._setLeaf.bind(this);
         this.removeHi = this.removeHi.bind(this);
+        this.saveHi = this.saveHi.bind(this);
     }
 
     get id() {
@@ -72,6 +73,14 @@ export class Leaf extends Model {
             .catch(e => {
                 mNotification.showMessage(e.message, SEVERITY_TYPES.ERROR);
                 console.log(e)
+            });
+    }
+
+    async saveHi(hi) {
+        const method = 'POST';
+        return await doVoidJsonRequest(routes.POST_CREATE_LEAF_HISTORY_ITEM(this._leaf.id), method, hi)
+            .then(() => {
+                this.retrieve(this._leaf.id);
             });
     }
 

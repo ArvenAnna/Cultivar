@@ -2,6 +2,8 @@ package com.anna.cultivar.dto;
 
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotNull;
+
 import com.anna.cultivar.entity.LeafHistory;
 
 import lombok.AllArgsConstructor;
@@ -13,8 +15,9 @@ import lombok.Getter;
 @Builder
 public class LeafHistoryDto {
 	private Long id;
+	@NotNull(message = "Event type should be defined")
 	private LeafHistory.LeafEvent eventType;
-	private Integer eventNumber;
+	@NotNull(message = "Date should be present")
 	private LocalDate date;
 	private String description;
 	private String photo;

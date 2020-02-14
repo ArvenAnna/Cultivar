@@ -3,13 +3,20 @@ import WebElement from '../../abstract/web-element';
 import mModal from '../../model/modal';
 
 import '../../styled/action-button';
+import '../../styled/input-text';
+import '../../styled/text-area';
+
+import '../../components/file-upload/photo-upload';
+import '../../components/drop-down/drop-down';
 
 import { noImage } from '../../../constants/themes';
 import {t} from "../../utils/translateUtils";
+import routes from "../../../constants/Routes";
 
 const CONTAINER = 'page-container';
 const DETAIL_TEMPLATE = 'detail_template';
 const RECIPE_DETAIL_PHOTO_TEMPLATE = 'recipe-detail-photo-template';
+const CREATE_TEMPLATE = 'leaf-create-row-template';
 
 const CAPTION = 'recipe_page_caption';
 const DESCRIPTION = 'recipe_page_description';
@@ -21,6 +28,11 @@ const DETAILS_PHOTO_FULL = 'recipe_page_details_photo_full';
 const DETAILS_DESCRIPTION = 'recipe_page_details_description';
 const DETAILS_DATE = 'details-date';
 const DETAILS_EVENT = 'details-event';
+
+const DESCRIPTION_COMPONENT = 'text-area';
+const DROP_DOWN = 'drop-down';
+const UPLOAD_COMPONENT = 'photo-upload';
+const DATE = 'date';
 
 const BUTTON_CONTAINER = 'button-container';
 const BUTTON_COMPONENT = 'action-button';
@@ -52,14 +64,13 @@ const template = `
      }
     
     .${DETAILS_PHOTO} {
-        width: 10rem;
         
         object-fit: contain;
         border-radius: var(--theme-border-radius);
     }
     
     table {
-        margin: 1rem;
+        padding: 1rem;
         width: 100%;
         text-align: center;
     }
@@ -97,6 +108,16 @@ const template = `
     </tr>
   </template>
   
+  <template id='${CREATE_TEMPLATE}'>
+    <tr>
+        <td><${UPLOAD_COMPONENT}></${UPLOAD_COMPONENT}></td>
+        <td><${DESCRIPTION_COMPONENT}></${DESCRIPTION_COMPONENT}></div></td>
+        <td><input-text id='${DATE}'/></td>
+        <td><${DROP_DOWN}></${DROP_DOWN}></td>
+        <td><${BUTTON_COMPONENT} text='${t('common.save')}'></${BUTTON_COMPONENT}></td>
+    </tr>
+  </template>
+  
   <template id='${RECIPE_DETAIL_PHOTO_TEMPLATE}'>
         <img src='${noImage}' class='${DETAILS_PHOTO_FULL}'/>
   </template>
@@ -127,13 +148,20 @@ class LeafPage extends WebElement {
         this._renderPage();
     }
 
+    set events(events) {
+        this.$events = events;
+        this._renderPage();
+    }
+
     constructor() {
         super(template, true);
 
         this._renderPage = this._renderPage.bind(this);
         this._clearPage = this._clearPage.bind(this);
         this._openFullPhoto = this._openFullPhoto.bind(this);
+        this._renderCreationRow = this._renderCreationRow.bind(this);
 
+        this._save = this._save.bind(this);
         // this._renderPage();
     }
 
@@ -147,6 +175,49 @@ class LeafPage extends WebElement {
         this.$_id(CAPTION).textContent = '';
         this.$_id(DESCRIPTION).textContent = '';
         this.$('tbody').innerHTML = '';
+    }
+
+    _save() {
+        this._newHi.description = this.$(DESCRIPTION_COMPONENT).value;
+        this._newHi.date = this.$_id(DATE).value;
+        this._newHi.eventType = this._newHi.eventType || this.$events[0];
+
+        if (this._newHi.date == 'Invalid Date') {
+            alert('date or date format is not valid');
+        } else {
+            this._leaf.saveHi(this._newHi).then(() => {
+                // window.location.hash = '/exemplar/' + this.$exemplarId;
+            });
+        }
+    }
+
+    _renderCreationRow() {
+        const createTemplate = this.getTemplateById(CREATE_TEMPLATE);
+        this._newHi = {};
+
+        createTemplate.byTag(UPLOAD_COMPONENT).onConstruct = c => {
+            c.props = {
+                uploadFileCallback: (path) => {
+                    this._newHi.photo = path;
+                },
+                uploadUrl: routes.UPLOAD_FILE,
+                src: this._newHi.photo,
+                defaultSrc: noImage
+            };
+        };
+
+        createTemplate.byTag(DROP_DOWN).onConstruct = c => {
+            c.props = {
+                chooseItemCallback: item => this._newHi.eventType = item,
+                items: this.$events,
+                renderItem: item => item,
+            }
+        };
+        createTemplate.byTag(BUTTON_COMPONENT).onConstruct = (el) => {
+                el.onClick = this._save;
+            }
+
+        this.$('tbody').appendChild(createTemplate);
     }
 
     _renderPage() {
@@ -175,7 +246,9 @@ class LeafPage extends WebElement {
                     }
                     detailTemplate.byClass(DETAILS_DESCRIPTION).textContent = detail.description;
                     this.$('tbody').appendChild(detailTemplate);
-                })
+                });
+
+                this._renderCreationRow();
             }
 
         }

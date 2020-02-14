@@ -40,6 +40,13 @@ public class GlobalExceptionController {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(Throwable.class)
+    public ResponseEntity<ObjectNode> handleAnyException(Exception ex) {
+        ObjectNode error = getJsonError(ex, "UnknownException");
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
     private ObjectNode getJsonError(Exception ex, String exception) {
         ObjectNode error = JsonNodeFactory.instance.objectNode();
         error.put("message", ex.getMessage());

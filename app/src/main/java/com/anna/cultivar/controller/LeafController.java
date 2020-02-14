@@ -30,7 +30,7 @@ public class LeafController {
 	private LeafService leafService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public LeafPage exemplarsList(LeafSearchParams searchParams, @NotNull final Pageable pageable) {
+	public LeafPage leavesList(LeafSearchParams searchParams, @NotNull final Pageable pageable) {
 		return leafService.getList(pageable, searchParams);
 	}
 
@@ -60,7 +60,7 @@ public class LeafController {
 	// Event types
 
 	@RequestMapping(value = {"/{leafId}/history/events"}, method = RequestMethod.POST)
-	public List<String> getAllowedEvents(@RequestBody @NotNull AllowedEventsRequest request, @PathVariable("leafId") Long leafId) {
+	public List<String> getAllowedEvents(@RequestBody @Valid @NotNull AllowedEventsRequest request, @PathVariable("leafId") Long leafId) {
 		return leafService.getAllowedEvents(leafId, request).stream()
 				.map(enumValue -> enumValue.name())
 				.collect(Collectors.toList());

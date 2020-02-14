@@ -12,7 +12,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class CreateLeafRequest {
-	//todo: check this to be mandatory as phono saved to null path
+	//todo: check this to be mandatory as photo saved to null path
 	@NotNull
 	private VarietyBaseDto variety;
 	private LocalDate date;

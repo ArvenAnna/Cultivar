@@ -35,6 +35,10 @@ const routes = {
     GET_LEAF: (leaf) => `${httpPrefix}/leaves/${leaf}`,
     POST_CREATE_LEAF: httpPrefix + '/leaves',
     DELETE_LEAF_ITEM: (leaf, id) => `${httpPrefix}/leaves/${leaf}/history/${id}`,
+
+    POST_CREATE_LEAF_HISTORY_ITEM: (leaf) => `${httpPrefix}/leaves/${leaf}/history`,
+
+    GET_LEAF_EVENTS: (leaf) => `${httpPrefix}/leaves/${leaf}/history/events`,
 };
 
 export const getImageSmallCopy = (imgPath) => {

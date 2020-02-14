@@ -138,6 +138,7 @@ public class LeafServiceImpl implements LeafService {
 		leafRepository.saveAndFlush(leaf);
 	}
 
+	@Transactional
 	@Override
 	public LeafPage getList(Pageable pageable, LeafSearchParams searchParams) {
 		Page<Leaf> page = leafRepository.findAll(new LeafSpecification(searchParams), pageable);
