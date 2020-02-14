@@ -7,6 +7,7 @@ const EDIT_VARIETY_ID = 3;
 const EXEMPLARS_ID = 4;
 const NEW_EXEMPLAR_ID = 5;
 const EDIT_EXEMPLAR_ID = 6;
+const LEAVES_ID = 7;
 
 class Header extends Model {
 
@@ -35,6 +36,9 @@ class Header extends Model {
             },
             NEW_EXEMPLAR: { trans: () => mTranslations.getTranslation('exemplars.new_exemplar'), id: NEW_EXEMPLAR_ID, linkFn: () => '/exemplar', active: true },
             EDIT_EXEMPLAR: { trans: () => mTranslations.getTranslation('exemplars.edit_exemplar'), id: EDIT_EXEMPLAR_ID, linkFn: (id) => `/exemplar/${id}/edit`, active: false},
+            LEAVES: {
+                trans: () => mTranslations.getTranslation('leaves.leaves'), id: LEAVES_ID, linkFn: () => '/leaves', active: true
+            },
             // MENU: {trans: () => mTranslations.getTranslation('common.menu'), id: MENU_ID, linkFn: () => `/menu`, active: true}
         };
 
@@ -68,6 +72,7 @@ class Header extends Model {
         this.$menu.NEW_VARIETY.to = this.$menu.NEW_VARIETY.linkFn();
         this.$menu.EXEMPLARS.to = this.$menu.EXEMPLARS.linkFn();
         this.$menu.NEW_EXEMPLAR.to = this.$menu.NEW_EXEMPLAR.linkFn();
+        this.$menu.LEAVES.to = this.$menu.LEAVES.linkFn();
         // this.$menu.MENU.to = this.$menu.MENU.linkFn();
         await this._setTranslations();
     }

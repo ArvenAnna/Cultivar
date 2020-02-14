@@ -17,6 +17,9 @@ import './views/create-exemplar/edit-exemplar-page-renderer';
 
 import './views/edit-history/edit-history-page-renderer';
 
+import './views/leaves/leaves-page-renderer';
+import './views/leaf/leaf-page-renderer';
+
 import './app-header';
 // import './app-sidebar';
 // import './recipe-search';
@@ -92,7 +95,10 @@ const template = `
             <app-route path="/exemplar" component="create-exemplar-page-renderer"></app-route>
             
             <app-route path="/exemplar/:id/hi/:hiId/edit" component="edit-history-page-renderer"></app-route>
-
+            
+            <app-route path="/leaves" component="leaves-page-renderer"></app-route>
+            <app-route path="/leaves/:id" component="leaf-page-renderer"></app-route>
+            
         </div>
         <div id="${SIDE}">
             <!--<app-sidebar></app-sidebar>-->

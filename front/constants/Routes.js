@@ -29,7 +29,12 @@ const routes = {
     POST_CREATE_HISTORY_ITEM: (exemplar) => `${httpPrefix}/exemplars/${exemplar}/history`,
     DELETE_HISTORY_ITEM: (exemplar, id) => `${httpPrefix}/exemplars/${exemplar}/history/${id}`,
 
-    GET_EVENTS: (exemplar) => `${httpPrefix}/exemplars/${exemplar}/history/events`
+    GET_EVENTS: (exemplar) => `${httpPrefix}/exemplars/${exemplar}/history/events`,
+
+    SEARCH_LEAVES_PAGEABLE: (searchUrl) => `${httpPrefix}/leaves${searchUrl}`,
+    GET_LEAF: (leaf) => `${httpPrefix}/leaves/${leaf}`,
+    POST_CREATE_LEAF: httpPrefix + '/leaves',
+    DELETE_LEAF_ITEM: (leaf, id) => `${httpPrefix}/leaves/${leaf}/history/${id}`,
 };
 
 export const getImageSmallCopy = (imgPath) => {

@@ -31,4 +31,6 @@ c. add history item section with separate button + update every history item
 10. Write Leaf entity infractructure
 11. check the allowed events logic on history editing
 
+12. Filter on list by event type "DISAPPEARED"
+
 seems, full photo is not saved, only small

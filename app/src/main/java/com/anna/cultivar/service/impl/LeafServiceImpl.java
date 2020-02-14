@@ -15,19 +15,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.anna.cultivar.dto.AllowedEventsRequest;
 import com.anna.cultivar.dto.CreateLeafRequest;
+import com.anna.cultivar.dto.ExemplarDto;
+import com.anna.cultivar.dto.ExemplarPage;
 import com.anna.cultivar.dto.LeafDto;
 import com.anna.cultivar.dto.LeafHistoryDto;
+import com.anna.cultivar.dto.LeafPage;
+import com.anna.cultivar.dto.LeafSearchParams;
+import com.anna.cultivar.entity.Exemplar;
 import com.anna.cultivar.entity.Leaf;
 import com.anna.cultivar.entity.LeafHistory;
+import com.anna.cultivar.repository.ExemplarSpecification;
 import com.anna.cultivar.repository.LeafHistoryRepository;
 import com.anna.cultivar.repository.LeafRepository;
+import com.anna.cultivar.repository.LeafSpecification;
 import com.anna.cultivar.service.ExemplarTransitionService;
 import com.anna.cultivar.service.LeafService;
 
@@ -128,6 +138,23 @@ public class LeafServiceImpl implements LeafService {
 		leafRepository.saveAndFlush(leaf);
 	}
 
+	@Override
+	public LeafPage getList(Pageable pageable, LeafSearchParams searchParams) {
+		Page<Leaf> page = leafRepository.findAll(new LeafSpecification(searchParams), pageable);
+		return LeafPage.builder()
+				.leaves(convert(page.getContent()))
+				.totalElements(page.getTotalElements())
+				.totalPages(page.getTotalPages())
+				.currentPage(page.getNumber())
+				.pageSize(page.getSize())
+				.build();
+	}
+
+	private List<LeafDto> convert(List<Leaf> entities) {
+		return entities.stream()
+				.map(LeafDto::of).collect(Collectors.toList());
+	}
+
 	private void validateEventType(LeafHistoryDto dto, Leaf leaf) {
 		List<LeafHistory.LeafEvent> allowedEvents = eventsMapping.get(leaf.getHistory().stream()
 				.sorted(Comparator.comparing(LeafHistory::getDate).reversed())
@@ -145,6 +172,6 @@ public class LeafServiceImpl implements LeafService {
 	}
 
 	private String saveFile(String photo, Leaf entity) {
-		return fileService.saveLeafFile(photo, entity.getId().toString());
+		return fileService.saveLeafFile(photo, entity.getVariety().getName());
 	}
 }

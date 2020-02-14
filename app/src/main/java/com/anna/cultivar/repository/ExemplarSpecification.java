@@ -16,7 +16,6 @@ import com.anna.cultivar.entity.Exemplar;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-
 public class ExemplarSpecification implements Specification<Exemplar> {
 
 	private ExemplarSearchParams searchParams;
