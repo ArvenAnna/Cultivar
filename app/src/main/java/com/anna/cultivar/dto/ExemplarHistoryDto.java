@@ -8,11 +8,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import javax.validation.constraints.NotNull;
+
 @AllArgsConstructor
 @Getter
 @Builder
 public class ExemplarHistoryDto {
 	private Long id;
+	@NotNull(message = "Event type should be defined")
 	private ExemplarHistory.ExemplarEvent eventType;
 	private Integer eventNumber;
 	private LocalDate date;

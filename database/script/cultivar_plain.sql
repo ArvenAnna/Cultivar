@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.15
--- Dumped by pg_dump version 9.6.15
+-- Dumped from database version 9.6.12
+-- Dumped by pg_dump version 9.6.12
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -12,7 +12,6 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
-SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
@@ -81,7 +80,8 @@ CREATE TABLE public.exemplars (
     variety_id integer,
     parent integer,
     is_sport boolean,
-    name character varying(1000)
+    name character varying(1000),
+    parent_leaf integer
 );
 
 
@@ -198,7 +198,7 @@ ALTER SEQUENCE public.leaf_history_id_seq OWNED BY public.leaf_history.id;
 
 CREATE TABLE public.leaves (
     id integer NOT NULL,
-    parent integer NOT NULL,
+    parent integer,
     variety_id integer
 );
 
@@ -375,6 +375,19 @@ ALTER TABLE ONLY public.variety_details ALTER COLUMN id SET DEFAULT nextval('pub
 --
 
 COPY public.exemplar_history (id, description, exemplar_id, event_type, event_date, photo, event_number) FROM stdin;
+1	Leaf separation exemplar description	1	APPEARANCE	\N	\N	\N
+2		1	FIRST_BUDS	2019-10-25 00:00:00	exemplars/Н-Радость/Н-Радость03367578-55d2-4445-a87f-dc9b61be286a.jpg	\N
+3		1	GROW	2019-11-03 00:00:00	exemplars/Н-Радость/Н-Радостьf8b33f4a-b260-4789-9c42-5fd37d93391f.jpg	\N
+4		1	BLOSSOM_START	2019-11-09 00:00:00	exemplars/Н-Радость/Н-Радость62d8aab4-3ee8-4c27-983f-8e06b5afd6c3.jpg	\N
+5	Еле видны незначительные вкрапления фэнтези	1	GROW	2019-11-11 00:00:00	exemplars/Н-Радость/Н-Радость62666eea-ac0d-435c-bf13-f7f88fcb114c.jpg	\N
+6		1	GROW	2019-11-17 00:00:00	exemplars/Н-Радость/Н-Радость9b7bc209-f910-48b8-8e34-2201e344c6f7.jpg	\N
+7		1	GROW	2019-11-28 00:00:00	exemplars/Н-Радость/Н-Радость89493f16-5d56-4e45-9c0e-d2295562b162.jpg	\N
+8		1	BLOSSOM_END	2019-12-07 00:00:00	exemplars/Н-Радость/Н-Радостьbb6bc81a-95b9-4786-b21b-2fd02c12e344.jpg	\N
+9		1	BLOSSOM_START	2019-01-01 00:00:00	exemplars/Н-Радость/Н-Радостьcfec6ee5-672f-48cf-906d-f894c012b297.JPG	\N
+10		1	GROW	2020-01-16 00:00:00	exemplars/Н-Радость/Н-Радостьf0d2aab7-46bd-4f8b-a03f-0cfd6e99501d.JPG	\N
+11		1	BLOSSOM_END	2020-02-04 00:00:00	exemplars/Н-Радость/Н-Радость0319ea89-75b7-4e19-8928-d76ff1d38ce8.JPG	\N
+12	Leaf separation exemplar description	2	APPEARANCE	\N	\N	\N
+13		2	BLOSSOM_START	2020-02-15 00:00:00	exemplars/Н-Радость/Н-Радость1d938fb9-e526-4471-a549-2d46c3a93410.JPG	\N
 \.
 
 
@@ -382,14 +395,16 @@ COPY public.exemplar_history (id, description, exemplar_id, event_type, event_da
 -- Name: exemplar_history_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.exemplar_history_id_seq', 1, false);
+SELECT pg_catalog.setval('public.exemplar_history_id_seq', 13, true);
 
 
 --
 -- Data for Name: exemplars; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.exemplars (id, variety_id, parent, is_sport, name) FROM stdin;
+COPY public.exemplars (id, variety_id, parent, is_sport, name, parent_leaf) FROM stdin;
+1	3	\N	f	Leaf separation exemplar	1
+2	3	\N	f	Leaf separation exemplar	1
 \.
 
 
@@ -397,7 +412,7 @@ COPY public.exemplars (id, variety_id, parent, is_sport, name) FROM stdin;
 -- Name: exemplars_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.exemplars_id_seq', 1, false);
+SELECT pg_catalog.setval('public.exemplars_id_seq', 2, true);
 
 
 --
@@ -406,6 +421,7 @@ SELECT pg_catalog.setval('public.exemplars_id_seq', 1, false);
 
 COPY public.hybridisators (id, name) FROM stdin;
 1	Елена Лебецкая
+2	Надежда Бердникова
 \.
 
 
@@ -413,7 +429,7 @@ COPY public.hybridisators (id, name) FROM stdin;
 -- Name: hybridisators_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.hybridisators_id_seq', 1, true);
+SELECT pg_catalog.setval('public.hybridisators_id_seq', 2, true);
 
 
 --
@@ -421,6 +437,12 @@ SELECT pg_catalog.setval('public.hybridisators_id_seq', 1, true);
 --
 
 COPY public.leaf_history (id, leaf_id, description, event_type, event_date, photo) FROM stdin;
+1	1	Получила в результате обмена лист	APPEARANCE	\N	\N
+2	1	Второй лист погиб, этот был слабый	FIRST_LEAF	2019-07-13 00:00:00	leaves/Н-Радость/Н-Радостьd63634e2-3fd7-4f80-99cd-22e791f1188a.jpg
+3	1	Пестролистным был изначально	GROW	2019-08-08 00:00:00	leaves/Н-Радость/Н-Радость9530ad5a-480c-415a-a45a-fd6a1bbd4962.jpg
+4	1	Сначала отсадила одну детку	SEPARATE_FROM_LEAF	\N	\N
+5	1	Затем вторую	SEPARATE_FROM_LEAF	\N	\N
+6	1	Лист погиб	DISAPPEARANCE	\N	\N
 \.
 
 
@@ -428,7 +450,7 @@ COPY public.leaf_history (id, leaf_id, description, event_type, event_date, phot
 -- Name: leaf_history_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.leaf_history_id_seq', 1, false);
+SELECT pg_catalog.setval('public.leaf_history_id_seq', 6, true);
 
 
 --
@@ -436,6 +458,7 @@ SELECT pg_catalog.setval('public.leaf_history_id_seq', 1, false);
 --
 
 COPY public.leaves (id, parent, variety_id) FROM stdin;
+1	\N	3
 \.
 
 
@@ -443,7 +466,7 @@ COPY public.leaves (id, parent, variety_id) FROM stdin;
 -- Name: leaves_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.leaves_id_seq', 1, false);
+SELECT pg_catalog.setval('public.leaves_id_seq', 1, true);
 
 
 --
@@ -453,6 +476,7 @@ SELECT pg_catalog.setval('public.leaves_id_seq', 1, false);
 COPY public.varieties (id, name, author, description, variety_type, hybridisation_date, sport_of) FROM stdin;
 1	ЛЕ-Иллюзия	1	Белая с яркими пурпурно-темно-фиолетовыми мазками полумахровая анютка. Пестролистник.	MINIATURE	2019-12-18 00:00:00	\N
 2	ЛЕ-Голубой Лютик	1	 Плотные махровые цветы-кочанчики нежно голубово цвета с зелеными краями лепестков. Ровная розетка из темных слегка удлиненных листьев. Полумини.	SEMIMINI	2019-12-18 00:00:00	\N
+3	Н-Радость	2		SEMIMINI	\N	\N
 \.
 
 
@@ -460,7 +484,7 @@ COPY public.varieties (id, name, author, description, variety_type, hybridisatio
 -- Name: varieties_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.varieties_id_seq', 2, true);
+SELECT pg_catalog.setval('public.varieties_id_seq', 3, true);
 
 
 --
@@ -597,6 +621,14 @@ ALTER TABLE ONLY public.exemplar_history
 
 ALTER TABLE ONLY public.exemplars
     ADD CONSTRAINT exemplars_exemplars_id_fk FOREIGN KEY (parent) REFERENCES public.exemplars(id);
+
+
+--
+-- Name: exemplars exemplars_leaves_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.exemplars
+    ADD CONSTRAINT exemplars_leaves_id_fk FOREIGN KEY (parent_leaf) REFERENCES public.leaves(id);
 
 
 --

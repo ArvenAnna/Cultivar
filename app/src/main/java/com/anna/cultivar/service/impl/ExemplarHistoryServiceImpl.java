@@ -60,7 +60,8 @@ public class ExemplarHistoryServiceImpl implements ExemplarHistoryService {
 		eventsMapping.put(DISAPPEARANCE,
 				Collections.emptyList());
 		eventsMapping.put(null,
-				Collections.emptyList());
+				Arrays.asList(SEPARATE_FROM_LEAF, FIRST_BUDS, BLOSSOM_START, BLOSSOM_END, LEAF_SEPARATED, STEAM_SEPARATED, GROW, HEAD_CUT,
+						DISAPPEARANCE));
 
 	}
 
@@ -102,6 +103,7 @@ public class ExemplarHistoryServiceImpl implements ExemplarHistoryService {
 	public List<ExemplarHistory.ExemplarEvent> getAllowedEvents(Long exemplarId, AllowedEventsRequest request) {
 		Exemplar exemplar = exemplarRepository.getOne(exemplarId);
 		return eventsMapping.get(exemplar.getHistory().stream()
+				.filter(hi -> hi.getDate() != null)
 				.sorted(Comparator.comparing(ExemplarHistory::getDate).reversed())
 				.filter(hi -> request.getDate() != null ? (request.getDate().compareTo(hi.getDate()) > 0) : true)
 				.map(ExemplarHistory::getEventType)
@@ -111,6 +113,7 @@ public class ExemplarHistoryServiceImpl implements ExemplarHistoryService {
 
 	private void validateEventType(ExemplarHistoryDto dto, Exemplar exemplar) {
 		List<ExemplarHistory.ExemplarEvent> allowedEvents = eventsMapping.get(exemplar.getHistory().stream()
+				.filter(hi -> hi.getDate() != null)
 				.sorted(Comparator.comparing(ExemplarHistory::getDate).reversed())
 				.filter(hi -> dto.getDate() != null ? (dto.getDate().compareTo(hi.getDate()) > 0) : true)
 				.map(ExemplarHistory::getEventType)

@@ -47,6 +47,10 @@ public class Exemplar {
 	@JoinColumn(name = "parent")
 	private Exemplar parent;
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "parent_leaf")
+	private Leaf parentLeaf;
+
 	@Column(name = "is_sport")
 	private boolean isSport;
 

@@ -178,7 +178,7 @@ class LeavesPage extends WebElement {
                 template.byClass(NAME).textContent = item.variety.name;
 
                 template.byTag('router-link').onConstruct = (link) => {
-                    link.path = `/leaf/${item.id}`
+                    link.path = `/leaves/${item.id}`
                 }
 
                 this.$_id(CONTENT).appendChild(template);

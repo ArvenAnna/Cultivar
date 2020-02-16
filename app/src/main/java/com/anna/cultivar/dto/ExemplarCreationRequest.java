@@ -16,5 +16,6 @@ public class ExemplarCreationRequest {
 	private String description;
 	private String photo;
 	private ExemplarDto parent;
+	private LeafDto parentLeaf;
 	private boolean sport;
 }

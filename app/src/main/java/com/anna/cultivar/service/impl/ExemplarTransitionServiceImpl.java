@@ -58,6 +58,7 @@ public class ExemplarTransitionServiceImpl implements ExemplarTransitionService 
 				.date(date)
 				.name("Leaf separation exemplar")
 				.description("Leaf separation exemplar description")
+				.parentLeaf(parentLeaf)
 				.parent(parentLeaf.getParent() != null ? parentLeaf.getParent() : null)
 				.sport(parentLeaf.getParent() != null ? parentLeaf.getParent().isSport() : false)
 				.variety(parentLeaf.getVariety())

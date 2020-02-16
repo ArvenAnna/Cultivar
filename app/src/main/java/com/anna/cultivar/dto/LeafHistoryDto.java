@@ -17,7 +17,6 @@ public class LeafHistoryDto {
 	private Long id;
 	@NotNull(message = "Event type should be defined")
 	private LeafHistory.LeafEvent eventType;
-	@NotNull(message = "Date should be present")
 	private LocalDate date;
 	private String description;
 	private String photo;

@@ -3,6 +3,8 @@ package com.anna.cultivar.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.anna.cultivar.entity.Leaf;
+import com.anna.cultivar.repository.LeafRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +28,8 @@ public class ExemplarServiceImpl implements ExemplarService {
 
 	@Autowired
 	private ExemplarRepository exemplarRepository;
+	@Autowired
+	private LeafRepository leafRepository;
 	@Autowired
 	private FileServiceImpl fileService;
 
@@ -54,8 +58,13 @@ public class ExemplarServiceImpl implements ExemplarService {
 	@Override
 	public ExemplarDto save(ExemplarCreationRequest dto) {
 		Exemplar entity = Exemplar.of(dto);
+		if (dto.getParentLeaf() != null) {
+			Leaf leaf = leafRepository.getOne(dto.getParentLeaf().getId());
+			entity.setParentLeaf(leaf);
+		}
 		ExemplarHistory history = ExemplarHistory.of(dto);
 		history.setExemplar(entity);
+		
 		entity.getHistory().add(history);
 
 		saveAllFiles(entity);

@@ -57,10 +57,12 @@ public class LeafServiceImpl implements LeafService {
 				Arrays.asList(SEPARATE_FROM_LEAF, GROW, DISAPPEARANCE));
 		eventsMapping.put(SEPARATE_FROM_LEAF,
 				Arrays.asList(FIRST_LEAF, SEPARATE_FROM_LEAF, GROW, DISAPPEARANCE));
+		eventsMapping.put(GROW,
+				Arrays.asList(LEAF_ROOTS, PLANTING_GROUND, FIRST_LEAF, SEPARATE_FROM_LEAF, GROW, DISAPPEARANCE));
 		eventsMapping.put(DISAPPEARANCE,
 				Collections.emptyList());
 		eventsMapping.put(null,
-				Collections.emptyList());
+				Arrays.asList(LEAF_ROOTS, PLANTING_GROUND, FIRST_LEAF, SEPARATE_FROM_LEAF, GROW, DISAPPEARANCE));
 
 	}
 
@@ -100,6 +102,7 @@ public class LeafServiceImpl implements LeafService {
 	public List<LeafHistory.LeafEvent> getAllowedEvents(Long leafId, AllowedEventsRequest request) {
 		Leaf leaf = leafRepository.getOne(leafId);
 		return eventsMapping.get(leaf.getHistory().stream()
+				.filter(hi -> hi.getDate() != null)
 				.sorted(Comparator.comparing(LeafHistory::getDate).reversed())
 				.filter(hi -> request.getDate() != null ? (request.getDate().compareTo(hi.getDate()) > 0) : true)
 				.map(LeafHistory::getEventType)
@@ -158,6 +161,7 @@ public class LeafServiceImpl implements LeafService {
 
 	private void validateEventType(LeafHistoryDto dto, Leaf leaf) {
 		List<LeafHistory.LeafEvent> allowedEvents = eventsMapping.get(leaf.getHistory().stream()
+				.filter(hi -> hi.getDate() != null)
 				.sorted(Comparator.comparing(LeafHistory::getDate).reversed())
 				.filter(hi -> dto.getDate() != null ? (dto.getDate().compareTo(hi.getDate()) > 0) : true)
 				.map(LeafHistory::getEventType)
