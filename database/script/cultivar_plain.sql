@@ -476,7 +476,9 @@ SELECT pg_catalog.setval('public.leaves_id_seq', 1, true);
 COPY public.varieties (id, name, author, description, variety_type, hybridisation_date, sport_of) FROM stdin;
 1	ЛЕ-Иллюзия	1	Белая с яркими пурпурно-темно-фиолетовыми мазками полумахровая анютка. Пестролистник.	MINIATURE	2019-12-18 00:00:00	\N
 2	ЛЕ-Голубой Лютик	1	 Плотные махровые цветы-кочанчики нежно голубово цвета с зелеными краями лепестков. Ровная розетка из темных слегка удлиненных листьев. Полумини.	SEMIMINI	2019-12-18 00:00:00	\N
-3	Н-Радость	2		SEMIMINI	\N	\N
+3	Н-Радость	2	Крупные полумахровые кремовые цветы с зеленоватыми внешними лепестками, переходящими в широкую тающую кайму, и украшенные мелким крапом темно-вишневого фэнтези. Темно-зеленая стеганая листва с бело-розовой окаймляющей пестролистностью. Полуминиатюра.	SEMIMINI	\N	\N
+4	ЛЕ-Голубой Поток	1	Крупные махровые чашевидные голубые с зеленой изнанкой цветы. Очень обильное бесконечное цветение. Полумини трейлер. 	SEMIMINI	\N	\N
+5	ЛЕ-Кудрявый хмель	1	Обильные махровые чашевидные голубые с зеленой изнанкой-цветы с подвернутыми внутрь лепестками. Очень обильное  бесконечное цветение. Полумини трейлер.	SEMIMINI	\N	\N
 \.
 
 
@@ -484,7 +486,7 @@ COPY public.varieties (id, name, author, description, variety_type, hybridisatio
 -- Name: varieties_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.varieties_id_seq', 3, true);
+SELECT pg_catalog.setval('public.varieties_id_seq', 5, true);
 
 
 --
@@ -492,6 +494,12 @@ SELECT pg_catalog.setval('public.varieties_id_seq', 3, true);
 --
 
 COPY public.variety_details (id, photo, description, variety_id, detail_order) FROM stdin;
+3	varieties/Н-Радость/Н-Радость295ddf9d-db79-4cdb-8a5b-1cccb5ad5a43.jpg	\N	3	1
+4	varieties/ЛЕ-Голубой Поток/ЛЕ-Голубой Поток5f3ed29b-9f74-4d54-b29a-a2589d925a48.jpg	Фото селекционера	4	1
+5	varieties/ЛЕ-Кудрявый хмель/ЛЕ-Кудрявый хмельc1868504-d9ea-421a-aa3d-829e3e76d66a.jpg	Фото селекционера	5	1
+6	varieties/ЛЕ-Голубой Лютик/ЛЕ-Голубой Лютик0f929ff1-6bb4-4648-899e-1c421a40ebc4.jpg	Фото селекционера	2	1
+2	varieties/ЛЕ-Голубой Лютик/ЛЕ-Голубой Лютикa179d0f6-34ff-458f-ad09-f37e321cdb60.jpg		2	2
+1	varieties/ЛЕ-Иллюзия/ЛЕ-Иллюзия73675842-bd34-4a97-955d-09b005a69d93.jpg	Фото селекционера	1	1
 \.
 
 
@@ -499,7 +507,7 @@ COPY public.variety_details (id, photo, description, variety_id, detail_order) F
 -- Name: variety_details_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.variety_details_id_seq', 1, false);
+SELECT pg_catalog.setval('public.variety_details_id_seq', 6, true);
 
 
 --

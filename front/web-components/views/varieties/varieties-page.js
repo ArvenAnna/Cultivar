@@ -32,9 +32,9 @@ const template = `
     
     .${ITEM} {
         display: flex;
-        /*flex-direction: column;*/
-        /*align-items: center;*/
-        /*justify-content: flex-start;*/
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
         /*max-width: 200px;*/
         /*min-width: 80%;*/
         /*cursor: pointer;*/
@@ -96,9 +96,9 @@ class VarietiesPage extends WebElement {
 
                 template.byClass(NAME).textContent = item.name;
 
-                // if (recipe.imgPath) {
-                //     template.byClass(RECIPE_PHOTO).src =  recipe.imgPath;
-                // }
+                if (item.imgPath) {
+                    template.byClass(PHOTO).src =  item.imgPath;
+                }
 
                 template.byTag('router-link').onConstruct = (link) => {
                     link.path = `/variety/${item.id}`

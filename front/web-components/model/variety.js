@@ -41,7 +41,7 @@ export class Variety extends Model {
     }
 
     get hybridisationDate() {
-        return this._variety.hybridisationDate && this._variety.hybridisationDate.getFullYear();
+        return this._variety.hybridisationDate && new Date(this._variety.hybridisationDate).getFullYear();
     }
 
     // get refs() {

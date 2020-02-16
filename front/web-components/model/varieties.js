@@ -22,8 +22,8 @@ class Varieties extends Model {
             id: item.id,
             name: item.name,
             author: item.author,
-            description: item.description
-            // imgPath: getImageSmallCopy(item.imgPath && routes.IMAGE_CATALOG + item.imgPath),
+            description: item.description,
+            imgPath: item.details && item.details.length && item.details[0].photo && getImageSmallCopy(item.details[0].photo && routes.IMAGE_CATALOG + item.details[0].photo),
             // imgPathFull: item.imgPath && routes.IMAGE_CATALOG + item.imgPath
         }))
     }
