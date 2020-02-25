@@ -19,7 +19,7 @@ To start application you need:
 -----------------------------------------------------------------
 TODO:
 
-2. Implement datepicker
+2. Implement datepicker (input date range)
 4. Add Russian translations
 
 8. When date is changed inside new-event element - do fetch new events
@@ -27,5 +27,7 @@ TODO:
 
 12. Filter on list by event type "DISAPPEARED"
 13. Remove constraint on leaf parent
+
+14. Add extension about authors
 
 seems, full photo is not saved, only small

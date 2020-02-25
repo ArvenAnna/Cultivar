@@ -13,6 +13,7 @@ const template = `
        width: var(--control-width, 10rem);
        border-radius: var(--theme-border-radius);
        box-sizing: border-box;
+       padding: 0.3rem;
     }
     
     #${BUTTON}:hover {

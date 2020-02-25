@@ -1,18 +1,25 @@
 import WebElement from '../../abstract/web-element';
+import '../../components/page-list'
+import '../../components/image/image-with-text';
+
 import { noImage } from '../../../constants/themes';
-import {t} from '../../utils/translateUtils';
-import '../../components/page-list';
+import { t } from '../../utils/translateUtils';
+
 import mSearch from '../../model/search';
 import mVarieties from '../../model/varieties';
 
-const CONTAINER = 'page-container';
+// ID
+const CONTAINER = 'varieties-page-container';
+const CONTENT = 'varieties-page-content';
+const CAPTION = 'varieties-page-caption';
+
+// TEMPLATE
 const ITEM_TEMPLATE = 'item-template';
 const ITEM = 'item';
-const NAME = 'name';
-const PHOTO = 'photo';
-const CONTENT = 'content';
 
+// COMPONENTS
 const PAGE_COMPONENT = 'page-list';
+const IMAGE_COMPONENT = 'image-with-text';
 
 const template = `
   <style>
@@ -20,51 +27,33 @@ const template = `
         padding: 1rem;
     }
     
+    #${CAPTION} {
+        text-align: center;
+        font-size: var(--header-font-size);
+        padding-bottom: 1rem;
+    }
+    
     #${CONTENT} {
         display: flex;
-        justify-content: center;
-       /*display: grid;*/
-       /*grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));*/
-       /*justify-items: center;*/
-       /*align-content: center;*/
-       /*height: 100%;*/
+        flex-wrap: wrap;
+        justify-content: space-around;
     }
     
     .${ITEM} {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        /*max-width: 200px;*/
-        /*min-width: 80%;*/
-        /*cursor: pointer;*/
+        cursor: pointer;
     }
-    
-    .${NAME} {
-          /*text-align: center;*/
-          padding: 5px;
-          font-size: medium;
-          font-weight: 600;
-    }
-    
-    .${PHOTO} {
-        width: 100%;
-        height: 200px;
-        object-fit: contain;
-    }
-    
   </style>
   
   <template id='${ITEM_TEMPLATE}'>
       <router-link>
          <div class='${ITEM}'>
-            <img src='${noImage}' class='${PHOTO}'/>
-            <div class='${NAME}'></div>
+            <${IMAGE_COMPONENT}></${IMAGE_COMPONENT}>
          </div>
       </router-link>    
   </template>
   
   <div id='${CONTAINER}'>
+    <div id='${CAPTION}'>${t('varieties.varieties')}</div>
     <div id='${CONTENT}'></div>
     <${PAGE_COMPONENT}></${PAGE_COMPONENT}>
   </div>
@@ -81,8 +70,6 @@ class VarietiesPage extends WebElement {
         super(template, true);
 
         this._renderPage = this._renderPage.bind(this);
-
-        this._renderPage();
     }
 
     _renderPage() {
@@ -94,10 +81,12 @@ class VarietiesPage extends WebElement {
 
                 const template = this.getTemplateById(ITEM_TEMPLATE);
 
-                template.byClass(NAME).textContent = item.name;
-
-                if (item.imgPath) {
-                    template.byClass(PHOTO).src =  item.imgPath;
+                template.byTag(IMAGE_COMPONENT).onConstruct = (comp) => {
+                    comp.props = {
+                        brokenImageSrc: noImage,
+                        src: item.imgPath,
+                        text: item.name
+                    }
                 }
 
                 template.byTag('router-link').onConstruct = (link) => {

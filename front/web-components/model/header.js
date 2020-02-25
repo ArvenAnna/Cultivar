@@ -15,7 +15,6 @@ class Header extends Model {
         return Object.values(this.$menu).filter(button => button.active).map(button => ({
             name: button.name,
             to: button.to,
-            // count: button.id == MENU_ID ? this.$recipeInMenu : null
         }));
     }
 
@@ -39,7 +38,6 @@ class Header extends Model {
             LEAVES: {
                 trans: () => mTranslations.getTranslation('leaves.leaves'), id: LEAVES_ID, linkFn: () => '/leaves', active: true
             },
-            // MENU: {trans: () => mTranslations.getTranslation('common.menu'), id: MENU_ID, linkFn: () => `/menu`, active: true}
         };
 
         this.addVarietyEditButton = this.addVarietyEditButton.bind(this);
@@ -48,9 +46,6 @@ class Header extends Model {
         this.removeExemplarEditButton = this.removeExemplarEditButton.bind(this);
         this._initButtons = this._initButtons.bind(this);
         this._setTranslations = this._setTranslations.bind(this);
-
-        // this.addRecipeToMenu = this.addRecipeToMenu.bind(this);
-        // this.removeRecipeFromMenu = this.removeRecipeFromMenu.bind(this);
 
         mTranslations.addSubscriber(this._setTranslations);
 
@@ -73,7 +68,6 @@ class Header extends Model {
         this.$menu.EXEMPLARS.to = this.$menu.EXEMPLARS.linkFn();
         this.$menu.NEW_EXEMPLAR.to = this.$menu.NEW_EXEMPLAR.linkFn();
         this.$menu.LEAVES.to = this.$menu.LEAVES.linkFn();
-        // this.$menu.MENU.to = this.$menu.MENU.linkFn();
         await this._setTranslations();
     }
 
@@ -103,15 +97,6 @@ class Header extends Model {
         mTranslations.removeSubscriber(this._setTranslations);
     }
 
-    // addRecipeToMenu() {
-    //     this.$recipeInMenu++;
-    //     this.notifySubscribers();
-    // }
-    //
-    // removeRecipeFromMenu() {
-    //     this.$recipeInMenu--;
-    //     this.notifySubscribers();
-    // }
 }
 
 export default new Header();
