@@ -1,13 +1,15 @@
 import WebElement from '../../../abstract/web-element';
-
 import '../../../components/tag/removable-tag';
 import '../../../components/suggestions-chooser';
 
 import {t} from '../../../utils/translateUtils';
 import {retrieveVarietiesByKeyword} from "../../../utils/asyncRequests";
 
-const CONTAINER = 'container';
+// ID
+const CONTAINER = 'sport-of-container';
+const LABEL = 'sport-of-label';
 
+// COMPONENTS
 const SUGGESTION_INPUT_COMPONENT = 'suggestions-chooser';
 const REMOVABLE_TAG_COMPONENT = 'removable-tag';
 
@@ -15,17 +17,21 @@ const template = `
   <style>
       #${CONTAINER} {
          display: flex;
-         margin: 0.5rem;
+         margin: 1rem;
          align-items: center;
       }
       
       ${REMOVABLE_TAG_COMPONENT} {
         display: none;
       }
+      
+      #${LABEL} {
+        margin-right: 0.5rem;
+      }
   </style>
   
   <div id='${CONTAINER}'>
-       <span class='label'>${t('varieties.sport_of')}</span> 
+       <span id='${LABEL}'>${t('varieties.sport_of')}</span>
        <${SUGGESTION_INPUT_COMPONENT}></${SUGGESTION_INPUT_COMPONENT}>
        <${REMOVABLE_TAG_COMPONENT}></${REMOVABLE_TAG_COMPONENT}>
   </div>
@@ -33,11 +39,6 @@ const template = `
 `;
 
 class SportOf extends WebElement {
-
-    // set props(newItems) {
-    //     this.$types = newItems;
-    //     this._render();
-    // }
 
     set variety(newVariety) {
         this.$variety = newVariety;
@@ -80,7 +81,6 @@ class SportOf extends WebElement {
         super(template, true);
 
         this._render = this._render.bind(this);
-        // this._saveIngredient = this._saveIngredient.bind(this);
         this._retrieveVarietiesByKeyword = this._retrieveVarietiesByKeyword.bind(this);
         this._removeSportOfCallback = this._removeSportOfCallback.bind(this);
     }
@@ -96,20 +96,6 @@ class SportOf extends WebElement {
         this.$(REMOVABLE_TAG_COMPONENT).style.display = 'none';
         this.$(SUGGESTION_INPUT_COMPONENT).style.display = 'block';
     }
-
-    // _saveIngredient() {
-    //     this.$ingredient.name = this.$(INPUT_COMPONENT).value;
-    //     this.$ingredient.description = this.$(TEXT_COMPONENT).value;
-    //
-    //     // put default behavior
-    //     this.$(REMOVABLE_TAG_COMPONENT).style.display = 'none';
-    //     this.$(SUGGESTION_INPUT_COMPONENT).style.display = 'block';
-    //
-    //     this.$ingredient.save().then(id => {
-    //         this.$addIngredient();
-    //         window.location.hash = '/ingredients/' + id;
-    //     });
-    // }
 }
 
 customElements.define('sport-of', SportOf);

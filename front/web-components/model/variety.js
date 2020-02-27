@@ -1,9 +1,7 @@
 import routes, {getImageSmallCopy} from '../../constants/Routes';
 import Model from '../abstract/model';
 import {getResponse} from "../utils/httpUtils";
-import mNotification from "./notification";
 import {INTERNAL_ID_KEY} from '../../constants/common';
-import {SEVERITY_TYPES} from "../common-notification";
 
 export class Variety extends Model {
 
@@ -41,34 +39,16 @@ export class Variety extends Model {
     }
 
     get hybridisationDate() {
-        return this._variety.hybridisationDate && new Date(this._variety.hybridisationDate).getFullYear();
+        const {hybridisationDate} = this._variety;
+        // if(!hybridisationDate) return null;
+        // const dd = hybridisationDate.getDate();
+        // const mm = hybridisationDate.getMonth() + 1;
+        // const yyyy = hybridisationDate.getFullYear();
+        // const stringDate = `${yyyy}-${mm}-${dd}`;
+        // return stringDate;
+        return hybridisationDate;
     }
 
-    // get refs() {
-    //     if (!this._recipe.refs || !this._recipe.refs.length) {
-    //         return null;
-    //     }
-    //     return this._recipe.refs.map(ref => ({
-    //         ...ref
-    //     }));
-    // }
-    //
-    // get imgPath() {
-    //     return getImageSmallCopy(this._recipe.imgPath && routes.IMAGE_CATALOG + this._recipe.imgPath);
-    // }
-    //
-    // get imgPathFull() {
-    //     return this._recipe.imgPath && routes.IMAGE_CATALOG + this._recipe.imgPath;
-    // }
-    //
-    // get proportions() {
-    //     return this._recipe.proportions
-    //         && this._recipe.proportions.map(prop => ({ ...prop,
-    //             alternativeProportions: prop.alternativeProportions && prop.alternativeProportions.map(altP => ({...altP})),
-    //             alternativeRefs: prop.alternativeRefs && prop.alternativeRefs.map(altP => ({...altP}))
-    //         }));
-    // }
-    //
     get details() {
         return this._variety.details && this._variety.details.map((detail) => {
             const {photo, id, order, description} = detail;
@@ -87,19 +67,14 @@ export class Variety extends Model {
     retrieve(id) {
         fetch(routes.GET_VARIETY(id))
             .then(getResponse)
-            .then(this._setVariety)
-            .catch(e => {
-                mNotification.showMessage(e.message, SEVERITY_TYPES.ERROR);
-            });
+            .then(this._setVariety);
     }
 
     _setVariety(item) {
         this._variety = item;
         this._variety.details = this._variety.details.sort((d1,d2) => d1.order - d2.order);
         this._variety.details.forEach((d, i) => d.order = i + 1);
-        // this._recipe.proportions = this._recipe.proportions.map((p, i) => ({...p, [`${INTERNAL_ID_KEY}`]: i}));
         this._variety.details = this._variety.details.map((p, i) => ({...p, [`${INTERNAL_ID_KEY}`]: i}));
-        // this._recipe.refs = this._recipe.refs.map((p, i) => ({...p, [`${INTERNAL_ID_KEY}`]: i}));
         this.notifySubscribers();
     }
 }

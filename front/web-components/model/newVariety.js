@@ -67,16 +67,8 @@ class NewVariety extends Variety {
     }
 
     set hybridisationDate(date) {
-        this._variety.hybridisationDate = date && new Date(`${date}-01-01`);
+        this._variety.hybridisationDate = date;
     }
-
-    // set imgPath(path) {
-    //     this._recipe.imgPath = path;
-    // }
-    //
-    // get imgPath() {
-    //     return super.imgPath;
-    // }
 
     set detail (detail) {
         if (!this._variety.details) {

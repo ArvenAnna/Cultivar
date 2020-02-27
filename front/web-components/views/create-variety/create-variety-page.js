@@ -2,6 +2,7 @@ import WebElement from '../../abstract/web-element';
 import '../../styled/input-text';
 import '../../styled/text-area';
 import '../../styled/action-button';
+import '../../components/date/date-input';
 
 import './parts/author-selector';
 import './parts/type-selector';
@@ -10,14 +11,15 @@ import './parts/variety-details';
 
 import {t} from '../../utils/translateUtils';
 
-const CONTAINER = 'page-container';
+// ID
+const CONTAINER = 'create-variety-page-container';
+const CAPTION = 'create-variety-page-caption';
+const NAME_CONTAINER = 'create-variety-page-name-container';
+const NAME = 'create-variety-page-name';
+const NAME_CAPTION = 'create-variety-page-name-caption';
+const BUTTON_CONTAINER = 'create-variety-page-button-container';
 
-const NAME_CONTAINER = 'name-container';
-const NAME = 'name';
-const DATE = 'date';
-const NAME_CAPTION = 'name-caption';
-const BUTTON_CONTAINER = 'button-container';
-
+// COMPONENTS
 const DESCRIPTION_COMPONENT = 'text-area';
 const BUTTON_COMPONENT = 'action-button';
 
@@ -25,13 +27,20 @@ const DETAILS_COMPONENT = 'variety-details';
 const AUTHOR_SELECTOR_COMPONENT = 'author-selector';
 const TYPE_SELECTOR_COMPONENT = 'type-selector';
 const SPORT_OF_COMPONENT = 'sport-of';
-
+const DATE_COMPONENT = 'date-input';
 
 const template = `
   <style>
     #${CONTAINER} {
         color: var(--create-recipe-font-color);
         padding: 0 1.5rem;
+    }
+    
+    #${CAPTION} {
+        text-align: center;
+        font-size: var(--header-font-size);
+        margin: 1.5rem 0;
+        text-shadow: var(--text-shadow);
     }
     
     #${NAME_CONTAINER}{
@@ -59,6 +68,7 @@ const template = `
   </style>
   
   <div id='${CONTAINER}'>
+      <div id='${CAPTION}'>${t('varieties.edit_variety')}</div>
       <div id='${NAME_CONTAINER}'>
         <div id='${NAME_CAPTION}'>${t('varieties.variety_name')}</div>
         <input-text id='${NAME}'/>
@@ -73,7 +83,7 @@ const template = `
       
       <div id='${NAME_CONTAINER}'>
         <div id='${NAME_CAPTION}'>${t('varieties.hybridisation_date')}</div>
-        <input-text id='${DATE}'/>
+        <${DATE_COMPONENT}></${DATE_COMPONENT}>
       </div> 
       
       <${SPORT_OF_COMPONENT}></${SPORT_OF_COMPONENT}>
@@ -137,13 +147,11 @@ class CreateVarietyPage extends WebElement {
                 ? this.$types[0] : null;
         }
 
-        if (this.$variety.hybridisationDate == 'Invalid Date') {
-            alert('date or date format is not valid');
-        } else {
-            this.$variety.save().then(id => {
+        this.$variety.hybridisationDate = this.$(DATE_COMPONENT).value;
+
+        this.$variety.save().then(id => {
                 window.location.hash = '/variety/' + id;
-            });
-        }
+        });
     }
 
     _renderPage() {
@@ -156,16 +164,8 @@ class CreateVarietyPage extends WebElement {
             this.$(TYPE_SELECTOR_COMPONENT).types = this.$types;
             this.$(SPORT_OF_COMPONENT).variety = this.$variety;
             this.$(DETAILS_COMPONENT).variety = this.$variety;
-            this.$_id(DATE).value = this.$variety.hybridisationDate || '';
-
+            this.$(DATE_COMPONENT).value = this.$variety.hybridisationDate || '';
         }
-
-        // this.$(RECIPE_DEPARTMENT_COMPONENT).recipe = this.$recipe;
-        // this.$(RECIPE_DEPARTMENT_COMPONENT).departments = this.$departments;
-        // this.$(RECIPE_REFS_COMPONENT).recipe = this.$recipe;
-        // this.$(RECIPE_PROPORTIONS_COMPONENT).recipe = this.$recipe;
-        // this.$(RECIPE_MAIN_PHOTO_COMPONENT).recipe = this.$recipe;
-        // this.$(RECIPE_DETAILS_COMPONENT).recipe = this.$recipe;
     }
 
 

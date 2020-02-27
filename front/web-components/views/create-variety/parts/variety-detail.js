@@ -7,13 +7,14 @@ import '../../../styled/action-button';
 
 import routes from '../../../../constants/Routes';
 import {noImage} from '../../../../constants/themes';
-
 import mTranslations from '../../../model/translations';
 import {t} from '../../../utils/translateUtils';
 
-const CONTAINER = 'container';
-const ADD_ICON = 'add-icon';
+// ID
+const CONTAINER = 'variety-detail-container';
+const ADD_ICON = 'variety-detail-add-icon';
 
+// COMPONENTS
 const TEXT_COMPONENT = 'text-area';
 const PHOTO_UPLOAD_COMPONENT = 'photo-upload';
 const EXPANDABLE_BLOCK_COMPONENT = 'expandable-block';

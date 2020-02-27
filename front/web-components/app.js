@@ -117,3 +117,7 @@ export default class App extends WebElement {
 }
 
 customElements.define('main-app', App);
+
+window.onerror = function (message, url, line, col, error) {
+    alert(`${message}\n In ${line}:${col} on ${url}`);
+}

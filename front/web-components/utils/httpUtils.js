@@ -5,6 +5,7 @@ import {SEVERITY_TYPES} from "../common-notification";
 export const getResponse = (response) => {
     if (!response.ok) {
          return response.json().then(json => {
+             mNotification.showMessage(json.message, SEVERITY_TYPES.ERROR);
              throw new Error(json.message);
          });
     }

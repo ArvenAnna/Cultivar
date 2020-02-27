@@ -1,12 +1,13 @@
 import WebElement from '../../../abstract/web-element';
-
 import '../../../components/drop-down/drop-down';
 
 import {t} from '../../../utils/translateUtils';
 
-const CONTAINER = 'container';
-const CAPTION = 'caption';
+// ID
+const CONTAINER = 'author-selector-container';
+const CAPTION = 'author-selector-caption';
 
+// COMPONENTS
 const DROP_DOWN_COMPONENT = 'drop-down';
 
 const template = `

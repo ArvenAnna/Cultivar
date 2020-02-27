@@ -1,22 +1,21 @@
 import WebElement from '../../../abstract/web-element';
-
 import '../../../components/lists/draggable-image-list';
+
 import './variety-detail';
+
 import {noImage} from '../../../../constants/themes';
 import {t} from '../../../utils/translateUtils';
 
-const CONTAINER = 'container';
-const LIST_CONTAINER = 'list-container';
+// ID
+const CONTAINER = 'variety-details-container';
+const LIST_CONTAINER = 'variety-details-list-container';
 
+// COMPONENTS
 const LIST_COMPONENT = 'draggable-image-list';
 const DETAIL_COMPONENT = 'variety-detail';
 
 const template = `
   <style>
-      #${CONTAINER} {
-     
-      }
-      
       #${LIST_CONTAINER} {
           margin-left: 1rem;
       }
