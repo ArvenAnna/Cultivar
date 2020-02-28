@@ -1,38 +1,36 @@
 import WebElement from '../../../abstract/web-element';
-
 import '../../../components/tag/removable-tag';
 import '../../../components/suggestions-chooser';
 import '../../../components/drop-down/drop-down';
-
+import '../../../components/file-upload/photo-upload';
+import '../../../components/date/date-input';
 import '../../../styled/input-text';
 import '../../../styled/text-area';
 import '../../../styled/action-button';
 import '../../../styled/check-box';
-
-import '../../../components/file-upload/photo-upload';
 
 import {t} from '../../../utils/translateUtils';
 import {NewHistoryItem} from "../../../model/newHistoryItem";
 import routes from "../../../../constants/Routes";
 import {noImage} from "../../../../constants/themes";
 
-const CONTAINER = 'container';
+// ID
+const CONTAINER = 'new-event-container';
 const NAME_CONTAINER = 'name-container';
-const DATE = 'date';
 const NAME_CAPTION = 'name-caption';
-const BUTTON_CONTAINER = 'button-container';
+const BUTTON_CONTAINER = 'new-event-button-container';
 
+// COMPONENTS
 const DESCRIPTION_COMPONENT = 'text-area';
 const BUTTON_COMPONENT = 'action-button';
 const DROP_DOWN = 'drop-down';
-
 const UPLOAD_COMPONENT = 'photo-upload';
+const DATE_COMPONENT = 'date-input';
 
 const template = `
   <style>
     #${CONTAINER} {
         color: var(--create-recipe-font-color);
-        padding: 0 1.5rem;
     }
     
     .${NAME_CONTAINER}{
@@ -56,19 +54,23 @@ const template = `
         width: 100%;
         --textarea-height: 10rem;
     }
-    
   </style>
   
   <div id='${CONTAINER}'>
-      <div id='${NAME_CONTAINER}'>
+      <div class='${NAME_CONTAINER}'>
             <${DESCRIPTION_COMPONENT}></${DESCRIPTION_COMPONENT}>
       </div>
-      <${UPLOAD_COMPONENT}></${UPLOAD_COMPONENT}>
+      <div class="${NAME_CONTAINER}">
+          <${UPLOAD_COMPONENT}></${UPLOAD_COMPONENT}>
+      </div>
       <div class='${NAME_CONTAINER}'>
         <div class='${NAME_CAPTION}'>${t('exemplars.exemplar_date')}</div>
-        <input-text id='${DATE}'/>
+        <${DATE_COMPONENT}></${DATE_COMPONENT}>
       </div> 
-      <${DROP_DOWN}></${DROP_DOWN}>
+      <div class='${NAME_CONTAINER}'>
+         <div class='${NAME_CAPTION}'>${t('exemplars.choose_event_type')}</div>
+         <${DROP_DOWN}></${DROP_DOWN}>
+      </div>
       <div class='${BUTTON_CONTAINER}'>
             <${BUTTON_COMPONENT} text='${t('common.save')}'></${BUTTON_COMPONENT}>
       </div>
@@ -76,12 +78,6 @@ const template = `
 `;
 
 class NewEvent extends WebElement {
-
-    // set exemplar(item) {
-    //     this.$exemplar = item;
-    //     this.$historyItem = new NewHistoryItem();
-    //     this._renderPage();
-    // }
 
     set props({exemplarId, events, hi}) {
         this.$exemplarId = exemplarId;
@@ -104,16 +100,11 @@ class NewEvent extends WebElement {
 
     _save() {
         this.$historyItem.description = this.$(DESCRIPTION_COMPONENT).value;
-        this.$historyItem.date = this.$_id(DATE).value;
+        this.$historyItem.date = this.$(DATE_COMPONENT).value;
         this.$historyItem.eventType = this.$historyItem.eventType || this.$events[0];
-
-        if (this.$historyItem.date == 'Invalid Date') {
-            alert('date or date format is not valid');
-        } else {
-            this.$historyItem.save(this.$exemplarId).then(() => {
+        this.$historyItem.save(this.$exemplarId).then(() => {
                 window.location.hash = '/exemplar/' + this.$exemplarId;
-            });
-        }
+        });
     }
 
     _renderPage() {
@@ -127,7 +118,7 @@ class NewEvent extends WebElement {
                 src: this.$historyItem.photo,
                 defaultSrc: noImage
             };
-            this.$_id(DATE).value = this.$historyItem.date || '';
+            this.$(DATE_COMPONENT).value = this.$historyItem.date || '';
 
         }
         if (this.$events) {

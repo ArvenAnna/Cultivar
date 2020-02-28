@@ -6,9 +6,13 @@ import '../../../components/suggestions-chooser';
 import {t} from '../../../utils/translateUtils';
 import {retrieveExemplarsByKeyword} from "../../../utils/asyncRequests";
 
-const CONTAINER = 'container';
-const PARENT_TAG_TMPL = 'parent-tag-template';
+// ID
+const CONTAINER = 'parent-selector-container';
 
+// TEMPLATE
+const PARENT_TAG_TEMPLATE = 'parent-tag-template';
+
+// COMPONENTS
 const SUGGESTION_INPUT_COMPONENT = 'suggestions-chooser';
 const REMOVABLE_TAG_COMPONENT = 'removable-tag';
 
@@ -16,21 +20,21 @@ const template = `
   <style>
       #${CONTAINER} {
          display: flex;
-         margin: 0.5rem;
+         margin: 1rem;
          align-items: center;
       }
       
-      // ${REMOVABLE_TAG_COMPONENT} {
-      //   display: none;
-      // }
+      .label {
+        margin-right: 0.5rem;
+      }
   </style>
   
-  <template id='${PARENT_TAG_TMPL}'>
+  <template id='${PARENT_TAG_TEMPLATE}'>
      <${REMOVABLE_TAG_COMPONENT}></${REMOVABLE_TAG_COMPONENT}>
   </template>
   
   <div id='${CONTAINER}'>
-       <span class='label'>${t('exemplars.choose_parent')} </span> 
+       <span class='label'>${t('exemplars.choose_parent')}</span> 
        <${SUGGESTION_INPUT_COMPONENT}></${SUGGESTION_INPUT_COMPONENT}>
   </div>
   
@@ -45,7 +49,7 @@ class ParentSelector extends WebElement {
 
     _renderRemovableTag(tagContent) {
         if (!this.$(REMOVABLE_TAG_COMPONENT)) {
-            const tagTemplate = this.getTemplateById(PARENT_TAG_TMPL);
+            const tagTemplate = this.getTemplateById(PARENT_TAG_TEMPLATE);
             tagTemplate.byTag(REMOVABLE_TAG_COMPONENT).innerHTML = tagContent;
             this.$_id(CONTAINER).appendChild(tagTemplate);
             this.$(REMOVABLE_TAG_COMPONENT).props = {

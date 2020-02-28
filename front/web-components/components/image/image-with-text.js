@@ -33,7 +33,7 @@ const template = `
   <div id='${CONTAINER}'>
     <img id='${IMAGE}'/>
     <div id='${TEXT}'>
-        
+        <slot></slot>
     </div>
   </div>
   
@@ -47,7 +47,9 @@ class ImageWithText extends WebElement {
 
     set props({src, text, brokenImageSrc}) {
         this.setAttribute(supportedAttributes.SRC, src);
-        this.$_id(TEXT).textContent = text;
+        if (text) {
+            this.$_id(TEXT).textContent = text;
+        }
         this.$_id(IMAGE).onerror = function () {
             this.onerror = null;
             this.src = brokenImageSrc;

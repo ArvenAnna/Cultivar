@@ -1,66 +1,50 @@
 import WebElement from '../../abstract/web-element';
+import '../../styled/action-button';
+import '../../components/image/image-with-text-and-zoom';
 
 import mModal from '../../model/modal';
-import '../../styled/action-button';
-
 import { noImage } from '../../../constants/themes';
 import {t} from "../../utils/translateUtils";
 
+// ID
 const CONTAINER = 'page-container';
+const BUTTON_CONTAINER = 'button-container';
+
+// TEMPLATE
 const DETAIL_TEMPLATE = 'detail_template';
-const RECIPE_DETAIL_PHOTO_TEMPLATE = 'recipe-detail-photo-template';
 
 const CAPTION = 'recipe_page_caption';
 const DESCRIPTION = 'recipe_page_description';
 const DETAILS = 'recipe_page_details';
 
 const DETAIL = 'detail';
-const DETAILS_PHOTO = 'recipe_page_details_photo';
-const DETAILS_PHOTO_FULL = 'recipe_page_details_photo_full';
 const DETAILS_DESCRIPTION = 'recipe_page_details_description';
 const DETAILS_DATE = 'details-date';
 const DETAILS_EVENT = 'details-event';
 
-const BUTTON_CONTAINER = 'button-container';
+// COMPONENTS
 const BUTTON_COMPONENT = 'action-button';
+const IMAGE_COMPONENT = 'image-with-text-and-zoom';
 
 const template = `
   <style>
     #${CONTAINER} {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        position: relative;
     }
     
     #${CAPTION} {
-        grid-column-start: 1;
-        grid-column-end: 3;
-        grid-row-start: 1;
-        grid-row-end: 2;
-        text-align: center;
         font-size: var(--header-font-size);
-        width: 100%;
+        text-align: center;
         margin: 20px 0;
         text-shadow: var(--text-shadow);
     }
     
     #${DESCRIPTION} {
-        grid-column-start: 1;
-        grid-column-end: 3;
-        grid-row-start: 5;
-        grid-row-end: 6;
-
         text-align: justify;
         margin: 1rem;
         white-space: pre-wrap;
     }
     
     #${DETAILS} {
-        grid-column-start: 1;
-        grid-column-end: 3;
-        grid-row-start: 6;
-        grid-row-end: 7;
-
         display: grid;
         background-color: var(--dark-background);
         border-radius: var(--theme-border-radius);
@@ -85,44 +69,28 @@ const template = `
         white-space: pre-wrap;
      }
     
-    .${DETAILS_PHOTO} {
-        width: 100%;
-        
-        object-fit: contain;
-        border-radius: var(--theme-border-radius);
-    }
-    
-    .${DETAILS_PHOTO_FULL} {
-        width: 100%;
-        position: fixed;
-    }
-    
     .${BUTTON_CONTAINER} {
        margin: 1rem 0;
        display: flex;
        justify-content: center;
     }
     
-    
   </style>
   
   <template id='${DETAIL_TEMPLATE}'>
     <div class='${DETAIL}'>
-        <img src='${noImage}' class='${DETAILS_PHOTO}'/>
-        <div class='${DETAILS_DESCRIPTION}'></div>
-        <div class='${DETAILS_DATE}'></div>
-        <div class='${DETAILS_EVENT}'></div>
-        <div class='${DETAILS_EVENT}'></div>
-        <div class='${BUTTON_CONTAINER}'>
-            <${BUTTON_COMPONENT} text='${t('common.edit')}'></${BUTTON_COMPONENT}>
-        </div>
+        <${IMAGE_COMPONENT}>
+            <div class='${DETAILS_DESCRIPTION}'></div>
+            <div class='${DETAILS_DATE}'></div>
+            <div class='${DETAILS_EVENT}'></div>
+            <div class='${BUTTON_CONTAINER}'>
+                <${BUTTON_COMPONENT} text='${t('common.edit')}'></${BUTTON_COMPONENT}>
+            </div>
+        </${IMAGE_COMPONENT}>        
     </div>
     
   </template>
-  
-  <template id='${RECIPE_DETAIL_PHOTO_TEMPLATE}'>
-        <img src='${noImage}' class='${DETAILS_PHOTO_FULL}'/>
-  </template>
+ 
   
   <div id='${CONTAINER}'>
       <div id='${CAPTION}'></div>     
@@ -143,22 +111,14 @@ class ExemplarPage extends WebElement {
 
         this._renderPage = this._renderPage.bind(this);
         this._clearPage = this._clearPage.bind(this);
-        this._openFullPhoto = this._openFullPhoto.bind(this);
 
         this._renderPage();
-    }
-
-    _openFullPhoto(imgPath) {
-        const photoTemplate = this.getTemplateById(RECIPE_DETAIL_PHOTO_TEMPLATE);
-        photoTemplate.byTag('img').src = imgPath;
-        mModal.open(photoTemplate);
     }
 
     _clearPage() {
         this.$_id(CAPTION).textContent = '';
         this.$_id(DESCRIPTION).textContent = '';
         this.$_id(DETAILS).innerHTML = '';
-        this.$_id(DETAILS).style.display = 'none';
     }
 
     _renderPage() {
@@ -167,18 +127,23 @@ class ExemplarPage extends WebElement {
         if (this.$exemplar) {
 
             this.$_id(CAPTION).textContent = `${this.$exemplar.name || ''} (${this.$exemplar.variety.name || ''})`;
-            // this.$_id(MAIN_PHOTO).src =  this.$variety.imgPathFull || noImage;
+
             let text = this.$exemplar.isSport ? t('exemplars.it_is_sport') : ' ';
             text += `${this.$exemplar.parent && this.$exemplar.parent.id ? t('exemplars.parent_ref') + this.$exemplar.parent.name || '' : ''}`
             this.$_id(DESCRIPTION).innerHTML = text;
 
             if (this.$exemplar.history && this.$exemplar.history.length) {
-                this.$_id(DETAILS).style.display = 'grid';
                 this.$exemplar.history.forEach(detail => {
                     const detailTemplate = this.getTemplateById(DETAIL_TEMPLATE);
                     if (detail.photo) {
-                        detailTemplate.byClass(DETAILS_PHOTO).src = detail.photo;
-                        detailTemplate.byClass(DETAILS_PHOTO).addEventListener('click', this._openFullPhoto.bind(this, detail.photoFull));
+                        detailTemplate.byTag(IMAGE_COMPONENT).onConstruct = (comp) => {
+                            comp.props = {
+                                brokenImageSrc: noImage,
+                                src: detail.photo,
+                                zoomedSrc: detail.photoFull,
+                                openFn: mModal.open
+                            }
+                        }
                         detailTemplate.byClass(DETAILS_DATE).textContent = detail.date;
                         detailTemplate.byClass(DETAILS_EVENT).innerHTML = t(`events.${detail.eventType}`) + ' '
                             + (detail.eventNumber || '');

@@ -32,7 +32,7 @@ export class HistoryItem extends Model {
     }
 
     get date() {
-        return this._hi.date && this._hi.date.toString();
+        return this._hi.date;
     }
 
     get photo() {

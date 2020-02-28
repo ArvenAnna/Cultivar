@@ -75,7 +75,7 @@ class NewExemplar extends Exemplar {
     }
 
     set date(date) {
-        this._exemplar.date = date && new Date(date);
+        this._exemplar.date = date;
     }
 
     // set detail (detail) {

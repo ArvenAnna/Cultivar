@@ -37,7 +37,7 @@ export class NewHistoryItem extends HistoryItem {
     }
 
     set date(date) {
-        this._hi.date = date && new Date(date);
+        this._hi.date = date;
     }
 
     get photo() {

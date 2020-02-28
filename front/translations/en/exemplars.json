@@ -10,5 +10,8 @@
   "choose_parent": "Choose parent exemplar ",
   "exemplar_date": "Enter exemplar appearance date in format YYYY-MM-DD",
   "is_sport": "Is it sport?",
-  "add_event": "Add new event for this exemplar"
+  "add_event": "Add new event for this exemplar",
+  "choose_event_type": "Choose event type",
+  "edit_exemplar_history": "Edit exemplar history",
+  "delete_history": "If you want delete history item click button"
 }

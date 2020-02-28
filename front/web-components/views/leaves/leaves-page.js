@@ -1,8 +1,5 @@
 import WebElement from '../../abstract/web-element';
-import { noImage } from '../../../constants/themes';
-import {t} from '../../utils/translateUtils';
 import '../../components/page-list';
-
 import '../../styled/text-area';
 import '../../styled/action-button';
 import '../../components/file-upload/photo-upload';
@@ -10,15 +7,14 @@ import '../../components/file-upload/photo-upload';
 import '../create-exemplar/parts/variety-selector';
 import '../create-exemplar/parts/parent-selector';
 
+import { noImage } from '../../../constants/themes';
+import {t} from '../../utils/translateUtils';
 import {NewLeaf} from '../../model/newLeaf';
-import routes from "../../../constants/Routes";
+import routes from '../../../constants/Routes';
 
-const CONTAINER = 'page-container';
-const ITEM_TEMPLATE = 'item-template';
-const ITEM = 'item';
-const PHOTO = 'photo';
-const CONTENT = 'content';
-
+// ID
+const CONTAINER = 'leaves-page-container';
+const CAPTION = 'caption';
 const NAME_CONTAINER = 'name-container';
 const DATE_CONTAINER = 'date-container';
 const NAME = 'name';
@@ -26,13 +22,19 @@ const DATE = 'date';
 const NAME_CAPTION = 'name-caption';
 const BUTTON_CONTAINER = 'button-container';
 
-const PAGE_COMPONENT = 'page-list';
+// TEMPLATE
+const ITEM_TEMPLATE = 'item-template';
+const ITEM = 'item';
+const PHOTO = 'photo';
+const CONTENT = 'content';
 
+// COMPONENTS
+const PAGE_COMPONENT = 'page-list';
 const DESCRIPTION_COMPONENT = 'text-area';
 const BUTTON_COMPONENT = 'action-button';
 const UPLOAD_COMPONENT = 'photo-upload';
 const VARIETY_SELECTOR_COMPONENT = 'variety-selector';
-const PARENT_SELECTOR = 'parent-selector';
+const PARENT_SELECTOR_COMPONENT = 'parent-selector';
 
 const template = `
   <style>
@@ -43,25 +45,20 @@ const template = `
     #${CONTENT} {
         display: flex;
         justify-content: center;
-       /*display: grid;*/
-       /*grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));*/
-       /*justify-items: center;*/
-       /*align-content: center;*/
-       /*height: 100%;*/
+    }
+    
+    .${CAPTION} {
+        text-align: center;
+        font-size: var(--header-font-size);
+        margin: 1.5rem 0;
+        text-shadow: var(--text-shadow);
     }
     
     .${ITEM} {
         display: flex;
-        /*flex-direction: column;*/
-        /*align-items: center;*/
-        /*justify-content: flex-start;*/
-        /*max-width: 200px;*/
-        /*min-width: 80%;*/
-        /*cursor: pointer;*/
     }
     
     .${NAME} {
-          /*text-align: center;*/
           padding: 5px;
           font-size: medium;
           font-weight: 600;
@@ -103,11 +100,13 @@ const template = `
   </template>
   
   <div id='${CONTAINER}'>
+    <div class='${CAPTION}'>${t('leaves.leaves')}</div>
     <div id='${CONTENT}'></div>
+    <div class='${CAPTION}'>${t('leaves.create_new_leaf')}</div>
     <${VARIETY_SELECTOR_COMPONENT}></${VARIETY_SELECTOR_COMPONENT}>  
-    <${PARENT_SELECTOR}></${PARENT_SELECTOR}>
+    <${PARENT_SELECTOR_COMPONENT}></${PARENT_SELECTOR_COMPONENT}>
     <div id='${NAME_CONTAINER}'>
-            <${DESCRIPTION_COMPONENT}></${DESCRIPTION_COMPONENT}>
+       <${DESCRIPTION_COMPONENT}></${DESCRIPTION_COMPONENT}>
     </div>
     
     <${UPLOAD_COMPONENT}></${UPLOAD_COMPONENT}>
@@ -157,7 +156,7 @@ class LeavesPage extends WebElement {
         this.$_id(CONTENT).innerHTML = ''; // clear all content
 
         this.$(VARIETY_SELECTOR_COMPONENT).exemplar = this._newLeaf;
-        this.$(PARENT_SELECTOR).exemplar = this._newLeaf;
+        this.$(PARENT_SELECTOR_COMPONENT).exemplar = this._newLeaf;
         this.$(DESCRIPTION_COMPONENT).value = this._newLeaf.description || '';
         this.$(UPLOAD_COMPONENT).props = {
             uploadFileCallback: (path) => {

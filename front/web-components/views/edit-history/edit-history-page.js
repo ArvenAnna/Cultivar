@@ -1,63 +1,52 @@
 import WebElement from '../../abstract/web-element';
 
-import mModal from '../../model/modal';
-
-import { noImage } from '../../../constants/themes';
 import {t} from "../../utils/translateUtils";
 
 import '../create-exemplar/parts/new-event';
 import '../../styled/action-button';
 
-const CONTAINER = 'page-container';
+// ID
+const CONTAINER = 'edit-history-page-container';
+const CAPTION = 'edit-history-page-caption';
+const NAME_CONTAINER = 'edit-history-page-name-container';
+const NAME_CAPTION = 'name-caption';
 
-const CAPTION = 'recipe_page_caption';
-const DESCRIPTION = 'recipe_page_description';
-
-const BUTTON_CONTAINER = 'button-container';
+// COMPONENTS
 const BUTTON_COMPONENT = 'action-button';
-
 const EVENT_COMPONENT = 'new-event';
 
 const template = `
   <style>
     #${CONTAINER} {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        position: relative;
     }
     
     #${CAPTION} {
-        grid-column-start: 1;
-        grid-column-end: 3;
-        grid-row-start: 1;
-        grid-row-end: 2;
         text-align: center;
         font-size: var(--header-font-size);
-        width: 100%;
         margin: 20px 0;
         text-shadow: var(--text-shadow);
     }
     
-    #${DESCRIPTION} {
-        grid-column-start: 1;
-        grid-column-end: 3;
-        grid-row-start: 5;
-        grid-row-end: 6;
-
-        text-align: justify;
+    .${NAME_CONTAINER} {
+        display: flex;
         margin: 1rem;
-        white-space: pre-wrap;
+        align-items: center;
+    }
+    
+    .${NAME_CAPTION} {
+        margin-right: 0.5rem;
     }
   
     
   </style>
   
   <div id='${CONTAINER}'>
-      <div id='${CAPTION}'>aaaaaaa</div>   
-      <${EVENT_COMPONENT}></${EVENT_COMPONENT}>  
-      <div class='${BUTTON_CONTAINER}'>
+      <div id='${CAPTION}'>${t('exemplars.edit_exemplar_history')}</div>   
+      <div class='${NAME_CONTAINER}'>
+            <div class='${NAME_CAPTION}'>${t('exemplars.delete_history')}</div>
             <${BUTTON_COMPONENT} text='${t('common.delete')}'></${BUTTON_COMPONENT}>
       </div>
+      <${EVENT_COMPONENT}></${EVENT_COMPONENT}>
   </div>
 `;
 
@@ -85,20 +74,9 @@ class EditHistoryPage extends WebElement {
                 window.location.hash = '/exemplar/' + this.$exemplarId;
             });
         }
-        // this._clearPage = this._clearPage.bind(this);
     }
 
-    //
-    // _clearPage() {
-    //     this.$_id(CAPTION).textContent = '';
-    //     this.$_id(DESCRIPTION).textContent = '';
-    //     this.$_id(DETAILS).innerHTML = '';
-    //     this.$_id(DETAILS).style.display = 'none';
-    // }
-
     _renderPage() {
-        // this._clearPage();
-
         if (this.$exemplarId) {
             this.$(EVENT_COMPONENT).props = {
                 exemplarId: this.$exemplarId,

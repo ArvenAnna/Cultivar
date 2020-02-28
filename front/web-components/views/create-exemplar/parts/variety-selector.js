@@ -1,14 +1,17 @@
 import WebElement from '../../../abstract/web-element';
-
 import '../../../components/tag/removable-tag';
 import '../../../components/suggestions-chooser';
 
 import {t} from '../../../utils/translateUtils';
 import {retrieveVarietiesByKeyword} from "../../../utils/asyncRequests";
 
-const CONTAINER = 'container';
-const VARIETY_TAG_TMPL = 'variety-tag-template';
+// ID
+const CONTAINER = 'variety-selector-container';
 
+// TEMPLATE
+const VARIETY_TAG_TEMPLATE = 'variety-tag-template';
+
+// COMPONENTS
 const SUGGESTION_INPUT_COMPONENT = 'suggestions-chooser';
 const REMOVABLE_TAG_COMPONENT = 'removable-tag';
 
@@ -16,16 +19,16 @@ const template = `
   <style>
       #${CONTAINER} {
          display: flex;
-         margin: 0.5rem;
+         margin: 1rem;
          align-items: center;
       }
       
-      // ${REMOVABLE_TAG_COMPONENT} {
-      //   display: none;
-      // }
+      .label {
+        margin-right: 0.5rem;
+      }
   </style>
   
-  <template id='${VARIETY_TAG_TMPL}'>
+  <template id='${VARIETY_TAG_TEMPLATE}'>
      <${REMOVABLE_TAG_COMPONENT}></${REMOVABLE_TAG_COMPONENT}>
   </template>
   
@@ -38,11 +41,6 @@ const template = `
 
 class VarietySelector extends WebElement {
 
-    // set props(newItems) {
-    //     this.$types = newItems;
-    //     this._render();
-    // }
-
     set exemplar(exemplar) {
         this.$exemplar = exemplar;
         this._render();
@@ -50,7 +48,7 @@ class VarietySelector extends WebElement {
 
     _renderRemovableTag(tagContent) {
         if (!this.$(REMOVABLE_TAG_COMPONENT)) {
-            const tagTemplate = this.getTemplateById(VARIETY_TAG_TMPL);
+            const tagTemplate = this.getTemplateById(VARIETY_TAG_TEMPLATE);
             tagTemplate.byTag(REMOVABLE_TAG_COMPONENT).innerHTML = tagContent;
             this.$_id(CONTAINER).appendChild(tagTemplate);
             this.$(REMOVABLE_TAG_COMPONENT).props = {
@@ -73,8 +71,8 @@ class VarietySelector extends WebElement {
                 getSuggestionsPromise: this._retrieveVarietiesByKeyword,
                 renderSuggestionCallback: suggestion => suggestion.name,
                 addItemCallback: (item) => {
-                    this._retrieveVarietiesByKeyword(item).then(itms => {
-                        const variety = itms.find(i => i.name === item);
+                    this._retrieveVarietiesByKeyword(item).then(items => {
+                        const variety = items.find(i => i.name === item);
                         if (variety) {
                             this.$exemplar.variety = variety;
                             this._renderRemovableTag(variety.name);

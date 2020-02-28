@@ -51,18 +51,9 @@ export class Exemplar extends Model {
     }
 
     get date() {
-        return this._exemplar.date && this._exemplar.date.toString();
+        return this._exemplar.date;
     }
 
-    // get refs() {
-    //     if (!this._recipe.refs || !this._recipe.refs.length) {
-    //         return null;
-    //     }
-    //     return this._recipe.refs.map(ref => ({
-    //         ...ref
-    //     }));
-    // }
-    //
     get photo() {
         return getImageSmallCopy(this._exemplar.photo && routes.IMAGE_CATALOG + this._exemplar.photo);
     }

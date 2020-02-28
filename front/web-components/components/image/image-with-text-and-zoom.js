@@ -30,7 +30,9 @@ const template = `
   </template>
   
   <div id='${CONTAINER}'>
-    <${IMAGE_COMPONENT}></${IMAGE_COMPONENT}>
+    <${IMAGE_COMPONENT}>
+        <slot></slot>
+    </${IMAGE_COMPONENT}>
   </div>
   
 `;
@@ -61,7 +63,7 @@ class ImageWithTextAndZoom extends WebElement {
         super(template, true);
         this._openFullPhoto = this._openFullPhoto.bind(this);
 
-        this.$(IMAGE_COMPONENT).addEventListener('click', this._openFullPhoto.bind(this, this.$zoomedSrc));
+        this.$(IMAGE_COMPONENT).addEventListener('dblclick', this._openFullPhoto.bind(this, this.$zoomedSrc));
     }
 }
 
