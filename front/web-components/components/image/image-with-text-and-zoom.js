@@ -48,7 +48,8 @@ class ImageWithTextAndZoom extends WebElement {
         }
     }
 
-    _openFullPhoto(imgPath) {
+    _openFullPhoto() {
+        const imgPath = this.$zoomedSrc;
         const photoTemplate = this.getTemplateById(ZOOMED_PHOTO_TEMPLATE);
         photoTemplate.byTag('img').src = imgPath;
         const self = this;
@@ -63,7 +64,7 @@ class ImageWithTextAndZoom extends WebElement {
         super(template, true);
         this._openFullPhoto = this._openFullPhoto.bind(this);
 
-        this.$(IMAGE_COMPONENT).addEventListener('dblclick', this._openFullPhoto.bind(this, this.$zoomedSrc));
+        this.$(IMAGE_COMPONENT).addEventListener('dblclick', this._openFullPhoto);
     }
 }
 

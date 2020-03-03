@@ -114,7 +114,8 @@ ALTER SEQUENCE public.exemplars_id_seq OWNED BY public.exemplars.id;
 
 CREATE TABLE public.hybridisators (
     id integer NOT NULL,
-    name character varying(400)
+    name character varying(400),
+    description text
 );
 
 
@@ -419,9 +420,9 @@ SELECT pg_catalog.setval('public.exemplars_id_seq', 2, true);
 -- Data for Name: hybridisators; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.hybridisators (id, name) FROM stdin;
-1	Елена Лебецкая
-2	Надежда Бердникова
+COPY public.hybridisators (id, name, description) FROM stdin;
+1	Елена Лебецкая	\N
+2	Надежда Бердникова	\N
 \.
 
 

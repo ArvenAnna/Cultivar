@@ -27,10 +27,14 @@ public class Hybridisator {
 	@Column(name = "name")
 	private String name;
 
+	@Column(name = "description")
+	private String description;
+
 	public static Hybridisator of(HybridisatorDto dto) {
 		Hybridisator entity = new Hybridisator();
 		entity.setId(dto.getId());
 		entity.setName(dto.getName());
+		entity.setDescription(dto.getDescription());
 		return entity;
 	}
 

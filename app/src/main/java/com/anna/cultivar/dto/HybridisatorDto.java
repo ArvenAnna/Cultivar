@@ -12,11 +12,13 @@ import lombok.Getter;
 public class HybridisatorDto {
 	private Long id;
 	private String name;
+	private String description;
 
 	public static HybridisatorDto of(Hybridisator entity) {
 		return HybridisatorDto.builder()
 				.id(entity.getId())
 				.name(entity.getName())
+				.description(entity.getDescription())
 				.build();
 	}
 }
