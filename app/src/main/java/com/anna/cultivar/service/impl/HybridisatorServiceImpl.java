@@ -16,11 +16,13 @@ public class HybridisatorServiceImpl implements HybridisatorService {
 	@Autowired
 	private HybridisatorRepository repository;
 
+	@Transactional
 	@Override
 	public Stream<HybridisatorDto> getAll() {
 		return repository.findAll().stream().map(HybridisatorDto::of);
 	}
 
+	@Transactional
 	@Override
 	public HybridisatorDto getOne(Long hybridisatorId) {
 		return HybridisatorDto.of(repository.getOne(hybridisatorId));

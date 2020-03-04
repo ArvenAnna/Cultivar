@@ -43,7 +43,7 @@ const template = `
         text-shadow: var(--text-shadow);
     }
     
-    #${NAME_CONTAINER}{
+    .${NAME_CONTAINER}{
         display: flex;
         margin: 1rem;
         align-items: center;
@@ -69,7 +69,7 @@ const template = `
   
   <div id='${CONTAINER}'>
       <div id='${CAPTION}'>${t('varieties.edit_variety')}</div>
-      <div id='${NAME_CONTAINER}'>
+      <div class='${NAME_CONTAINER}'>
         <div id='${NAME_CAPTION}'>${t('varieties.variety_name')}</div>
         <input-text id='${NAME}'/>
       </div> 
@@ -77,11 +77,11 @@ const template = `
       <${AUTHOR_SELECTOR_COMPONENT}></${AUTHOR_SELECTOR_COMPONENT}>
       <${TYPE_SELECTOR_COMPONENT}></${TYPE_SELECTOR_COMPONENT}>
       
-      <div id='${NAME_CONTAINER}'>
+      <div class='${NAME_CONTAINER}'>
             <${DESCRIPTION_COMPONENT}></${DESCRIPTION_COMPONENT}>
       </div>
       
-      <div id='${NAME_CONTAINER}'>
+      <div class='${NAME_CONTAINER}'>
         <div id='${NAME_CAPTION}'>${t('varieties.hybridisation_date')}</div>
         <${DATE_COMPONENT}></${DATE_COMPONENT}>
       </div> 

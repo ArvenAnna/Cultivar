@@ -17,6 +17,8 @@ const routes = {
     POST_CREATE_VARIETY: httpPrefix + '/varieties',
 
     GET_AUTHORS: `${httpPrefix}/varieties/hybridisators`,
+    GET_HYBRIDISATORS: `${httpPrefix}/hybridisators`,
+    GET_HYBRIDISATOR: (id) => `${httpPrefix}/hybridisators/${id}`,
     GET_VARIETY_TYPES: `${httpPrefix}/varieties/types`,
     GET_VARIETIES_BY_KEYWORD: `${httpPrefix}/varieties/keyword?pageSize=${MAX_SUGGESTIONS_NUMBER}&pageNumber=0`,
 

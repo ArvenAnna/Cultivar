@@ -1,4 +1,6 @@
 {
   "hybridisators": "Hybridisators",
-  "no_hybridisators_found": "No hybridisators found"
+  "hybridisator": "Hybridisator info",
+  "no_hybridisators_found": "No hybridisators found",
+  "create_hybridisator": "Create new hybridisator"
 }

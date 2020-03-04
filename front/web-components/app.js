@@ -20,6 +20,9 @@ import './views/edit-history/edit-history-page-renderer';
 import './views/leaves/leaves-page-renderer';
 import './views/leaf/leaf-page-renderer';
 
+import './views/hybridisators/hybridisators-page-renderer';
+import './views/hybridisator/hybridisator-page-renderer';
+
 import './app-header';
 // import './app-sidebar';
 // import './recipe-search';
@@ -98,6 +101,9 @@ const template = `
             
             <app-route path="/leaves" component="leaves-page-renderer"></app-route>
             <app-route path="/leaves/:id" component="leaf-page-renderer"></app-route>
+            
+            <app-route path="/hybridisators" component="hybridisators-page-renderer"></app-route>
+            <app-route path="/hybridisators/:id" component="hybridisator-page-renderer"></app-route>
             
         </div>
         <div id="${SIDE}">

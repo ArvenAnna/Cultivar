@@ -21,10 +21,10 @@ public class HybridisatorController {
     @Autowired
     private HybridisatorService hybridisatorService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public List<HybridisatorDto> hybridisatorsList() {
-        return hybridisatorService.getAll().collect(Collectors.toList());
-    }
+//    @RequestMapping(method = RequestMethod.GET)
+//    public List<HybridisatorDto> hybridisatorsList() {
+//        return hybridisatorService.getAll().collect(Collectors.toList());
+//    }
 
     @RequestMapping(value = {"/{hybridisatorId}"}, method = RequestMethod.GET)
     public HybridisatorDto getHybridisator(@PathVariable("hybridisatorId") Long hybridisatorId) {

@@ -8,6 +8,7 @@ const EXEMPLARS_ID = 4;
 const NEW_EXEMPLAR_ID = 5;
 const EDIT_EXEMPLAR_ID = 6;
 const LEAVES_ID = 7;
+const HYBRIDISATORS_ID = 7;
 
 class Header extends Model {
 
@@ -38,6 +39,9 @@ class Header extends Model {
             LEAVES: {
                 trans: () => mTranslations.getTranslation('leaves.leaves'), id: LEAVES_ID, linkFn: () => '/leaves', active: true
             },
+            HYBRIDISATORS: {
+                trans: () => mTranslations.getTranslation('hybridisators.hybridisators'), id: HYBRIDISATORS_ID, linkFn: () => '/hybridisators', active: true
+            }
         };
 
         this.addVarietyEditButton = this.addVarietyEditButton.bind(this);
@@ -68,6 +72,7 @@ class Header extends Model {
         this.$menu.EXEMPLARS.to = this.$menu.EXEMPLARS.linkFn();
         this.$menu.NEW_EXEMPLAR.to = this.$menu.NEW_EXEMPLAR.linkFn();
         this.$menu.LEAVES.to = this.$menu.LEAVES.linkFn();
+        this.$menu.HYBRIDISATORS.to = this.$menu.HYBRIDISATORS.linkFn();
         await this._setTranslations();
     }
 
