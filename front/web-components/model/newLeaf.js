@@ -46,7 +46,7 @@ export class NewLeaf extends Leaf {
     }
 
     set date(date) {
-        this._leaf.date = date && new Date(date);
+        this._leaf.date = date;
     }
 
     async save() {

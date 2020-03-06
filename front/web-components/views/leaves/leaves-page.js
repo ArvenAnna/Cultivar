@@ -1,8 +1,10 @@
 import WebElement from '../../abstract/web-element';
-import '../../components/page-list';
 import '../../styled/text-area';
 import '../../styled/action-button';
 import '../../components/file-upload/photo-upload';
+import '../../components/page-list';
+import '../../components/image/image-with-text';
+import '../../components/date/date-input';
 
 import '../create-exemplar/parts/variety-selector';
 import '../create-exemplar/parts/parent-selector';
@@ -17,8 +19,6 @@ const CONTAINER = 'leaves-page-container';
 const CAPTION = 'caption';
 const NAME_CONTAINER = 'name-container';
 const DATE_CONTAINER = 'date-container';
-const NAME = 'name';
-const DATE = 'date';
 const NAME_CAPTION = 'name-caption';
 const BUTTON_CONTAINER = 'button-container';
 
@@ -35,6 +35,8 @@ const BUTTON_COMPONENT = 'action-button';
 const UPLOAD_COMPONENT = 'photo-upload';
 const VARIETY_SELECTOR_COMPONENT = 'variety-selector';
 const PARENT_SELECTOR_COMPONENT = 'parent-selector';
+const IMAGE_COMPONENT = 'image-with-text';
+const DATE_COMPONENT = 'date-input';
 
 const template = `
   <style>
@@ -44,7 +46,8 @@ const template = `
     
     #${CONTENT} {
         display: flex;
-        justify-content: center;
+        flex-wrap: wrap;
+        justify-content: space-around;
     }
     
     .${CAPTION} {
@@ -58,10 +61,8 @@ const template = `
         display: flex;
     }
     
-    .${NAME} {
-          padding: 5px;
-          font-size: medium;
-          font-weight: 600;
+    .${NAME_CAPTION} {
+        margin-right: 0.5rem;
     }
     
     .${PHOTO} {
@@ -93,8 +94,7 @@ const template = `
   <template id='${ITEM_TEMPLATE}'>
       <router-link>
          <div class='${ITEM}'>
-            <img src='${noImage}' class='${PHOTO}'/>
-            <div class='${NAME}'></div>
+            <${IMAGE_COMPONENT}></${IMAGE_COMPONENT}>
          </div>
       </router-link>    
   </template>
@@ -102,24 +102,28 @@ const template = `
   <div id='${CONTAINER}'>
     <div class='${CAPTION}'>${t('leaves.leaves')}</div>
     <div id='${CONTENT}'></div>
+    <${PAGE_COMPONENT}></${PAGE_COMPONENT}>
+    
     <div class='${CAPTION}'>${t('leaves.create_new_leaf')}</div>
     <${VARIETY_SELECTOR_COMPONENT}></${VARIETY_SELECTOR_COMPONENT}>  
     <${PARENT_SELECTOR_COMPONENT}></${PARENT_SELECTOR_COMPONENT}>
-    <div id='${NAME_CONTAINER}'>
+    <div class='${NAME_CONTAINER}'>
        <${DESCRIPTION_COMPONENT}></${DESCRIPTION_COMPONENT}>
     </div>
     
-    <${UPLOAD_COMPONENT}></${UPLOAD_COMPONENT}>
+    <div class='${NAME_CONTAINER}'>
+        <${UPLOAD_COMPONENT}></${UPLOAD_COMPONENT}>
+    </div>
       
     <div class='${DATE_CONTAINER}'>
         <div class='${NAME_CAPTION}'>${t('exemplars.exemplar_date')}</div>
-        <input-text id='${DATE}'/>
+        <${DATE_COMPONENT}></${DATE_COMPONENT}>
     </div> 
       
     <div class='${BUTTON_CONTAINER}'>
-            <${BUTTON_COMPONENT} text='${t('common.save')}'></${BUTTON_COMPONENT}>
+        <${BUTTON_COMPONENT} text='${t('common.save')}'></${BUTTON_COMPONENT}>
     </div>
-    <${PAGE_COMPONENT}></${PAGE_COMPONENT}>
+    
   </div>
 `;
 
@@ -141,15 +145,11 @@ class LeavesPage extends WebElement {
 
     _save() {
         this._newLeaf.description = this.$(DESCRIPTION_COMPONENT).value;
-        this._newLeaf.date = this.$_id(DATE).value;
+        this._newLeaf.date = this.$(DATE_COMPONENT).value;
 
-        if (this._newLeaf.date == 'Invalid Date') {
-            alert('date or date format is not valid');
-        } else {
-            this._newLeaf.save().then(id => {
-                window.location.hash = '/leaves/' + id;
-            });
-        }
+        this._newLeaf.save().then(id => {
+            window.location.hash = '/leaves/' + id;
+        });
     }
 
     _renderPage() {
@@ -166,7 +166,7 @@ class LeavesPage extends WebElement {
             src: this._newLeaf.photo,
             defaultSrc: noImage
         };
-        this.$_id(DATE).value = this._newLeaf.date || '';
+        this.$(DATE_COMPONENT).value = this._newLeaf.date || '';
 
         if (this.$exemplarsModel.leaves && this.$exemplarsModel.leaves.length) {
 
@@ -174,7 +174,13 @@ class LeavesPage extends WebElement {
 
                 const template = this.getTemplateById(ITEM_TEMPLATE);
 
-                template.byClass(NAME).textContent = item.variety.name;
+                template.byTag(IMAGE_COMPONENT).onConstruct = (comp) => {
+                    comp.props = {
+                        brokenImageSrc: noImage,
+                        src: item.imgPath,
+                        text: item.variety.name
+                    }
+                }
 
                 template.byTag('router-link').onConstruct = (link) => {
                     link.path = `/leaves/${item.id}`

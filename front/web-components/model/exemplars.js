@@ -18,6 +18,8 @@ class Exemplars extends Model {
     }
 
     get exemplars() {
+        const getImgPath = (item) =>  item.history.map(hi => hi.photo).filter(photo => photo)[0];
+
         return this._exemplars.map(item => ({
             id: item.id,
             parent: item.parent,
@@ -25,9 +27,9 @@ class Exemplars extends Model {
             variety: {
                 id: item.variety.id,
                 name: item.variety.name
-            }
-            // imgPath: getImageSmallCopy(item.imgPath && routes.IMAGE_CATALOG + item.imgPath),
-            // imgPathFull: item.imgPath && routes.IMAGE_CATALOG + item.imgPath
+            },
+            imgPath: getImageSmallCopy(getImgPath(item) && routes.IMAGE_CATALOG + getImgPath(item)),
+            imgPathFull: getImgPath(item) && routes.IMAGE_CATALOG + getImgPath(item)
         }))
     }
 

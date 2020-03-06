@@ -3,5 +3,8 @@
   "apply": "Apply",
   "reset": "Reset",
   "all": "All",
-  "search": "search"
+  "search": "search",
+  "varieties": "Varieties search",
+  "exemplars": "Exemplars search",
+  "leaves": "Leaves search"
 }

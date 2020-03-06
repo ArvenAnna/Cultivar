@@ -21,6 +21,7 @@ const template = `
         box-shadow: var(--input-shadow);
         overflow: hidden;
         white-space: pre-wrap;
+        text-align: left;
     }
     
     // #${INPUT}::placeholder {

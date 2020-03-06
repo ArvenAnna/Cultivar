@@ -25,7 +25,7 @@ import './views/hybridisator/hybridisator-page-renderer';
 
 import './app-header';
 // import './app-sidebar';
-// import './recipe-search';
+import './search-sidebar';
 
 const CONTAINER = 'app_container';
 const BODY = 'app_body';
@@ -108,7 +108,7 @@ const template = `
         </div>
         <div id="${SIDE}">
             <!--<app-sidebar></app-sidebar>-->
-            <!--<recipe-search></recipe-search>-->
+            <search-sidebar></search-sidebar>
         </div>
     </div>
   </div>

@@ -2,7 +2,7 @@ import routes, {getImageSmallCopy} from '../../constants/Routes';
 import Model from '../abstract/model';
 import {getResponse} from '../utils/httpUtils';
 import mNotification from './notification';
-import mSearch from './search';
+import mSearch from './varietiesSearch';
 import {SEVERITY_TYPES} from "../common-notification";
 
 class Varieties extends Model {

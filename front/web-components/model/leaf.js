@@ -40,13 +40,13 @@ export class Leaf extends Model {
             }});
     }
 
-    // get description() {
-    //     return this._exemplar.description;
-    // }
-    //
-    // get date() {
-    //     return this._exemplar.date && this._exemplar.date.toString();
-    // }
+    get description() {
+        return this._leaf.description;
+    }
+
+    get date() {
+        return this._leaf.date;
+    }
 
     retrieve(id) {
         fetch(routes.GET_LEAF(id))

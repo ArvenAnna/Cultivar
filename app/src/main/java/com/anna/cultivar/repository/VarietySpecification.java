@@ -39,7 +39,7 @@ public class VarietySpecification implements Specification<Variety> {
 		}
 
 		if (searchParams.getType() != null) {
-			predicates.add(cb.equal(varietyRoot.get("ype"), searchParams.getType()));
+			predicates.add(cb.equal(varietyRoot.get("type"), searchParams.getType()));
 		}
 
 		if (searchParams.getSportOf() != null) {

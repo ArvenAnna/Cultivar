@@ -1,4 +1,4 @@
-import mSearch from '../../model/search';
+import mSearch from '../../model/varietiesSearch';
 import mVarieties from '../../model/varieties';
 
 import router from '../../router/router-context';

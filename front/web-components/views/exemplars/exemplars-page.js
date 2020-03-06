@@ -80,11 +80,10 @@ class ExemplarsPage extends WebElement {
 
                 const template = this.getTemplateById(ITEM_TEMPLATE);
 
-                // TODO: will be photo of first entry (may be with description to distinguish exemplars)
                 template.byTag(IMAGE_COMPONENT).onConstruct = (comp) => {
                     comp.props = {
                         brokenImageSrc: noImage,
-                        src: noImage,
+                        src: item.imgPath,
                         text: item.variety.name
                     }
                 }

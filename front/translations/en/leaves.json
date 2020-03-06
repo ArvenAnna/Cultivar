@@ -1,5 +1,10 @@
 {
   "leaves": "Leaves",
   "history": "Leaf's history",
-  "create_new_leaf": "Create new leaf"
+  "create_new_leaf": "Create new leaf",
+  "photo": "Photo",
+  "description": "Description",
+  "date": "Date",
+  "event": "Event",
+  "action": "Action"
 }

@@ -5,7 +5,7 @@ import '../../components/image/image-with-text';
 import { noImage } from '../../../constants/themes';
 import { t } from '../../utils/translateUtils';
 
-import mSearch from '../../model/search';
+import mSearch from '../../model/varietiesSearch';
 import mVarieties from '../../model/varieties';
 
 // ID

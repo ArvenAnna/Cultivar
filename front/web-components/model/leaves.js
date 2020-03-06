@@ -1,4 +1,4 @@
-import routes from '../../constants/Routes';
+import routes, {getImageSmallCopy} from '../../constants/Routes';
 import Model from '../abstract/model';
 import {getResponse} from '../utils/httpUtils';
 import mNotification from './notification';
@@ -18,13 +18,16 @@ class Leaves extends Model {
     }
 
     get leaves() {
+        const getImgPath = (item) =>  item.history.map(hi => hi.photo).filter(photo => photo)[0];
         return this._leaves.map(item => ({
             id: item.id,
             parent: item.parent,
             variety: {
                 id: item.variety.id,
                 name: item.variety.name
-            }
+            },
+            imgPath: getImageSmallCopy(getImgPath(item) && routes.IMAGE_CATALOG + getImgPath(item)),
+            imgPathFull: getImgPath(item) && routes.IMAGE_CATALOG + getImgPath(item)
         }))
     }
 
