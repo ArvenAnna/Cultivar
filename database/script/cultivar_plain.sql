@@ -421,8 +421,17 @@ SELECT pg_catalog.setval('public.exemplars_id_seq', 2, true);
 --
 
 COPY public.hybridisators (id, name, description) FROM stdin;
-1	Елена Лебецкая	\N
-2	Надежда Бердникова	\N
+1	Елена Лебецкая	Селекционер из Винницы, Украина.\nОфициальный сайт http://le-fialka.at.ua/
+2	Надежда Бердникова	Селекционер из Москвы.\nИнформация о ней: http://www.fialki.ru/%D0%91%D0%B5%D1%80%D0%B4%D0%BD%D0%B8%D0%BA%D0%BE%D0%B2%D0%B0\nОфициальный каталог: http://www.domfialki.ru/forum3/viewtopic.php?f=114&t=1827
+3	Фатина Бутене	Селекционер из Вильнюса. Журналист по профессии, выйдя на пенсию, весьма серьезно занялась селекцией сенполий и оставила много прекрасных сортов, часть которых сохранилась в коллекциях до сих пор. \nДостоинством ее сенполий были яркие сочные колеры, продолжительное обильное цветение, крепкие цветоносы. Иногда цветки свисают гроздьями с куста, что придает фиалке особый шарм. \nСенполии создавались сериями. \nВсего Ф. К. Бутене создала более 150 сортов сенполий. \nИнформация о ней (Бутене Фатина Кирьяновна):\nhttp://www.flowersweb.info/gesneriaceae/history/rainbow3.php
+5	R. Holtkamp	Питомник промышленных сортов Optimara.\nИстория: http://www.fialki.ru/Optimara\nофициальный вебсайт: https://www.optimara.com/\nГруппа в facebook: https://www.facebook.com/optimara/
+6	Olive Ma Robinson	О ней: http://www.fialki.ru/Olive_Robinson\nСелекционер из Тайвани.\nЕе (и мужа Ральфа Робинсона) интернет-магазин: http://www.violetbarn.com/\nСтраничка в facebook: https://www.facebook.com/africanviolets
+7	Ralph Robinson	О нем: http://www.fialki.ru/Robinson\nСелекционер из США\nЕго (и жены Оливии Ма Робинсон) интернет-магазин: http://www.violetbarn.com/\nСтраничка в facebook: https://www.facebook.com/africanviolets\n
+4	George McDonald	Джордж Макдональд, США (серия Mac's). Он автор миниатюр и полуминиатюр. Большинство его сортов по размерам ближе скорее к стандартам, чем к мини. Как правило, это типичные полумини с крупной (и очень красивой) розеткой, крупными ровными листьями, большими цветами, цветущие суперобильными шапками. Недавно Джордж занялся и гел-листвой и листвой типа “клакамус”.\nГруппа в facebook: https://www.facebook.com/groups/215503188876926/\nО нем: http://www.fialki.ru/McDonald
+8	Hortense Pittman	Гортензия Питтман (Hortense Pittman) - выдающийся селекционер сенполий из Техаса. Большинство сортов ее селекции - мини и полумини.\nГортензия Питтман родилась в Техасе. Её увлечение сенполиями началось в 60-х годах с подаренной на день рождения фиалки. \nКроме коллекционирования сенполий Гортензия принимала активное участие в работе Общества любителей сенполий в Аламо и в 70-х стала президентом этого общества. \nВ это же время супруги Питтман создали фирму Hortense's African Violet по выращиванию и продаже сенполий, а с 1978 года они ежегодно принимали участие в выставках AVSA. \nК селекции Гортензию приобщил друг их семьи - известный в то время селекционер Гарольд Утц, и в 1979 году Гортензия зарегистрировала свой первый сорт. \nВ 1993 году Гортензия Питтман была избрана 27-м президентом African Violet Society of America, а в 1995 году стала почетным пожизненным членом AVSA. \nЗа долгие годы своей ра­боты Гортензия Питтман создала множество прекрасных сортов, которые она в разное время выпускала под различными серийными названиями - Hortense's, Happy, Jolly, Teen.\nКак признание заслуг Горензии Питтман, её имя внесено в Галерею Славы AVSA. \nО ней: http://www.fialki.ru/Pittman
+9	David Rollins	Канадский селекционер, работают вместе с женой Нэнси.\nСерия Kentucky\n\n
+10	David Senk	О нем: http://www.kwetki.ru/spisok/David_Senk.html  http://www.fialki.ru/Senk\nНемного его фиалок: https://saintpauliaancestry.wordpress.com/2014/11/18/david-senk-in-photos/\nCорта селекции Девида Сенка (серия Senk’s, Alchemy). Известный своими фиалками-осами, а также цветками в виде колокольчиков и фиалочками с экзотической формой листьев, турнюрная листва, удлиненной формы лонгифолия. Это очень неординарный селекционер с фантазией и чувством юмора — его фиалки имеют поистине экзотический вид! Его сенполии сразу выделяются на фоне других своей оригинальностью, это и цветы в форме колокольчиков, и цветы-осы, и турнюрная листва, и удлиненная, в общем, на любой вкус. У этого селекционера всего три сорта пишутся без приставки Senk`s: Alchemy Antique Bells (D. Senk); Alchemy Gold (D. Senk); Alchemy Yellow Star (D. Senk).\n
+11	Константин Морев	г. Москва\nО нем кратко: https://www.fialkovod.ru/selection/russian/morev/\nСорта: http://domfialki.ru/forum3/viewforum.php?f=58\nИнтервью с ним: http://dimetris.com.ua/site/all/selekcioner_konstantin_morev
 \.
 
 
@@ -430,7 +439,7 @@ COPY public.hybridisators (id, name, description) FROM stdin;
 -- Name: hybridisators_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.hybridisators_id_seq', 2, true);
+SELECT pg_catalog.setval('public.hybridisators_id_seq', 11, true);
 
 
 --
@@ -480,6 +489,12 @@ COPY public.varieties (id, name, author, description, variety_type, hybridisatio
 3	Н-Радость	2	Крупные полумахровые кремовые цветы с зеленоватыми внешними лепестками, переходящими в широкую тающую кайму, и украшенные мелким крапом темно-вишневого фэнтези. Темно-зеленая стеганая листва с бело-розовой окаймляющей пестролистностью. Полуминиатюра.	SEMIMINI	\N	\N
 4	ЛЕ-Голубой Поток	1	Крупные махровые чашевидные голубые с зеленой изнанкой цветы. Очень обильное бесконечное цветение. Полумини трейлер. 	SEMIMINI	\N	\N
 5	ЛЕ-Кудрявый хмель	1	Обильные махровые чашевидные голубые с зеленой изнанкой-цветы с подвернутыми внутрь лепестками. Очень обильное  бесконечное цветение. Полумини трейлер.	SEMIMINI	\N	\N
+6	Lituanika	3	Сильно пасынкующийся длинночерешковый мелколистный стандарт с рыхлой кроной и высоким по сорту стволом, увешанный невероятно прекрасными двухтоновыми цветами уникальной формы на тонких длинных цветоносах. Выращивать предпочтительнее в виде трейлера.	COMPACT_STANDART	\N	\N
+7	Ma's Melody Girl	6	Something really different for the collector.  Sdbl. coral stars with raspberry fantasy and banding, then thinly edged white.  Great, well-behaved girl foliage.  Standard.  AVSA #9132	COMPACT_STANDART	\N	\N
+8	Alchemy Antique Bells	10	Single light yellow ruffled bell. Medium green, plain, heart-shaped. Miniature.\nПростые светло-желтые колокольчики с оборчатым краем. Ровная ярко-зеленая сердцевидная листва. Миниатюра. 	MINIATURE	2004-09-24 00:00:00	\N
+10	Kentucky Gooseberries	9	DAVS 1602\nDouble white star/light pink blush. Medium green, serrated. Semiminiature. \nМахровые белые звездочки с нежно-розовым подсветом и иногда – зеленоватыми внешними лепестками. Красивая светло-зеленая стеганая листва с волнистым зубчатым краем. Аккуратная симметричная розетка. \nПолуминиатюра.\nЕго спорт Kentucky Berry Bush спортит обратно в него.	SEMIMINI	\N	9
+9	Kentucky Berry Bush	9	DAVS 1599\nDouble medium pink star/green edge. Dark green, serrated/red back. Semiminiature.\nМахровые ярко-розовые цветы с зеленоватой каймой. Стеганая темно-зеленая зубчатая листва с красной изнанкой. Полуминиатюра.\n	SEMIMINI	\N	10
+11	Свадебный букет	11	Сорт Свадебный букет – фиалка с очень крупными, от 5 до 6,5 сантиметров в диаметре, цветами белоснежной окраски. По форме цветы представляют собой белоснежные звёзды с гофрированным краем лепестков. С обратной стороны лепестки фиалки покрыты серебристо-пепельным цветом, отчего букет кажется слегка подёрнутым голубоватой дымкой.Описание сорта отличается в начале и середине цветения. В начале цветения по краю лепестков проявляется тонкая зелёная кайма. Зелень также может проявляться, если фиалка выращивается в прохладном помещении. По мере повышения температуры и роспуска цветка зелень на лепестках пропадает.Цветение фиалки букетное, волнообразное с  интервалом от 1 до 3 месяцев. Каждый цветок находится в роспуске 2-3 недели. В розетке  до 5-ти цветоносов, с четырьмя-пятью бутонами на каждом. В полном роспуске букет цветов приобретает форму гофрированного шара.Розетка сорта симметричная, небольшого размера. Листья ровные, гладкие, среднего размера. Поверхность листьев средне-зелёная, стёганая.	COMPACT_STANDART	\N	\N
 \.
 
 
@@ -487,7 +502,7 @@ COPY public.varieties (id, name, author, description, variety_type, hybridisatio
 -- Name: varieties_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.varieties_id_seq', 5, true);
+SELECT pg_catalog.setval('public.varieties_id_seq', 11, true);
 
 
 --
@@ -495,12 +510,30 @@ SELECT pg_catalog.setval('public.varieties_id_seq', 5, true);
 --
 
 COPY public.variety_details (id, photo, description, variety_id, detail_order) FROM stdin;
-3	varieties/Н-Радость/Н-Радость295ddf9d-db79-4cdb-8a5b-1cccb5ad5a43.jpg	\N	3	1
 4	varieties/ЛЕ-Голубой Поток/ЛЕ-Голубой Поток5f3ed29b-9f74-4d54-b29a-a2589d925a48.jpg	Фото селекционера	4	1
 5	varieties/ЛЕ-Кудрявый хмель/ЛЕ-Кудрявый хмельc1868504-d9ea-421a-aa3d-829e3e76d66a.jpg	Фото селекционера	5	1
 6	varieties/ЛЕ-Голубой Лютик/ЛЕ-Голубой Лютик0f929ff1-6bb4-4648-899e-1c421a40ebc4.jpg	Фото селекционера	2	1
 2	varieties/ЛЕ-Голубой Лютик/ЛЕ-Голубой Лютикa179d0f6-34ff-458f-ad09-f37e321cdb60.jpg		2	2
 1	varieties/ЛЕ-Иллюзия/ЛЕ-Иллюзия73675842-bd34-4a97-955d-09b005a69d93.jpg	Фото селекционера	1	1
+7	varieties/Н-Радость/Н-Радость4facbf98-f5bb-4bea-b30f-cf7433b8cb58.jpg	Фото селекционера	3	2
+8	varieties/Н-Радость/Н-Радость560aae2d-edc0-4496-be1b-6d59286b33ee.JPG	Фото селекционера	3	1
+3	varieties/Н-Радость/Н-Радость295ddf9d-db79-4cdb-8a5b-1cccb5ad5a43.jpg	\N	3	3
+9	varieties/Lituanika/Lituanika3d7e1ec6-b37e-475c-acc0-15b28a269e69.jpg	\N	6	1
+10	varieties/Lituanika/Lituanika42c16bdd-6365-43f8-aa6b-003e9be0a12c.jpg		6	2
+11	varieties/Lituanika/Lituanika5ae951b9-a97d-4599-8774-2f783e7eb227.jpg		6	3
+12	varieties/Lituanika/Lituanika7690bf4d-708d-4723-ba52-eb2aa9831d00.jpg		6	4
+13	varieties/Ma's Melody Girl/Ma's Melody Girlb8ac8279-0ee6-4675-ac12-964c2a850d54.jpg	Фото селекционера	7	1
+14	varieties/Alchemy Antique Bells/Alchemy Antique Bells489cc38b-bec1-45c5-a4c7-ac19a735b2b1.jpg	\N	8	1
+15	varieties/Kentucky Berry Bush/Kentucky Berry Bush5724bbe0-4332-4f4b-8581-f97489c187d8.jpg	\N	9	1
+16	varieties/Kentucky Berry Bush/Kentucky Berry Bushbd3b79f6-6539-496d-aca4-3d398b8294e3.jpg		9	2
+17	varieties/Kentucky Berry Bush/Kentucky Berry Busha647a7f3-de58-40b7-b49e-b97527daab15.jpg		9	3
+18	varieties/Kentucky Berry Bush/Kentucky Berry Bush5083780f-7c22-41a7-bc3d-ac703297528c.jpg		9	4
+19	varieties/Kentucky Gooseberries/Kentucky Gooseberries378446f4-7a55-41ef-8d9e-2ab2a1b18aee.jpeg	\N	10	1
+20	varieties/Kentucky Gooseberries/Kentucky Gooseberries7ed10c5e-7280-4bea-a644-04e20083bee6.jpg		10	2
+21	varieties/Kentucky Gooseberries/Kentucky Gooseberriesf44824f9-3f61-407a-b83f-4d80e1657345.jpg		10	3
+22	varieties/Kentucky Gooseberries/Kentucky Gooseberriesa0dbbce4-0808-4b98-bdad-5af1869ae36f.jpg		10	4
+23	varieties/Свадебный букет/Свадебный букет7a62734a-f8c8-4d8d-a647-703a18f7d699.jpg	\N	11	1
+24	varieties/Свадебный букет/Свадебный букетc1b43eac-d796-4638-ac1e-9f9c2adab890.jpg		11	2
 \.
 
 
@@ -508,7 +541,7 @@ COPY public.variety_details (id, photo, description, variety_id, detail_order) F
 -- Name: variety_details_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.variety_details_id_seq', 6, true);
+SELECT pg_catalog.setval('public.variety_details_id_seq', 24, true);
 
 
 --
