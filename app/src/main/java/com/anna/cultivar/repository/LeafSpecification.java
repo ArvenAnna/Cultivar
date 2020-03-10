@@ -22,7 +22,13 @@ public class LeafSpecification implements Specification<Leaf> {
 
 	@Override
 	public Predicate toPredicate(Root<Leaf> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+		Root<Leaf> leafRoot = root;
 		List<Predicate> predicates = new ArrayList<>();
+
+		if (searchParams.getVarietyId() != null) {
+			predicates.add(cb.equal(leafRoot.get("variety"), searchParams.getVarietyId()));
+		}
+
 		return cb.and(predicates.toArray(new Predicate[0]));
 	}
 }

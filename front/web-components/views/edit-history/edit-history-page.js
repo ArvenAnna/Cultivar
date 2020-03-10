@@ -27,7 +27,7 @@ const template = `
         text-shadow: var(--text-shadow);
     }
     
-    .${NAME_CONTAINER} {
+    #${NAME_CONTAINER} {
         display: flex;
         margin: 1rem;
         align-items: center;
@@ -42,7 +42,7 @@ const template = `
   
   <div id='${CONTAINER}'>
       <div id='${CAPTION}'>${t('exemplars.edit_exemplar_history')}</div>   
-      <div class='${NAME_CONTAINER}'>
+      <div id='${NAME_CONTAINER}'>
             <div class='${NAME_CAPTION}'>${t('exemplars.delete_history')}</div>
             <${BUTTON_COMPONENT} text='${t('common.delete')}'></${BUTTON_COMPONENT}>
       </div>
@@ -78,6 +78,9 @@ class EditHistoryPage extends WebElement {
 
     _renderPage() {
         if (this.$exemplarId) {
+            if (this.$hi && this.$hi.eventType === "APPEARANCE" && this.$_id(NAME_CONTAINER)) {
+                this.$_id(NAME_CONTAINER).remove();
+            }
             this.$(EVENT_COMPONENT).props = {
                 exemplarId: this.$exemplarId,
                 events: this.$events,

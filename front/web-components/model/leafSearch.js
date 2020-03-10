@@ -6,13 +6,12 @@ const DEFAULT_SEARCH_STRING = '';
 const DEFAULT_PAGE_NUMBER = 0;
 const DEFAULT_SEARCH_URL = `?page=${DEFAULT_PAGE_NUMBER}&size=${PAGE_SIZE}`;
 
-//TODO: move search logic to basic class (for now 3 classes with the same logic)
 class Search extends Model {
 
     constructor() {
         super();
         this.$searchString = DEFAULT_SEARCH_STRING;
-
+        this.$variety = null;
         this.$pageSize = PAGE_SIZE;
         this.$pageNumber = DEFAULT_PAGE_NUMBER;
         this.$searchUrl = DEFAULT_SEARCH_URL;
@@ -31,6 +30,10 @@ class Search extends Model {
         return this.$searchString;
     }
 
+    get variety() {
+        return this.$variety;
+    }
+
     get page() {
         return this.$pageNumber;
     }
@@ -39,10 +42,12 @@ class Search extends Model {
         // for direct opening from url
         const PARAMS = {
             VALUE: 'value',
+            VARIETY: 'varietyId',
             PAGE_SIZE: 'pageSize',
             PAGE_NUMBER: 'pageNumber'
         }
         this.$searchString = '';
+        this.$variety = null;
         this.$pageSize = PAGE_SIZE;
         this.$pageNumber = 0;
 
@@ -56,6 +61,9 @@ class Search extends Model {
             switch (paramName) {
                 case PARAMS.VALUE:
                     this.$searchString = paramValue;
+                    break;
+                case PARAMS.VARIETY:
+                    this.$variety = parseInt(paramValue);
                     break;
                 case PARAMS.PAGE_SIZE:
                     this.$pageSize = parseInt(paramValue);
@@ -75,6 +83,7 @@ class Search extends Model {
 
     searchByParams(params) {
         this.$searchString = params.value || this.$searchString;
+        this.$variety = params.variety;
         this.$pageSize = params.pageSize || this.$pageSize;
         this.$pageNumber = params.pageNumber || this.$pageNumber;
 
@@ -88,6 +97,7 @@ class Search extends Model {
 
     _reset() {
         this.$searchString = DEFAULT_SEARCH_STRING;
+        this.$variety = null;
         this.$pageSize = PAGE_SIZE;
         this.$pageNumber = DEFAULT_PAGE_NUMBER;
     }
@@ -98,6 +108,10 @@ class Search extends Model {
 
         if (this.$searchString) {
             searchUrl = `${searchUrl}&search=${this.$searchString}`;
+        }
+
+        if (this.$variety) {
+            searchUrl = `${searchUrl}&varietyId=${this.$variety}`
         }
 
         this.$searchUrl = searchUrl;

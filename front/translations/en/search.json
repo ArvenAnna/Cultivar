@@ -6,5 +6,6 @@
   "search": "search",
   "varieties": "Varieties search",
   "exemplars": "Exemplars search",
-  "leaves": "Leaves search"
+  "leaves": "Leaves search",
+  "search_string": "String"
 }
