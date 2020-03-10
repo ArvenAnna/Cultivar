@@ -19,7 +19,7 @@ class Varieties extends Model {
 
     get varieties() {
         const getImgPath = (item) => {
-            return item.details && item.details.length && item.details.sort((d1, d2) => d2.order - d1.order)[0].photo;
+            return item.details && item.details.length && item.details.sort((d1, d2) => d1.order - d2.order)[0].photo;
         }
         return this._varieties.map(item => ({
             id: item.id,
