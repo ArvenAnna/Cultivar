@@ -18,12 +18,15 @@ class Varieties extends Model {
     }
 
     get varieties() {
+        const getImgPath = (item) => {
+            return item.details && item.details.length && item.details.sort((d1, d2) => d2.order - d1.order)[0].photo;
+        }
         return this._varieties.map(item => ({
             id: item.id,
             name: item.name,
             author: item.author,
             description: item.description,
-            imgPath: item.details && item.details.length && item.details[0].photo && getImageSmallCopy(item.details[0].photo && routes.IMAGE_CATALOG + item.details[0].photo),
+            imgPath: getImgPath(item) && getImageSmallCopy(routes.IMAGE_CATALOG + getImgPath(item)),
             // imgPathFull: item.imgPath && routes.IMAGE_CATALOG + item.imgPath
         }))
     }

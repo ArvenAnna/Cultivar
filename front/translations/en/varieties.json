@@ -3,6 +3,7 @@
   "varieties": "Varieties",
   "new_variety": "New variety",
   "edit_variety": "Edit variety",
+  "edit_or_create_variety": "Create or edit variety",
   "error_empty_variety": "Variety should not be empty",
   "variety_name": "Variety name",
   "select_cultivator": "Select cultivator",
@@ -12,5 +13,8 @@
   "add_description_with_photo": "Add description with photo",
   "add_button": "Add",
   "add_details_description": "Add detail's description",
-  "hybridisation_date": "Enter hybridization date"
+  "hybridisation_date": "Enter hybridization date",
+  "author": "Author:",
+  "type": "Type:",
+  "sport_of_key": "Sport of:"
 }

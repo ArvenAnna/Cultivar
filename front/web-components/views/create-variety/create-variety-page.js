@@ -68,7 +68,7 @@ const template = `
   </style>
   
   <div id='${CONTAINER}'>
-      <div id='${CAPTION}'>${t('varieties.edit_variety')}</div>
+      <div id='${CAPTION}'>${t('varieties.edit_or_create_variety')}</div>
       <div class='${NAME_CONTAINER}'>
         <div id='${NAME_CAPTION}'>${t('varieties.variety_name')}</div>
         <input-text id='${NAME}'/>
