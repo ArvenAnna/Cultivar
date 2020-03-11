@@ -16,6 +16,7 @@ const template = `
          display: flex;
          margin: 1rem;
          align-items: center;
+         font-size: var(--author-selector-font-size);
       }
       
       #${CAPTION} {

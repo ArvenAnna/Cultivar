@@ -36,25 +36,17 @@ const LEAVES_SEARCH_APPLY = 'leaves-search-apply';
 const LEAVES_SEARCH_RESET = 'leaves-search-reset';
 
 const ELEMENT_CONTAINER = 'search-element-container';
+const BUTTON_CONTAINER = 'search-button-container';
 
-const INGREDIENT_CHOOSER = 'ingredient-chooser';
-const REF_CHOOSER = 'ref-chooser';
-const INGREDIENT_LIST = 'ingredient-list';
-const REF_LIST = 'ref-list';
-const ADDITIONAL_SEARCH_PARAMS = 'additional-search-params';
-const APPLY_BUTTON = 'apply-button';
-const BUTTONS_CONTAINER = 'buttons-container';
+const SEARCH_CAPTION = 'search-caption';
 
 // COMPONENTS
 const INPUT_COMPONENT = 'input-text';
-const EXPANDABLE_COMPONENT = 'expandable-block';
-const SUGGESTIONS_COMPONENT = 'suggestions-chooser';
 const AUTHOR_SELECTOR_COMPONENT = 'author-selector';
 const TYPE_SELECTOR_COMPONENT = 'type-selector';
 const SPORT_OF_SELECTOR_COMPONENT = 'sport-of';
 const VARIETY_SELECTOR_COMPONENT = 'variety-selector';
 
-const DROP_DOWN_COMPONENT = 'drop-down';
 const BUTTON_COMPONENT = 'action-button';
 
 const template = `
@@ -63,38 +55,58 @@ const template = `
             margin-left: 1rem;
             background-color: var(--menu-background, green);
             padding: 0.5rem;
-            font-size: var(--small-font-size);
         }
-      
-       .${ELEMENT_CONTAINER} {
+        
+        .${ELEMENT_CONTAINER} {
             padding: 0.5rem 0;
             margin-left: 1rem;
             display: flex;
+            align-items: center;
+            font-size: var(--tiny-font-size);
        }
-
       
+       .${BUTTON_CONTAINER} {
+            padding: 0.5rem 0;
+            margin-left: 1rem;
+            display: flex;
+            justify-content: flex-end;
+            font-size: var(--tiny-font-size);
+       }
+       
+       .${SEARCH_CAPTION} {
+           font-size: var(--normal-font-size); 
+           font-weight: 600;
+           text-align: center;
+       }
+       
+       ${INPUT_COMPONENT} {
+            margin-left: 1rem;
+       }
+   
     </style>
 
     <div id="${CONTAINER}">
-        <div>${t('search.varieties')}</div>
+        <div class='${SEARCH_CAPTION}'>${t('search.varieties')}</div>
         <div class='${ELEMENT_CONTAINER}'>${t('search.search_string')}<${INPUT_COMPONENT} id='${VARIETIES_SEARCH_INPUT}'></${INPUT_COMPONENT}></div>
         <${AUTHOR_SELECTOR_COMPONENT}></${AUTHOR_SELECTOR_COMPONENT}>
         <${TYPE_SELECTOR_COMPONENT}></${TYPE_SELECTOR_COMPONENT}>
         <${SPORT_OF_SELECTOR_COMPONENT}></${SPORT_OF_SELECTOR_COMPONENT}>
-        <div class='${ELEMENT_CONTAINER}'>
+        <div class='${BUTTON_CONTAINER}'>
             <${BUTTON_COMPONENT} id='${VARIETIES_SEARCH_APPLY}' text='${t('search.apply')}'></${BUTTON_COMPONENT}>
             <${BUTTON_COMPONENT} id='${VARIETIES_SEARCH_RESET}' text='${t('search.reset')}'></${BUTTON_COMPONENT}>
         </div>
-        <div>${t('search.exemplars')}</div>
+        <hr/>
+        <div class='${SEARCH_CAPTION}'>${t('search.exemplars')}</div>
         <div class='${ELEMENT_CONTAINER}'>${t('search.search_string')}<${INPUT_COMPONENT} id='${EXEMPLARS_SEARCH_INPUT}'></${INPUT_COMPONENT}></div>
         <${VARIETY_SELECTOR_COMPONENT} id='${EXEMPLARS_VARIETY_SEARCH}'></${VARIETY_SELECTOR_COMPONENT}>
-        <div class='${ELEMENT_CONTAINER}'>
+        <div class='${BUTTON_CONTAINER}'>
             <${BUTTON_COMPONENT} id='${EXEMPLARS_SEARCH_APPLY}' text='${t('search.apply')}'></${BUTTON_COMPONENT}>
             <${BUTTON_COMPONENT} id='${EXEMPLARS_SEARCH_RESET}' text='${t('search.reset')}'></${BUTTON_COMPONENT}>
         </div>
-        <div>${t('search.leaves')}</div>
+        <hr/>
+        <div class='${SEARCH_CAPTION}'>${t('search.leaves')}</div>
         <${VARIETY_SELECTOR_COMPONENT} id='${LEAVES_VARIETY_SEARCH}'></${VARIETY_SELECTOR_COMPONENT}>
-        <div class='${ELEMENT_CONTAINER}'>
+        <div class='${BUTTON_CONTAINER}'>
             <${BUTTON_COMPONENT} id='${LEAVES_SEARCH_APPLY}' text='${t('search.apply')}'></${BUTTON_COMPONENT}>
             <${BUTTON_COMPONENT} id='${LEAVES_SEARCH_RESET}' text='${t('search.reset')}'></${BUTTON_COMPONENT}>
         </div>
@@ -134,7 +146,7 @@ class SearchSidebar extends WebElement {
         this.$_id(EXEMPLARS_SEARCH_APPLY).addEventListener('click', this._onApplyExemplarsSearch);
         this.$_id(EXEMPLARS_SEARCH_RESET).addEventListener('click', mExemplarsSearch.reset);
 
-        this.$_id(LEAVES_SEARCH_APPLY).addEventListener('click', this._onApplyLeavesSearch());
+        this.$_id(LEAVES_SEARCH_APPLY).addEventListener('click', this._onApplyLeavesSearch);
         this.$_id(LEAVES_SEARCH_RESET).addEventListener('click', mLeavesSearch.reset);
 
         this._render();

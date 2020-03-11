@@ -16,6 +16,7 @@ const template = `
     #${CONTAINER} {
         position: relative;
         width: var(--control-width, 10rem);
+        font-size: var(--control-font-size);
     }
     
     #${LABEL} {

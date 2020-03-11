@@ -19,6 +19,7 @@ const template = `
          display: flex;
          margin: 1rem;
          align-items: center;
+         font-size: var(--sport-of-selector-font-size);
       }
       
       ${REMOVABLE_TAG_COMPONENT} {

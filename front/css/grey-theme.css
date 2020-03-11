@@ -23,6 +23,7 @@
 
     --main-border: 2px solid var(--dark-background);
 
+    --tiny-font-size: 0.7rem;
     --normal-font-size: 1rem;
     --small-font-size: 0.9rem;
     --big-font-size: 1.2rem;

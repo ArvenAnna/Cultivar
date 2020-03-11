@@ -78,6 +78,11 @@ body {
     --tooltip-font--color: var(--light-background);
     --tooltip-shadow: var(--outer-light-shadow);
     --tooltip-width: 10rem;
+
+    --author-selector-font-size: var(--normal-font-size);
+    --type-selector-font-size: var(--normal-font-size);
+    --sport-of-selector-font-size: var(--normal-font-size);
+    --variety-selector-font-size: var(--normal-font-size);
 }
 
 recipe-header, recipe-sidebar {
@@ -88,8 +93,15 @@ recipe-header, recipe-sidebar {
     --button-hover-background: var(--dark-background);
 }
 
-recipe-search {
+search-sidebar {
     --control-width: 100%;
+    --control-font-size: var(--tiny-font-size);
+    --tag-font-size: var(--tiny-font-size);
+
+    --author-selector-font-size: var(--tiny-font-size);
+    --type-selector-font-size: var(--tiny-font-size);
+    --sport-of-selector-font-size: var(--tiny-font-size);
+    --variety-selector-font-size: var(--tiny-font-size);
 }
 
 create-recipe-page {

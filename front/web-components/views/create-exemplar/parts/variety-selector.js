@@ -21,6 +21,7 @@ const template = `
          display: flex;
          margin: 1rem;
          align-items: center;
+         font-size: var(--variety-selector-font-size);
       }
       
       .label {
