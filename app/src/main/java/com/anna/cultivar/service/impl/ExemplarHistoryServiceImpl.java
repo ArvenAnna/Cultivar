@@ -1,5 +1,6 @@
 package com.anna.cultivar.service.impl;
 
+import static com.anna.cultivar.entity.ExemplarHistory.ExemplarEvent.APPEARANCE;
 import static com.anna.cultivar.entity.ExemplarHistory.ExemplarEvent.BLOSSOM_END;
 import static com.anna.cultivar.entity.ExemplarHistory.ExemplarEvent.BLOSSOM_START;
 import static com.anna.cultivar.entity.ExemplarHistory.ExemplarEvent.DISAPPEARANCE;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,8 +40,8 @@ public class ExemplarHistoryServiceImpl implements ExemplarHistoryService {
 	private static List<ExemplarHistory.ExemplarEvent> countableEvents = Arrays.asList(BLOSSOM_START, BLOSSOM_END);
 
 	static {
-		eventsMapping.put(ExemplarHistory.ExemplarEvent.APPEARANCE,
-				Arrays.asList(SEPARATE_FROM_LEAF, FIRST_BUDS, BLOSSOM_START, BLOSSOM_END, LEAF_SEPARATED, STEAM_SEPARATED, GROW, HEAD_CUT,
+		eventsMapping.put(APPEARANCE,
+				Arrays.asList(APPEARANCE, SEPARATE_FROM_LEAF, FIRST_BUDS, BLOSSOM_START, BLOSSOM_END, LEAF_SEPARATED, STEAM_SEPARATED, GROW, HEAD_CUT,
 						DISAPPEARANCE));
 		eventsMapping.put(SEPARATE_FROM_LEAF,
 				Arrays.asList(FIRST_BUDS, GROW, DISAPPEARANCE));
@@ -79,7 +81,18 @@ public class ExemplarHistoryServiceImpl implements ExemplarHistoryService {
 	public void save(ExemplarHistoryDto dto, Long exemplarId) {
 		Exemplar exemplar = exemplarRepository.getOne(exemplarId);
 
-		validateEventType(dto, exemplar);
+//		validateEventType(dto, exemplar);
+		boolean isAppearanceWas = exemplar.getHistory().stream().anyMatch(hi -> hi.getEventType() == ExemplarHistory.ExemplarEvent.APPEARANCE);
+
+		if (isAppearanceWas && dto.getEventType() == ExemplarHistory.ExemplarEvent.APPEARANCE) {
+			throw new IllegalArgumentException("Event type APPEARANCE is not allowed");
+		}
+
+		if (dto.getEventType() != ExemplarHistory.ExemplarEvent.APPEARANCE && dto.getDate() == null) {
+			throw new IllegalArgumentException("Event date should be present");
+		}
+
+
 
 		ExemplarHistory history = ExemplarHistory.of(dto);
 
@@ -101,17 +114,20 @@ public class ExemplarHistoryServiceImpl implements ExemplarHistoryService {
 	@Transactional
 	@Override
 	public List<ExemplarHistory.ExemplarEvent> getAllowedEvents(Long exemplarId, AllowedEventsRequest request) {
-		Exemplar exemplar = exemplarRepository.getOne(exemplarId);
-		return eventsMapping.get(exemplar.getHistory().stream()
-				.filter(hi -> hi.getDate() != null)
-				.sorted(Comparator.comparing(ExemplarHistory::getDate).reversed())
-				.filter(hi -> request.getDate() != null ? (request.getDate().compareTo(hi.getDate()) > 0) : true)
-				.map(ExemplarHistory::getEventType)
-				.findFirst()
-				.orElse(null));
+		return Arrays.stream(ExemplarHistory.ExemplarEvent.values()).collect(Collectors.toList());
+
+//		Exemplar exemplar = exemplarRepository.getOne(exemplarId);
+//		return eventsMapping.get(exemplar.getHistory().stream()
+//				.filter(hi -> hi.getDate() != null)
+//				.sorted(Comparator.comparing(ExemplarHistory::getDate).reversed())
+//				.filter(hi -> request.getDate() != null ? (request.getDate().compareTo(hi.getDate()) > 0) : true)
+//				.map(ExemplarHistory::getEventType)
+//				.findFirst()
+//				.orElse(null));
 	}
 
 	private void validateEventType(ExemplarHistoryDto dto, Exemplar exemplar) {
+
 		List<ExemplarHistory.ExemplarEvent> allowedEvents = eventsMapping.get(exemplar.getHistory().stream()
 				.filter(hi -> hi.getDate() != null)
 				.sorted(Comparator.comparing(ExemplarHistory::getDate).reversed())
@@ -148,11 +164,31 @@ public class ExemplarHistoryServiceImpl implements ExemplarHistoryService {
 	@Override
 	public void update(ExemplarHistoryDto dto, Long exemplarId) {
 		Exemplar exemplar = exemplarRepository.getOne(exemplarId);
-		validateEventType(dto, exemplar);
+//		validateEventType(dto, exemplar);
+
+
+		Optional<ExemplarHistory> oldHi = exemplar.getHistory().stream().filter(hi -> hi.getId().equals(dto.getId())).findFirst();
+
+		if (oldHi.map(hi -> hi.getEventType()).orElse(null) == ExemplarHistory.ExemplarEvent.APPEARANCE
+				&& dto.getEventType() != ExemplarHistory.ExemplarEvent.APPEARANCE) {
+			throw new IllegalArgumentException("Event type APPEARANCE can not be changed");
+		}
+
+		if (oldHi.map(hi -> hi.getEventType()).orElse(null) != ExemplarHistory.ExemplarEvent.APPEARANCE
+				&& dto.getEventType() == ExemplarHistory.ExemplarEvent.APPEARANCE) {
+			throw new IllegalArgumentException("Event type APPEARANCE can not be assigned");
+		}
+
+		if (dto.getEventType() != ExemplarHistory.ExemplarEvent.APPEARANCE && dto.getDate() == null) {
+			throw new IllegalArgumentException("Event date should be present");
+		}
+
+
 
 		ExemplarHistory history = ExemplarHistory.of(dto);
 
 		history.setExemplar(exemplar);
+		history.setPhoto(saveFile(dto.getPhoto(), exemplar));
 
 		saveAllFiles(exemplar);
 		historyRepository.saveAndFlush(history);

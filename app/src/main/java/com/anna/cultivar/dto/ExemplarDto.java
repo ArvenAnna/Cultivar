@@ -1,11 +1,14 @@
 package com.anna.cultivar.dto;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.anna.cultivar.entity.Exemplar;
 
+import com.anna.cultivar.entity.ExemplarHistory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,7 +31,12 @@ public class ExemplarDto {
 				.variety(Optional.ofNullable(entity.getVariety()).map(VarietyBaseDto::of).orElse(null))
 				.parent(Optional.ofNullable(entity.getParent()).map(ExemplarDto::ofParent).orElse(null))
 				.sport(entity.isSport())
-				.history(entity.getHistory().stream().map(ExemplarHistoryDto::of).collect(Collectors.toList()))
+				.history(Stream.concat(entity.getHistory().stream().filter(dto -> dto.getDate() == null),
+						entity.getHistory().stream()
+						.filter(dto -> dto.getDate() != null)
+						.sorted(Comparator.comparing(ExemplarHistory::getDate)))
+						.map(ExemplarHistoryDto::of)
+						.collect(Collectors.toList()))
 				.build();
 	}
 

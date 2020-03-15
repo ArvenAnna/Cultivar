@@ -147,7 +147,7 @@ class CreateExemplarPage extends WebElement {
     _save() {
         this.$exemplar.name = this.$_id(NAME).value;
         this.$exemplar.description = this.$(DESCRIPTION_COMPONENT).value;
-        this.$exemplar.date = this.$_id(DATE_COMPONENT).value;
+        this.$exemplar.date = this.$(DATE_COMPONENT).value;
         this.$exemplar.isSport = this.$(CHECKBOX_COMPONENT).value;
         this.$exemplar.save().then(id => {
             window.location.hash = '/exemplar/' + id;
