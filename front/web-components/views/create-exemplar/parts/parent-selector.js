@@ -5,6 +5,8 @@ import '../../../components/suggestions-chooser';
 
 import {t} from '../../../utils/translateUtils';
 import {retrieveExemplarsByKeyword} from "../../../utils/asyncRequests";
+import {SEVERITY_TYPES} from "../../../common-notification";
+import mNotification from "../../../model/notification";
 
 // ID
 const CONTAINER = 'parent-selector-container';
@@ -72,14 +74,18 @@ class ParentSelector extends WebElement {
                 getSuggestionsPromise: this._retrieveExemplarsByKeyword,
                 renderSuggestionCallback: suggestion => suggestion.name,
                 addItemCallback: (item) => {
-                    this._retrieveExemplarsByKeyword(item).then(itms => {
-                        const variety = itms.find(i => i.name === item);
-                        if (variety) {
-                            this.$exemplar.parent = variety;
-                            this._renderRemovableTag(variety.name);
-                            this.$(SUGGESTION_INPUT_COMPONENT).style.display = 'none';
-                        }
-                    })
+                    if (!item) {
+                        mNotification.showMessage(t('common.you_should_choose_value'), SEVERITY_TYPES.INFO)
+                    } else {
+                        this._retrieveExemplarsByKeyword(item).then(itms => {
+                            const variety = itms.find(i => i.name === item);
+                            if (variety) {
+                                this.$exemplar.parent = variety;
+                                this._renderRemovableTag(variety.name);
+                                this.$(SUGGESTION_INPUT_COMPONENT).style.display = 'none';
+                            }
+                        })
+                    }
                 }
             }
         }

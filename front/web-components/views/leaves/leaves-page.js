@@ -13,6 +13,8 @@ import { noImage } from '../../../constants/themes';
 import {t} from '../../utils/translateUtils';
 import {NewLeaf} from '../../model/newLeaf';
 import routes from '../../../constants/Routes';
+import {SEVERITY_TYPES} from "../../common-notification";
+import mNotification from "../../model/notification";
 
 // ID
 const CONTAINER = 'leaves-page-container';
@@ -147,6 +149,10 @@ class LeavesPage extends WebElement {
         this._newLeaf.description = this.$(DESCRIPTION_COMPONENT).value;
         this._newLeaf.date = this.$(DATE_COMPONENT).value;
 
+        if (!this._newLeaf.variety || !this._newLeaf.variety.id) {
+            mNotification.showMessage(t('exemplars.must_choose_variety'), SEVERITY_TYPES.INFO);
+            return;
+        }
         this._newLeaf.save().then(id => {
             window.location.hash = '/leaves/' + id;
         });

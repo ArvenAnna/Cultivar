@@ -3,5 +3,6 @@
   "edit": "Edit",
   "delete": "Delete",
   "processing": "processing",
-  "successfully_saved": "Data was saved"
+  "successfully_saved": "Data was saved",
+  "you_should_choose_value": "You should choose value before pressing apply"
 }

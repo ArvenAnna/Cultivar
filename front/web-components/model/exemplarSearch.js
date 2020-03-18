@@ -106,7 +106,7 @@ class ExemplarSearch extends Model {
 
     _search() {
         // mandatory params:
-        let searchUrl = DEFAULT_SEARCH_URL;
+        let searchUrl = `?page=${this.$pageNumber}&size=${this.$pageSize}`;
 
         if (this.$searchString) {
             searchUrl = `${searchUrl}&search=${this.$searchString}`;

@@ -13,6 +13,8 @@ import {t} from '../../../utils/translateUtils';
 import {NewHistoryItem} from "../../../model/newHistoryItem";
 import routes from "../../../../constants/Routes";
 import {noImage} from "../../../../constants/themes";
+import {SEVERITY_TYPES} from "../../../common-notification";
+import mNotification from "../../../model/notification";
 
 // ID
 const CONTAINER = 'new-event-container';
@@ -102,6 +104,10 @@ class NewEvent extends WebElement {
         this.$historyItem.description = this.$(DESCRIPTION_COMPONENT).value;
         this.$historyItem.date = this.$(DATE_COMPONENT).value;
         this.$historyItem.eventType = this.$historyItem.eventType || this.$events[0];
+        if (!this.$historyItem.date && this.$historyItem.eventType !== 'APPEARANCE') {
+            mNotification.showMessage(t('exemplars.date_must_be_set'), SEVERITY_TYPES.INFO);
+            return;
+        }
         this.$historyItem.save(this.$exemplarId).then(() => {
                 window.location.hash = '/exemplar/' + this.$exemplarId;
         });
@@ -126,6 +132,7 @@ class NewEvent extends WebElement {
                 chooseItemCallback: item => this.$historyItem.eventType = item,
                 items: this.$events,
                 renderItem: item => item,
+                chosenItemIndex: this.$historyItem && this.$historyItem.eventType ? this.$events.indexOf(this.$historyItem.eventType) : 0
             }
         }
     }

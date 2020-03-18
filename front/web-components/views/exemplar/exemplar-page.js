@@ -2,23 +2,28 @@ import WebElement from '../../abstract/web-element';
 import '../../styled/action-button';
 import '../../components/image/image-with-text-and-zoom';
 
+import '../../router/router-link';
+
 import mModal from '../../model/modal';
 import { noImage } from '../../../constants/themes';
 import {t} from "../../utils/translateUtils";
 
 // ID
-const CONTAINER = 'page-container';
+const CONTAINER = 'exemplar-page-container';
 const BUTTON_CONTAINER = 'button-container';
 
 // TEMPLATE
-const DETAIL_TEMPLATE = 'detail_template';
+const DETAIL_TEMPLATE = 'detail-template';
 
-const CAPTION = 'recipe_page_caption';
-const DESCRIPTION = 'recipe_page_description';
-const DETAILS = 'recipe_page_details';
+const CAPTION = 'exemplar-page-caption';
+const ID_CAPTION = 'exemplar-page-id-caption';
+const DESCRIPTION = 'exemplar-page-description';
+const DESCRIPTION2 = 'exemplar-page-description2';
+const DESCRIPTION_VALUE = 'description-value';
+const DETAILS = 'exemplar-page-details';
 
 const DETAIL = 'detail';
-const DETAILS_DESCRIPTION = 'recipe_page_details_description';
+const DETAILS_DESCRIPTION = 'details-description';
 const DETAILS_DATE = 'details-date';
 const DETAILS_EVENT = 'details-event';
 
@@ -31,17 +36,22 @@ const template = `
     #${CONTAINER} {
     }
     
-    #${CAPTION} {
+    #${CAPTION}, #${ID_CAPTION} {
         font-size: var(--header-font-size);
         text-align: center;
         margin: 20px 0;
         text-shadow: var(--text-shadow);
     }
     
-    #${DESCRIPTION} {
-        text-align: justify;
+    #${DESCRIPTION}, #${DESCRIPTION2} {
         margin: 1rem;
-        white-space: pre-wrap;
+        display: flex;
+    }
+    
+    .${DESCRIPTION_VALUE} {
+        margin-left: 0.5rem;
+        color: var(--dark-dark-background);
+        cursor: pointer;
     }
     
     #${DETAILS} {
@@ -93,8 +103,10 @@ const template = `
  
   
   <div id='${CONTAINER}'>
-      <div id='${CAPTION}'></div>     
+      <div id='${CAPTION}'></div>   
+      <div id='${ID_CAPTION}'></div>  
       <div id='${DESCRIPTION}'></div>  
+      <div id='${DESCRIPTION2}'></div>  
       <div id='${DETAILS}'></div>
   </div>
 `;
@@ -127,30 +139,34 @@ class ExemplarPage extends WebElement {
         if (this.$exemplar) {
 
             this.$_id(CAPTION).textContent = `${this.$exemplar.name || ''} (${this.$exemplar.variety.name || ''})`;
+            this.$_id(ID_CAPTION).textContent = this.$exemplar.id;
 
-            let text = this.$exemplar.isSport ? t('exemplars.it_is_sport') : ' ';
-            text += `${this.$exemplar.parent && this.$exemplar.parent.id ? t('exemplars.parent_ref') + this.$exemplar.parent.name || '' : ''}`
-            this.$_id(DESCRIPTION).innerHTML = text;
+            this.$_id(DESCRIPTION2).innerHTML = this.$exemplar.isSport ? '<div>' + t('exemplars.it_is_sport') + '</div>' : ' ';
+            this.$_id(DESCRIPTION).innerHTML = `${this.$exemplar.parent && this.$exemplar.parent.id 
+                ? t('exemplars.parent_ref')
+                + '<div class="' + DESCRIPTION_VALUE + '"><router-link path="/exemplar/' 
+                + this.$exemplar.parent.id + '">'
+                + (this.$exemplar.parent.name || '') + '</router-link></div>' 
+                : ''}`
 
             if (this.$exemplar.history && this.$exemplar.history.length) {
                 this.$exemplar.history.forEach(detail => {
                     const detailTemplate = this.getTemplateById(DETAIL_TEMPLATE);
-                    if (detail.photo) {
-                        detailTemplate.byTag(IMAGE_COMPONENT).onConstruct = (comp) => {
+
+                    detailTemplate.byTag(IMAGE_COMPONENT).onConstruct = (comp) => {
                             comp.props = {
                                 brokenImageSrc: noImage,
                                 src: detail.photo,
                                 zoomedSrc: detail.photoFull,
                                 openFn: mModal.open
                             }
-                        }
-                        detailTemplate.byClass(DETAILS_DATE).textContent = detail.date;
-                        detailTemplate.byClass(DETAILS_EVENT).innerHTML = t(`events.${detail.eventType}`) + ' '
+                    }
+                    detailTemplate.byClass(DETAILS_DATE).textContent = detail.date;
+                    detailTemplate.byClass(DETAILS_EVENT).innerHTML = t(`events.${detail.eventType}`) + ' '
                             + (detail.eventNumber || '');
-                        detailTemplate.byTag(BUTTON_COMPONENT).onConstruct = (el) => {
+                    detailTemplate.byTag(BUTTON_COMPONENT).onConstruct = (el) => {
                             el.onClick = () => window.location.hash = '/exemplar/' + this.$exemplar.id + '/hi/' + detail.id + '/edit';
                         }
-                    }
                     detailTemplate.byClass(DETAILS_DESCRIPTION).textContent = detail.description;
                     this.$_id(DETAILS).appendChild(detailTemplate);
                 })

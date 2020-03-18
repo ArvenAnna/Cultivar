@@ -58,8 +58,8 @@ export class Variety extends Model {
                 description,
                 order,
                 [`${INTERNAL_ID_KEY}`]: detail[`${INTERNAL_ID_KEY}`],
-                photo: isTempImage ? photo : getImageSmallCopy(routes.IMAGE_CATALOG + photo),
-                photoFull: isTempImage ? photo : routes.IMAGE_CATALOG + photo
+                photo: isTempImage ? photo : photo && getImageSmallCopy(routes.IMAGE_CATALOG + photo),
+                photoFull: isTempImage ? photo : photo && (routes.IMAGE_CATALOG + photo)
             }
         });
     }

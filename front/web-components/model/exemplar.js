@@ -41,8 +41,8 @@ export class Exemplar extends Model {
             const isTempImage = hi.photo && `/${hi.photo}`.startsWith(routes.TEMP_CATALOG);
             return {
             ...hi,
-            photo: isTempImage ? hi.photo : getImageSmallCopy(routes.IMAGE_CATALOG + hi.photo),
-            photoFull: isTempImage ? hi.photo : routes.IMAGE_CATALOG + hi.photo
+            photo: isTempImage ? hi.photo : hi.photo && getImageSmallCopy(routes.IMAGE_CATALOG + hi.photo),
+            photoFull: isTempImage ? hi.photo : hi.photo && (routes.IMAGE_CATALOG + hi.photo)
         }});
     }
 

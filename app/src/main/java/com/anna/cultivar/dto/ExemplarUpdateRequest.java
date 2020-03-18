@@ -12,5 +12,5 @@ public class ExemplarUpdateRequest {
 	private VarietyBaseDto variety;
 	private String name;
 	private ExemplarDto parent;
-	private boolean isSport;
+	private boolean sport;
 }

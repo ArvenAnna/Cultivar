@@ -7,6 +7,8 @@ import '../../components/date/date-input';
 import '../../components/file-upload/photo-upload';
 import '../../components/drop-down/drop-down';
 
+import '../../router/router-link';
+
 import mModal from '../../model/modal';
 import { noImage } from '../../../constants/themes';
 import {t} from "../../utils/translateUtils";
@@ -16,6 +18,7 @@ import routes from "../../../constants/Routes";
 const CONTAINER = 'leaf-page-container';
 const CAPTION = 'leaf-page-caption';
 const DESCRIPTION = 'leaf-page-description';
+const DESCRIPTION_VALUE = 'description-value';
 
 // TEMPLATE
 const DETAIL_TEMPLATE = 'detail_template';
@@ -49,7 +52,13 @@ const template = `
     #${DESCRIPTION} {
         text-align: justify;
         margin: 1rem;
-        white-space: pre-wrap;
+        display: flex;
+    }
+    
+    .${DESCRIPTION_VALUE} {
+        margin-left: 0.5rem;
+        color: var(--dark-dark-background);
+        cursor: pointer;
     }
 
     .${DETAILS_DESCRIPTION} {
@@ -189,16 +198,19 @@ class LeafPage extends WebElement {
         this._clearPage();
 
         if (this._leaf) {
-
             this.$_id(CAPTION).textContent = `${this._leaf.variety.name || ''} (leaf ${this._leaf.id})`;
-            let text = `${this._leaf.parent && this._leaf.parent.id ? t('exemplars.parent_ref') + this._leaf.parent.name || '' : ''}`;
-            this.$_id(DESCRIPTION).textContent = text;
+
+            this.$_id(DESCRIPTION).innerHTML = `${this._leaf.parent && this._leaf.parent.id
+                ? t('exemplars.parent_ref')
+                + '<div class="' + DESCRIPTION_VALUE + '"><router-link path="/exemplar/'
+                + this._leaf.parent.id + '">'
+                + (this._leaf.parent.name || '') + '</router-link></div>'
+                : ''}`
 
             if (this._leaf.history && this._leaf.history.length) {
                 this._leaf.history.forEach(detail => {
                     const detailTemplate = this.getTemplateById(DETAIL_TEMPLATE);
-                    if (detail.photo) {
-                        detailTemplate.byTag(IMAGE_COMPONENT).onConstruct = (comp) => {
+                    detailTemplate.byTag(IMAGE_COMPONENT).onConstruct = (comp) => {
                             comp.props = {
                                 brokenImageSrc: noImage,
                                 src: detail.photo,
@@ -206,8 +218,8 @@ class LeafPage extends WebElement {
                                 openFn: mModal.open
                             }
                         }
-                        detailTemplate.byClass(DETAILS_DATE).textContent = detail.date;
-                        detailTemplate.byClass(DETAILS_EVENT).innerHTML = t(`events.${detail.eventType}`);
+                    detailTemplate.byClass(DETAILS_DATE).textContent = detail.date;
+                    detailTemplate.byClass(DETAILS_EVENT).innerHTML = t(`events.${detail.eventType}`);
                         if (detail.eventType !== "APPEARANCE") {
                             detailTemplate.byTag(BUTTON_COMPONENT).onConstruct = (el) => {
                                 el.onClick = () => {
@@ -218,7 +230,6 @@ class LeafPage extends WebElement {
                             detailTemplate.byTag(BUTTON_COMPONENT).remove();
                         }
 
-                    }
                     detailTemplate.byClass(DETAILS_DESCRIPTION).textContent = detail.description;
                     this.$('tbody').appendChild(detailTemplate);
                 });

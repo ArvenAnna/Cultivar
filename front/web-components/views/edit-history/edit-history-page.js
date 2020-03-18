@@ -84,7 +84,7 @@ class EditHistoryPage extends WebElement {
             this.$(EVENT_COMPONENT).props = {
                 exemplarId: this.$exemplarId,
                 events: this.$events,
-                hi: this.$hi
+                hi: this.$hi,
             }
         }
     }

@@ -4,6 +4,8 @@ import '../../../components/suggestions-chooser';
 
 import {t} from '../../../utils/translateUtils';
 import {retrieveVarietiesByKeyword} from "../../../utils/asyncRequests";
+import {SEVERITY_TYPES} from "../../../common-notification";
+import mNotification from "../../../model/notification";
 
 // ID
 const CONTAINER = 'sport-of-container';
@@ -64,15 +66,19 @@ class SportOf extends WebElement {
                 getSuggestionsPromise: this._retrieveVarietiesByKeyword,
                 renderSuggestionCallback: suggestion => suggestion.name,
                 addItemCallback: (item) => {
-                    this._retrieveVarietiesByKeyword(item).then(itms => {
-                        const variety = itms.find(i => i.name === item);
-                        if (variety) {
-                            this.$variety.sportOf = variety;
-                            this.$(REMOVABLE_TAG_COMPONENT).innerHTML = variety.name;
-                            this.$(REMOVABLE_TAG_COMPONENT).style.display = 'block';
-                            this.$(SUGGESTION_INPUT_COMPONENT).style.display = 'none';
-                        }
-                    })
+                    if (!item) {
+                        mNotification.showMessage(t('common.you_should_choose_value'), SEVERITY_TYPES.INFO)
+                    } else {
+                        this._retrieveVarietiesByKeyword(item).then(itms => {
+                            const variety = itms.find(i => i.name === item);
+                            if (variety) {
+                                this.$variety.sportOf = variety;
+                                this.$(REMOVABLE_TAG_COMPONENT).innerHTML = variety.name;
+                                this.$(REMOVABLE_TAG_COMPONENT).style.display = 'block';
+                                this.$(SUGGESTION_INPUT_COMPONENT).style.display = 'none';
+                            }
+                        })
+                    }
                 }
             }
         }

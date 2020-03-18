@@ -62,7 +62,6 @@ public class ExemplarController {
 	}
 
 
-
 	// exemplar history methods: could not be separated to separate controller due to SpringMvc limitation
 
 	@RequestMapping(value = {"/{exemplarId}/history/{hiId}"}, method = RequestMethod.GET)

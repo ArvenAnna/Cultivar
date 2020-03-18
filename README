@@ -20,28 +20,8 @@ To start application you need:
 TODO:
 
 4. Add Russian translations
-
-8. When date is changed inside new-event element - do fetch new events
-11. check the allowed events logic on history editing
-
 12. Filter on list by event type "DISAPPEARED"
 
-new variety -> can not choose sport of (only new, with edit all ok)
-(it is bug with pressing + button without chosen variant)
-
-pagination is not working
-we should not have possibility to create exemplar without variety name
-
-a lot of incorrect picture requests in console
-
-add slider to history to see how it was
-
-remove possibility to add null date to exemplar history as it will break sorting by date
-
-exemplar search by variety doesn't work
-
-add concept of group photo
-
-when exemplar update current event type should be default!
-
-add exemplar number to display (id)
+features:
+	add slider to history to see how it was
+	add concept of group photo

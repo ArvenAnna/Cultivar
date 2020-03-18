@@ -3,7 +3,9 @@ import '../../../components/tag/removable-tag';
 import '../../../components/suggestions-chooser';
 
 import {t} from '../../../utils/translateUtils';
-import {retrieveVarietiesByKeyword} from "../../../utils/asyncRequests";
+import {retrieveVarietiesByKeyword} from '../../../utils/asyncRequests';
+import mNotification from '../../../model/notification';
+import {SEVERITY_TYPES} from "../../../common-notification";
 
 // ID
 const CONTAINER = 'variety-selector-container';
@@ -72,14 +74,18 @@ class VarietySelector extends WebElement {
                 getSuggestionsPromise: this._retrieveVarietiesByKeyword,
                 renderSuggestionCallback: suggestion => suggestion.name,
                 addItemCallback: (item) => {
-                    this._retrieveVarietiesByKeyword(item).then(items => {
-                        const variety = items.find(i => i.name === item);
-                        if (variety) {
-                            this.$exemplar.variety = variety;
-                            this._renderRemovableTag(variety.name);
-                            this.$(SUGGESTION_INPUT_COMPONENT).style.display = 'none';
-                        }
-                    })
+                    if (!item) {
+                        mNotification.showMessage(t('common.you_should_choose_value'), SEVERITY_TYPES.INFO)
+                    } else {
+                        this._retrieveVarietiesByKeyword(item).then(items => {
+                            const variety = items.find(i => i.name === item);
+                            if (variety) {
+                                this.$exemplar.variety = variety;
+                                this._renderRemovableTag(variety.name);
+                                this.$(SUGGESTION_INPUT_COMPONENT).style.display = 'none';
+                            }
+                        })
+                    }
                 }
             }
         }

@@ -36,11 +36,11 @@ export class HistoryItem extends Model {
     }
 
     get photo() {
-        return getImageSmallCopy(this._hi.photo && routes.IMAGE_CATALOG + this._hi.photo);
+        return getImageSmallCopy(this._hi.photo && (routes.IMAGE_CATALOG + this._hi.photo));
     }
 
     get photoFull() {
-        return this._hi.photo && routes.IMAGE_CATALOG + this._hi.photo;
+        return this._hi.photo && (routes.IMAGE_CATALOG + this._hi.photo);
     }
 
     retrieve(exemplarId, id) {

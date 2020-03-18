@@ -4,7 +4,7 @@
   "new_exemplar": "New exemplar",
   "edit_exemplar": "Edit exemplar",
   "it_is_sport": "It is sport",
-  "parent_ref": "Reference on parent exemplar",
+  "parent_ref": "Reference on parent exemplar:",
   "exemplar_name": "Exemplar name ",
   "choose_variety": "Choose variety ",
   "choose_parent": "Choose parent exemplar ",
@@ -13,5 +13,7 @@
   "add_event": "Add new event for this exemplar",
   "choose_event_type": "Choose event type",
   "edit_exemplar_history": "Edit exemplar history",
-  "delete_history": "If you want delete history item click button"
+  "delete_history": "If you want delete history item click button",
+  "must_choose_variety": "You must choose variety for exemplar",
+  "date_must_be_set": "Event date must be set"
 }

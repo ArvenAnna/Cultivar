@@ -13,6 +13,8 @@ import './parts/new-event';
 import {t} from '../../utils/translateUtils';
 import routes from '../../../constants/Routes';
 import {noImage} from '../../../constants/themes';
+import mNotification from '../../model/notification';
+import {SEVERITY_TYPES} from "../../common-notification";
 
 // ID
 const CONTAINER = 'create-exemplar-page-container';
@@ -149,6 +151,10 @@ class CreateExemplarPage extends WebElement {
         this.$exemplar.description = this.$(DESCRIPTION_COMPONENT).value;
         this.$exemplar.date = this.$(DATE_COMPONENT).value;
         this.$exemplar.isSport = this.$(CHECKBOX_COMPONENT).value;
+        if (!this.$exemplar.variety || !this.$exemplar.variety.id) {
+            mNotification.showMessage(t('exemplars.must_choose_variety'), SEVERITY_TYPES.INFO);
+            return;
+        }
         this.$exemplar.save().then(id => {
             window.location.hash = '/exemplar/' + id;
         });

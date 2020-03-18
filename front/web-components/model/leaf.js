@@ -2,7 +2,6 @@ import routes, {getImageSmallCopy} from '../../constants/Routes';
 import Model from '../abstract/model';
 import {doVoidJsonRequest, getResponse} from "../utils/httpUtils";
 import mNotification from "./notification";
-import {INTERNAL_ID_KEY} from '../../constants/common';
 import {SEVERITY_TYPES} from "../common-notification";
 
 export class Leaf extends Model {
@@ -35,7 +34,7 @@ export class Leaf extends Model {
             const isTempImage = hi.photo && `/${hi.photo}`.startsWith(routes.TEMP_CATALOG);
             return {
                 ...hi,
-                photo: isTempImage ? hi.photo : getImageSmallCopy(routes.IMAGE_CATALOG + hi.photo),
+                photo: isTempImage ? hi.photo : hi.photo && getImageSmallCopy(routes.IMAGE_CATALOG + hi.photo),
                 photoFull: isTempImage ? hi.photo : routes.IMAGE_CATALOG + hi.photo
             }});
     }
