@@ -11,6 +11,7 @@ const template = `
     #${CONTAINER} {
        cursor: pointer;
        height: 100%
+       display: flex;
     }
     
     #${ICON} {

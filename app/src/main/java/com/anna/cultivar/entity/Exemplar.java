@@ -60,7 +60,7 @@ public class Exemplar {
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Leaf> leaves = new ArrayList<>();
 
-	public static Exemplar of(ExemplarCreationRequest request) {
+	public static Exemplar of(ExemplarCreationRequest request, Variety variety) {
 		Exemplar entity = new Exemplar();
 		entity.setName(request.getName());
 		entity.setSport(request.isSport());
@@ -69,16 +69,12 @@ public class Exemplar {
 			parent.setId(parentEx.getId());
 			entity.setParent(parent);
 		});
-		Optional.ofNullable(request.getVariety()).map(VarietyBaseDto::getId).ifPresent(id -> {
-			Variety v = new Variety();
-			v.setId(id);
-			entity.setVariety(v);
-		});
+		entity.setVariety(variety);
 
 		return entity;
 	}
 
-	public static Exemplar of(ExemplarUpdateRequest request, Exemplar entity) {
+	public static Exemplar of(ExemplarUpdateRequest request, Exemplar entity, Variety variety) {
 		entity.setId(request.getId());
 		entity.setName(request.getName());
 		entity.setSport(request.isSport());
@@ -88,11 +84,7 @@ public class Exemplar {
 			return parent;
 		}).orElse(null);
 		entity.setParent(parentExemplar);
-		Optional.ofNullable(request.getVariety()).map(VarietyBaseDto::getId).ifPresent(id -> {
-			Variety v = new Variety();
-			v.setId(id);
-			entity.setVariety(v);
-		});
+		entity.setVariety(variety);
 
 		return entity;
 	}

@@ -28,6 +28,10 @@ export class Exemplar extends Model {
         return { ... this._exemplar.parent};
     }
 
+    get parentLeaf() {
+        return { ... this._exemplar.parentLeaf};
+    }
+
     get isSport() {
         return this._exemplar.sport;
     }

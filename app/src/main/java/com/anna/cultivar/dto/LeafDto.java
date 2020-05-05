@@ -27,4 +27,10 @@ public class LeafDto {
 				.history(entity.getHistory().stream().map(LeafHistoryDto::of).collect(Collectors.toList()))
 				.build();
 	}
+
+	public static LeafDto ofParent(Leaf entity) {
+		return LeafDto.builder()
+				.id(entity.getId())
+				.build();
+	}
 }

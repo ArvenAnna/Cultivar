@@ -103,7 +103,7 @@ class NewEvent extends WebElement {
     _save() {
         this.$historyItem.description = this.$(DESCRIPTION_COMPONENT).value;
         this.$historyItem.date = this.$(DATE_COMPONENT).value;
-        this.$historyItem.eventType = this.$historyItem.eventType || this.$events[0];
+        this.$historyItem.eventType = this.$historyItem.eventType || 'GROW';
         if (!this.$historyItem.date && this.$historyItem.eventType !== 'APPEARANCE') {
             mNotification.showMessage(t('exemplars.date_must_be_set'), SEVERITY_TYPES.INFO);
             return;
@@ -132,7 +132,7 @@ class NewEvent extends WebElement {
                 chooseItemCallback: item => this.$historyItem.eventType = item,
                 items: this.$events,
                 renderItem: item => item,
-                chosenItemIndex: this.$historyItem && this.$historyItem.eventType ? this.$events.indexOf(this.$historyItem.eventType) : 0
+                chosenItemIndex: this.$historyItem && this.$historyItem.eventType ? this.$events.indexOf(this.$historyItem.eventType) : this.$events.indexOf('GROW')
             }
         }
     }

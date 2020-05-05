@@ -20,7 +20,7 @@ To start application you need:
 TODO:
 
 4. Add Russian translations
-12. Filter on list by event type "DISAPPEARED"
+12. Filter on list by event type "DISAPPEARED", exemplars also, but need to have links to exemplars in variety page
 
 features:
 	add slider to history to see how it was

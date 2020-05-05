@@ -1,6 +1,7 @@
 import WebElement from './abstract/web-element';
 import './styled/input-text';
 import './styled/action-button';
+import './styled/check-box';
 import './components/expandable-block';
 import './components/suggestions-chooser';
 import './components/lists/tags-list';
@@ -40,6 +41,9 @@ const BUTTON_CONTAINER = 'search-button-container';
 
 const SEARCH_CAPTION = 'search-caption';
 
+const EXEMPLAR_CLOSED = 'exemplar-closed';
+const LEAF_CLOSED = 'leaf-closed';
+
 // COMPONENTS
 const INPUT_COMPONENT = 'input-text';
 const AUTHOR_SELECTOR_COMPONENT = 'author-selector';
@@ -48,6 +52,8 @@ const SPORT_OF_SELECTOR_COMPONENT = 'sport-of';
 const VARIETY_SELECTOR_COMPONENT = 'variety-selector';
 
 const BUTTON_COMPONENT = 'action-button';
+const CHECKBOX_COMPONENT = 'check-box';
+
 
 const template = `
     <style>
@@ -96,16 +102,20 @@ const template = `
             <${BUTTON_COMPONENT} id='${VARIETIES_SEARCH_RESET}' text='${t('search.reset')}'></${BUTTON_COMPONENT}>
         </div>
         <hr/>
+        
         <div class='${SEARCH_CAPTION}'>${t('search.exemplars')}</div>
         <div class='${ELEMENT_CONTAINER}'>${t('search.search_string')}<${INPUT_COMPONENT} id='${EXEMPLARS_SEARCH_INPUT}'></${INPUT_COMPONENT}></div>
         <${VARIETY_SELECTOR_COMPONENT} id='${EXEMPLARS_VARIETY_SEARCH}'></${VARIETY_SELECTOR_COMPONENT}>
+        <${CHECKBOX_COMPONENT} id='${EXEMPLAR_CLOSED}'></${CHECKBOX_COMPONENT}>
         <div class='${BUTTON_CONTAINER}'>
             <${BUTTON_COMPONENT} id='${EXEMPLARS_SEARCH_APPLY}' text='${t('search.apply')}'></${BUTTON_COMPONENT}>
             <${BUTTON_COMPONENT} id='${EXEMPLARS_SEARCH_RESET}' text='${t('search.reset')}'></${BUTTON_COMPONENT}>
         </div>
         <hr/>
+        
         <div class='${SEARCH_CAPTION}'>${t('search.leaves')}</div>
         <${VARIETY_SELECTOR_COMPONENT} id='${LEAVES_VARIETY_SEARCH}'></${VARIETY_SELECTOR_COMPONENT}>
+        <${CHECKBOX_COMPONENT} id='${LEAF_CLOSED}'></${CHECKBOX_COMPONENT}>
         <div class='${BUTTON_CONTAINER}'>
             <${BUTTON_COMPONENT} id='${LEAVES_SEARCH_APPLY}' text='${t('search.apply')}'></${BUTTON_COMPONENT}>
             <${BUTTON_COMPONENT} id='${LEAVES_SEARCH_RESET}' text='${t('search.reset')}'></${BUTTON_COMPONENT}>
@@ -149,6 +159,9 @@ class SearchSidebar extends WebElement {
         this.$_id(LEAVES_SEARCH_APPLY).addEventListener('click', this._onApplyLeavesSearch);
         this.$_id(LEAVES_SEARCH_RESET).addEventListener('click', mLeavesSearch.reset);
 
+        this.$_id(EXEMPLAR_CLOSED).value = true;
+        this.$_id(LEAF_CLOSED).value = true;
+
         this._render();
     }
 
@@ -179,12 +192,14 @@ class SearchSidebar extends WebElement {
         mExemplarsSearch.searchByParams({
             value: this.$_id(EXEMPLARS_SEARCH_INPUT).value && this.$_id(EXEMPLARS_SEARCH_INPUT).value.trim(),
             variety: this.$chosenExemplar.variety && this.$chosenExemplar.variety.id,
+            closed: this.$_id(EXEMPLAR_CLOSED).value
         })
     }
 
     _onApplyLeavesSearch() {
         mLeavesSearch.searchByParams({
             variety: this.$chosenLeaf.variety && this.$chosenLeaf.variety.id,
+            closed: this.$_id(LEAF_CLOSED).value
         })
     }
 

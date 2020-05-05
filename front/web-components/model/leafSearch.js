@@ -4,6 +4,7 @@ import {PAGE_SIZE} from '../../constants/limits';
 
 const DEFAULT_SEARCH_STRING = '';
 const DEFAULT_PAGE_NUMBER = 0;
+const DEFAULT_CLOSED = true;
 const DEFAULT_SEARCH_URL = `?page=${DEFAULT_PAGE_NUMBER}&size=${PAGE_SIZE}`;
 
 class Search extends Model {
@@ -12,6 +13,7 @@ class Search extends Model {
         super();
         this.$searchString = DEFAULT_SEARCH_STRING;
         this.$variety = null;
+        this.$closed = DEFAULT_CLOSED;
         this.$pageSize = PAGE_SIZE;
         this.$pageNumber = DEFAULT_PAGE_NUMBER;
         this.$searchUrl = DEFAULT_SEARCH_URL;
@@ -34,6 +36,10 @@ class Search extends Model {
         return this.$variety;
     }
 
+    get closed() {
+        return this.$closed;
+    }
+
     get page() {
         return this.$pageNumber;
     }
@@ -43,11 +49,13 @@ class Search extends Model {
         const PARAMS = {
             VALUE: 'value',
             VARIETY: 'varietyId',
-            PAGE_SIZE: 'pageSize',
+            CLOSED: 'closed',
+            PAGE_SIZE: 'size',
             PAGE_NUMBER: 'pageNumber'
         }
         this.$searchString = '';
         this.$variety = null;
+        this.$closed = DEFAULT_CLOSED;
         this.$pageSize = PAGE_SIZE;
         this.$pageNumber = 0;
 
@@ -64,6 +72,9 @@ class Search extends Model {
                     break;
                 case PARAMS.VARIETY:
                     this.$variety = parseInt(paramValue);
+                    break;
+                case PARAMS.CLOSED:
+                    this.$closed = paramValue === 'true';
                     break;
                 case PARAMS.PAGE_SIZE:
                     this.$pageSize = parseInt(paramValue);
@@ -84,6 +95,7 @@ class Search extends Model {
     searchByParams(params) {
         this.$searchString = params.value || this.$searchString;
         this.$variety = params.variety;
+        this.$closed = params.closed;
         this.$pageSize = params.pageSize || this.$pageSize;
         this.$pageNumber = params.pageNumber || this.$pageNumber;
 
@@ -98,6 +110,7 @@ class Search extends Model {
     _reset() {
         this.$searchString = DEFAULT_SEARCH_STRING;
         this.$variety = null;
+        this.$closed = DEFAULT_CLOSED;
         this.$pageSize = PAGE_SIZE;
         this.$pageNumber = DEFAULT_PAGE_NUMBER;
     }
@@ -112,6 +125,9 @@ class Search extends Model {
 
         if (this.$variety) {
             searchUrl = `${searchUrl}&varietyId=${this.$variety}`
+        }
+        if (this.$closed !== null) {
+            searchUrl = `${searchUrl}&closed=${this.$closed}`
         }
 
         this.$searchUrl = searchUrl;

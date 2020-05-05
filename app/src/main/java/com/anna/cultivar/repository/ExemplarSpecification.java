@@ -5,9 +5,16 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 
+import com.anna.cultivar.entity.ExemplarHistory;
+import com.anna.recept.entity.Recipe;
+import org.hibernate.Criteria;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.anna.cultivar.dto.ExemplarSearchParams;
@@ -33,6 +40,21 @@ public class ExemplarSpecification implements Specification<Exemplar> {
 		if (searchParams.getVarietyId() != null) {
 			predicates.add(cb.equal(exRoot.get("variety"), searchParams.getVarietyId()));
 		}
+
+		if (searchParams.getClosed() != null && !searchParams.getClosed()) {
+			Subquery<Exemplar> sq = query.subquery(Exemplar.class);
+
+			Root<ExemplarHistory> history = sq.from(ExemplarHistory.class);
+			Join<ExemplarHistory, Exemplar> historyJoin = history.join("exemplar", JoinType.INNER);
+
+			sq.select(historyJoin).where(cb.equal(history.get("eventType"), ExemplarHistory.ExemplarEvent.DISAPPEARANCE));
+
+
+			Predicate containClosedHistoryPredicate = cb.in(exRoot).value(sq).not();
+			predicates.add(containClosedHistoryPredicate);
+		}
+
+		query.distinct(true);
 
 		return cb.and(predicates.toArray(new Predicate[0]));
 	}

@@ -21,6 +21,7 @@ public class ExemplarDto {
 	private String name;
 	private VarietyBaseDto variety;
 	private ExemplarDto parent;
+	private LeafDto parentLeaf;
 	private boolean sport;
 	private List<ExemplarHistoryDto> history;
 
@@ -30,6 +31,7 @@ public class ExemplarDto {
 				.name(entity.getName())
 				.variety(Optional.ofNullable(entity.getVariety()).map(VarietyBaseDto::of).orElse(null))
 				.parent(Optional.ofNullable(entity.getParent()).map(ExemplarDto::ofParent).orElse(null))
+				.parentLeaf(Optional.ofNullable(entity.getParentLeaf()).map(LeafDto::ofParent).orElse(null))
 				.sport(entity.isSport())
 				.history(Stream.concat(entity.getHistory().stream().filter(dto -> dto.getDate() == null),
 						entity.getHistory().stream()

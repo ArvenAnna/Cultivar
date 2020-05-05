@@ -8,4 +8,5 @@ import lombok.Setter;
 public class ExemplarSearchParams {
 	private String search;
 	private Long varietyId;
+	private Boolean closed;
 }

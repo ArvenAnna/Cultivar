@@ -4,6 +4,8 @@ RUN mkdir -p /usr/src/app
 
 COPY . /usr/src/app
 
+#COPY daemon.json /etc/docker/daemon.json
+
 WORKDIR /usr/src/app
 
 RUN npm install

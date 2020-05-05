@@ -19,6 +19,7 @@ const CAPTION = 'exemplar-page-caption';
 const ID_CAPTION = 'exemplar-page-id-caption';
 const DESCRIPTION = 'exemplar-page-description';
 const DESCRIPTION2 = 'exemplar-page-description2';
+const DESCRIPTION3 = 'exemplar-page-description3';
 const DESCRIPTION_VALUE = 'description-value';
 const DETAILS = 'exemplar-page-details';
 
@@ -26,6 +27,9 @@ const DETAIL = 'detail';
 const DETAILS_DESCRIPTION = 'details-description';
 const DETAILS_DATE = 'details-date';
 const DETAILS_EVENT = 'details-event';
+
+const EDIT_BUTTON = 'edit-button';
+const DOWNLOAD_BUTTON = 'download-button';
 
 // COMPONENTS
 const BUTTON_COMPONENT = 'action-button';
@@ -43,7 +47,7 @@ const template = `
         text-shadow: var(--text-shadow);
     }
     
-    #${DESCRIPTION}, #${DESCRIPTION2} {
+    #${DESCRIPTION}, #${DESCRIPTION2}, #${DESCRIPTION3} {
         margin: 1rem;
         display: flex;
     }
@@ -83,6 +87,8 @@ const template = `
        margin: 1rem 0;
        display: flex;
        justify-content: center;
+       flex-direction: column;
+       align-items: center;
     }
     
   </style>
@@ -94,7 +100,8 @@ const template = `
             <div class='${DETAILS_DATE}'></div>
             <div class='${DETAILS_EVENT}'></div>
             <div class='${BUTTON_CONTAINER}'>
-                <${BUTTON_COMPONENT} text='${t('common.edit')}'></${BUTTON_COMPONENT}>
+                <${BUTTON_COMPONENT} class='${EDIT_BUTTON}' text='${t('common.edit')}'></${BUTTON_COMPONENT}>
+                <a><${BUTTON_COMPONENT} class='${DOWNLOAD_BUTTON}' text='${t('common.download')}'></${BUTTON_COMPONENT}></a>
             </div>
         </${IMAGE_COMPONENT}>        
     </div>
@@ -106,7 +113,8 @@ const template = `
       <div id='${CAPTION}'></div>   
       <div id='${ID_CAPTION}'></div>  
       <div id='${DESCRIPTION}'></div>  
-      <div id='${DESCRIPTION2}'></div>  
+      <div id='${DESCRIPTION2}'></div> 
+      <div id='${DESCRIPTION3}'></div>   
       <div id='${DETAILS}'></div>
   </div>
 `;
@@ -147,7 +155,12 @@ class ExemplarPage extends WebElement {
                 + '<div class="' + DESCRIPTION_VALUE + '"><router-link path="/exemplar/' 
                 + this.$exemplar.parent.id + '">'
                 + (this.$exemplar.parent.name || '') + '</router-link></div>' 
-                : ''}`
+                : ''}`;
+            this.$_id(DESCRIPTION3).innerHTML = `${this.$exemplar.parentLeaf && this.$exemplar.parentLeaf.id
+                ? '<div class="' + DESCRIPTION_VALUE + '"><router-link path="/leaves/'
+                + this.$exemplar.parentLeaf.id + '">'
+                + t('exemplars.parent_leaf_ref') + '</router-link></div>'
+                : ''}`;
 
             if (this.$exemplar.history && this.$exemplar.history.length) {
                 this.$exemplar.history.forEach(detail => {
@@ -164,9 +177,19 @@ class ExemplarPage extends WebElement {
                     detailTemplate.byClass(DETAILS_DATE).textContent = detail.date;
                     detailTemplate.byClass(DETAILS_EVENT).innerHTML = t(`events.${detail.eventType}`) + ' '
                             + (detail.eventNumber || '');
-                    detailTemplate.byTag(BUTTON_COMPONENT).onConstruct = (el) => {
+                    detailTemplate.byClass(EDIT_BUTTON).onConstruct = (el) => {
                             el.onClick = () => window.location.hash = '/exemplar/' + this.$exemplar.id + '/hi/' + detail.id + '/edit';
-                        }
+                        };
+
+                    if (detail.photoFull) {
+                        const fileNameParts = detail.photoFull.split('/');
+
+                        detailTemplate.byTag('a').download = fileNameParts.pop();
+                        detailTemplate.byTag('a').href = detail.photoFull;
+                    } else {
+                        detailTemplate.byClass(DOWNLOAD_BUTTON).remove();
+                    }
+
                     detailTemplate.byClass(DETAILS_DESCRIPTION).textContent = detail.description;
                     this.$_id(DETAILS).appendChild(detailTemplate);
                 })

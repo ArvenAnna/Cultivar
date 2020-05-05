@@ -7,4 +7,5 @@ import lombok.Setter;
 @Setter
 public class LeafSearchParams {
 	private Long varietyId;
+	private Boolean closed;
 }

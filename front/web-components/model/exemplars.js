@@ -18,7 +18,7 @@ class Exemplars extends Model {
     }
 
     get exemplars() {
-        const getImgPath = (item) =>  item.history.map(hi => hi.photo).filter(photo => photo)[0];
+        const getImgPath = (item) =>  item.history.map(hi => hi.photo).filter(photo => photo).pop();
 
         return this._exemplars.map(item => ({
             id: item.id,

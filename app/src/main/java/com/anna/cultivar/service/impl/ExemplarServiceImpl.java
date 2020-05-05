@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.anna.cultivar.entity.Leaf;
+import com.anna.cultivar.entity.Variety;
 import com.anna.cultivar.repository.LeafRepository;
+import com.anna.cultivar.repository.VarietyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +34,8 @@ public class ExemplarServiceImpl implements ExemplarService {
 	private LeafRepository leafRepository;
 	@Autowired
 	private FileServiceImpl fileService;
+	@Autowired
+	private VarietyRepository varietyRepository;
 
 	@Transactional
 	@Override
@@ -57,7 +61,8 @@ public class ExemplarServiceImpl implements ExemplarService {
 	@Transactional
 	@Override
 	public ExemplarDto save(ExemplarCreationRequest dto) {
-		Exemplar entity = Exemplar.of(dto);
+		Variety variety = varietyRepository.getOne(dto.getVariety().getId());
+		Exemplar entity = Exemplar.of(dto, variety);
 		if (dto.getParentLeaf() != null) {
 			Leaf leaf = leafRepository.getOne(dto.getParentLeaf().getId());
 			entity.setParentLeaf(leaf);
@@ -78,7 +83,7 @@ public class ExemplarServiceImpl implements ExemplarService {
 	}
 
 	private String saveFile(String photo, Exemplar entity) {
-		return fileService.saveExemplarFile(photo, entity.getName());
+		return fileService.saveExemplarFile(photo, entity.getVariety().getName());
 	}
 
 	@Transactional
@@ -98,7 +103,8 @@ public class ExemplarServiceImpl implements ExemplarService {
 	@Override
 	public ExemplarDto update(ExemplarUpdateRequest dto) {
 		Exemplar existingEntity = exemplarRepository.getOne(dto.getId());
-		Exemplar entity = Exemplar.of(dto, existingEntity);
+		Variety variety = varietyRepository.getOne(dto.getVariety().getId());
+		Exemplar entity = Exemplar.of(dto, existingEntity, variety);
 		saveAllFiles(entity);
 		return ExemplarDto.of(exemplarRepository.saveAndFlush(entity));
 	}

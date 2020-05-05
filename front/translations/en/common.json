@@ -1,6 +1,7 @@
 {
   "save": "Save",
   "edit": "Edit",
+  "download": "Download",
   "delete": "Delete",
   "processing": "processing",
   "successfully_saved": "Data was saved",
