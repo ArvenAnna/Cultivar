@@ -13,12 +13,17 @@ import mModal from '../../model/modal';
 import { noImage } from '../../../constants/themes';
 import {t} from "../../utils/translateUtils";
 import routes from "../../../constants/Routes";
+import mExemplarsSearch from '../../model/exemplarSearch';
 
 // ID
 const CONTAINER = 'leaf-page-container';
 const CAPTION = 'leaf-page-caption';
 const DESCRIPTION = 'leaf-page-description';
 const DESCRIPTION_VALUE = 'description-value';
+const CHILDREN_BUTTON = 'leaf-page-children';
+
+const META_INFO_CONTAINER = 'leaf-page-meta-info';
+
 
 // TEMPLATE
 const DETAIL_TEMPLATE = 'detail_template';
@@ -39,6 +44,14 @@ const template = `
   <style>
     #${CONTAINER} {
         position: relative;
+    }
+    
+    .${META_INFO_CONTAINER} {
+        font-size: var(--normal-font-size);
+        margin: 20px 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
     
     #${CAPTION} {
@@ -109,7 +122,8 @@ const template = `
   </template>
   
   <div id='${CONTAINER}'>
-      <div id='${CAPTION}'></div>     
+      <div id='${CAPTION}'></div>
+      <div class='${META_INFO_CONTAINER}'><${BUTTON_COMPONENT} id='${CHILDREN_BUTTON}' text='${t('leaves.children')}'></${BUTTON_COMPONENT}></div>
       <div id='${DESCRIPTION}'></div>  
       <table>
             <caption>${t('leaves.history')}</caption>
@@ -147,6 +161,15 @@ class LeafPage extends WebElement {
         this._renderCreationRow = this._renderCreationRow.bind(this);
 
         this._save = this._save.bind(this);
+
+        this.$_id(CHILDREN_BUTTON).onClick = () => {
+            if (this._leaf) {
+                mExemplarsSearch.searchByParams({
+                    childrenForLeaf: this._leaf.id,
+                });
+            }
+
+        };
     }
 
     _clearPage() {

@@ -7,6 +7,7 @@ import '../../router/router-link';
 import mModal from '../../model/modal';
 import { noImage } from '../../../constants/themes';
 import {t} from "../../utils/translateUtils";
+import mExemplarsSearch from '../../model/exemplarSearch';
 
 // ID
 const CONTAINER = 'exemplar-page-container';
@@ -17,11 +18,15 @@ const DETAIL_TEMPLATE = 'detail-template';
 
 const CAPTION = 'exemplar-page-caption';
 const ID_CAPTION = 'exemplar-page-id-caption';
+const SAME_VARIETY_BUTTON = 'exemplar-page-same-button';
+const SEE_CHILDREN_BUTTON = 'exemplar-page-children';
 const DESCRIPTION = 'exemplar-page-description';
 const DESCRIPTION2 = 'exemplar-page-description2';
 const DESCRIPTION3 = 'exemplar-page-description3';
 const DESCRIPTION_VALUE = 'description-value';
 const DETAILS = 'exemplar-page-details';
+const META_INFO_CONTAINER = 'exemplar-page-meta-info';
+
 
 const DETAIL = 'detail';
 const DETAILS_DESCRIPTION = 'details-description';
@@ -40,11 +45,19 @@ const template = `
     #${CONTAINER} {
     }
     
-    #${CAPTION}, #${ID_CAPTION} {
+    #${CAPTION} {
         font-size: var(--header-font-size);
         text-align: center;
         margin: 20px 0;
         text-shadow: var(--text-shadow);
+    }
+    
+    .${META_INFO_CONTAINER} {
+        font-size: var(--normal-font-size);
+        margin: 20px 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
     
     #${DESCRIPTION}, #${DESCRIPTION2}, #${DESCRIPTION3} {
@@ -110,8 +123,12 @@ const template = `
  
   
   <div id='${CONTAINER}'>
-      <div id='${CAPTION}'></div>   
-      <div id='${ID_CAPTION}'></div>  
+      <div id='${CAPTION}'></div>  
+      <div class='${META_INFO_CONTAINER}'>
+        <div>Id:<span id='${ID_CAPTION}'></span> </div>
+        <${BUTTON_COMPONENT} id='${SAME_VARIETY_BUTTON}' text='${t('exemplars.see_same_variety')}'></${BUTTON_COMPONENT}>
+        <${BUTTON_COMPONENT} id='${SEE_CHILDREN_BUTTON}' text='${t('exemplars.see_children')}'></${BUTTON_COMPONENT}>
+      </div> 
       <div id='${DESCRIPTION}'></div>  
       <div id='${DESCRIPTION2}'></div> 
       <div id='${DESCRIPTION3}'></div>   
@@ -133,6 +150,24 @@ class ExemplarPage extends WebElement {
         this._clearPage = this._clearPage.bind(this);
 
         this._renderPage();
+
+        this.$_id(SAME_VARIETY_BUTTON).onClick = () => {
+            if (this.$exemplar) {
+                mExemplarsSearch.searchByParams({
+                    variety: this.$exemplar.variety && this.$exemplar.variety.id,
+                });
+            }
+
+        };
+
+        this.$_id(SEE_CHILDREN_BUTTON).onClick = () => {
+            if (this.$exemplar) {
+                mExemplarsSearch.searchByParams({
+                    childrenFor: this.$exemplar.id,
+                });
+            }
+
+        };
     }
 
     _clearPage() {
@@ -148,6 +183,7 @@ class ExemplarPage extends WebElement {
 
             this.$_id(CAPTION).textContent = `${this.$exemplar.name || ''} (${this.$exemplar.variety.name || ''})`;
             this.$_id(ID_CAPTION).textContent = this.$exemplar.id;
+
 
             this.$_id(DESCRIPTION2).innerHTML = this.$exemplar.isSport ? '<div>' + t('exemplars.it_is_sport') + '</div>' : ' ';
             this.$_id(DESCRIPTION).innerHTML = `${this.$exemplar.parent && this.$exemplar.parent.id 

@@ -10,7 +10,7 @@ const template = `
   <style>
     #${CONTAINER} {
        cursor: pointer;
-       height: 100%
+       height: 100%;
        display: flex;
     }
     

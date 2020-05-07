@@ -6,5 +6,6 @@
   "description": "Description",
   "date": "Date",
   "event": "Event",
-  "action": "Action"
+  "action": "Action",
+  "children": "Children"
 }

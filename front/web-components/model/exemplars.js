@@ -22,6 +22,7 @@ class Exemplars extends Model {
 
         return this._exemplars.map(item => ({
             id: item.id,
+            name: item.name,
             parent: item.parent,
             isSport: item.isSport,
             variety: {

@@ -15,6 +15,8 @@ class ExemplarSearch extends Model {
         this.$variety = null;
         this.$searchString = DEFAULT_SEARCH_STRING;
         this.$closed = DEFAULT_CLOSED;
+        this.$childrenFor = null;
+        this.$childrenForLeaf = null;
 
         this.$pageSize = PAGE_SIZE;
         this.$pageNumber = DEFAULT_PAGE_NUMBER;
@@ -52,10 +54,14 @@ class ExemplarSearch extends Model {
             VALUE: 'value',
             VARIETY: 'varietyId',
             CLOSED: 'closed',
+            CHILDREN_FOR: 'childrenFor',
+            CHILDREN_FOR_LEAF: 'childrenForLeaf',
             PAGE_SIZE: 'size',
             PAGE_NUMBER: 'pageNumber'
         }
         this.$variety = null;
+        this.$childrenFor = null;
+        this.$childrenForLeaf = null;
         this.$searchString = '';
         this.$closed = DEFAULT_CLOSED;
         this.$pageSize = PAGE_SIZE;
@@ -74,6 +80,12 @@ class ExemplarSearch extends Model {
                     break;
                 case PARAMS.VARIETY:
                     this.$variety = parseInt(paramValue);
+                    break;
+                case PARAMS.CHILDREN_FOR:
+                    this.$childrenFor = parseInt(paramValue);
+                    break;
+                case PARAMS.CHILDREN_FOR_LEAF:
+                    this.$childrenForLeaf = parseInt(paramValue);
                     break;
                 case PARAMS.CLOSED:
                     this.$closed = paramValue === 'true';
@@ -97,7 +109,9 @@ class ExemplarSearch extends Model {
     searchByParams(params) {
         this.$searchString = params.value || this.$searchString;
         this.$variety = params.variety;
-        this.$closed = params.closed;
+        this.$childrenFor = params.childrenFor;
+        this.$childrenForLeaf = params.childrenForLeaf;
+        this.$closed = params.closed !== undefined ? params.closed : DEFAULT_CLOSED;
         this.$pageSize = params.pageSize || this.$pageSize;
         this.$pageNumber = params.pageNumber || this.$pageNumber;
 
@@ -112,6 +126,8 @@ class ExemplarSearch extends Model {
     _reset() {
         this.$searchString = DEFAULT_SEARCH_STRING;
         this.$variety = null;
+        this.$childrenFor = null;
+        this.$childrenForLeaf = null;
         this.$closed = DEFAULT_CLOSED;
         this.$pageSize = PAGE_SIZE;
         this.$pageNumber = DEFAULT_PAGE_NUMBER;
@@ -129,6 +145,12 @@ class ExemplarSearch extends Model {
         }
         if (this.$closed !== null) {
             searchUrl = `${searchUrl}&closed=${this.$closed}`
+        }
+        if (this.$childrenFor) {
+            searchUrl = `${searchUrl}&childrenFor=${this.$childrenFor}`
+        }
+        if (this.$childrenForLeaf) {
+            searchUrl = `${searchUrl}&childrenForLeaf=${this.$childrenForLeaf}`
         }
 
         this.$searchUrl = searchUrl;

@@ -95,7 +95,7 @@ class Search extends Model {
     searchByParams(params) {
         this.$searchString = params.value || this.$searchString;
         this.$variety = params.variety;
-        this.$closed = params.closed;
+        this.$closed = params.closed !== undefined ? params.closed : DEFAULT_CLOSED;
         this.$pageSize = params.pageSize || this.$pageSize;
         this.$pageNumber = params.pageNumber || this.$pageNumber;
 

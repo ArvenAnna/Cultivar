@@ -16,5 +16,7 @@
   "edit_exemplar_history": "Edit exemplar history",
   "delete_history": "If you want delete history item click button",
   "must_choose_variety": "You must choose variety for exemplar",
-  "date_must_be_set": "Event date must be set"
+  "date_must_be_set": "Event date must be set",
+  "see_same_variety": "Same variety",
+  "see_children": "Children"
 }

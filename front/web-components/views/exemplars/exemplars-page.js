@@ -84,7 +84,7 @@ class ExemplarsPage extends WebElement {
                     comp.props = {
                         brokenImageSrc: noImage,
                         src: item.imgPath,
-                        text: `${item.variety.name} ${item.id}`
+                        text: `${item.variety.name} ${item.id} (${item.name})`
                     }
                 }
 

@@ -54,6 +54,14 @@ public class ExemplarSpecification implements Specification<Exemplar> {
 			predicates.add(containClosedHistoryPredicate);
 		}
 
+		if (searchParams.getChildrenFor() != null) {
+			predicates.add(cb.equal(exRoot.get("parent"), searchParams.getChildrenFor()));
+		}
+
+		if (searchParams.getChildrenForLeaf() != null) {
+			predicates.add(cb.equal(exRoot.get("parentLeaf"), searchParams.getChildrenForLeaf()));
+		}
+
 		query.distinct(true);
 
 		return cb.and(predicates.toArray(new Predicate[0]));
